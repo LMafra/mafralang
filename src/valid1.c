@@ -5,7 +5,7 @@ set subsum(set s, int target, int cur_sum, set ans) {
        int el;
        remove((exists (el in s)) in s);
        if(subsum(s, target, cur_sum, ans)) return ans;
-       cur_sum += el;
+       cur_sum = cur_sum + el;
        add(el in ans);
        if(subsum(s, target, cur_sum, ans)) return ans;
        add(el in s);

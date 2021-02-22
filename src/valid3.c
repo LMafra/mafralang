@@ -1,5 +1,5 @@
 set add_int(set s) {
-    return add(-2. in add(1 in s));
+    return add(2 in add(1 in s));
     // {1,2}
 }
 
