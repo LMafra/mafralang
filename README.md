@@ -15,8 +15,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ## Instrução de Execução
 
 ```c
-   % lex mafralang.l
-   % gcc lex.yy.c -ll -g -Wall
-   % ./a.out < code.c
+   lex mafralang.l
+   gcc lex.yy.c -ll -g -Wall
+   ./a.out < code.c
 ```
 Onde code representa um código válido ou inválido.
