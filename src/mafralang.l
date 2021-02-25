@@ -138,4 +138,6 @@ int main( int argc, char **argv ) {
     else
         yyin = stdin;
     yylex();
+    fclose(yyin);
+    yylex_destroy();
 }
