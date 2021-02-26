@@ -50,8 +50,8 @@ void createToken(char *token) {
     moveColumn();
 };
 
-void printString() {
-    printf(ANSI_COLOR_ORANGE "String: " ANSI_COLOR_RESET);
+void printChar() {
+    printf(ANSI_COLOR_ORANGE "Char: " ANSI_COLOR_RESET);
     printf(ANSI_COLOR_RED "%s\n" ANSI_COLOR_RESET, yytext);
 }
 void printError(){
@@ -84,10 +84,12 @@ EMPTY                   "EMPTY"
 AR_OP                   [=]|[+\-*/]
 LO_OP                   [!]|[&]{2}|[|]{2}
 RE_OP                   [=]{2}|[<]|[<=]|[>]|[>=]|[!=]
-KEYWORD                 "if"|"else"|"for"|"forall"|"return"
+ITERATION               "for"|"forall"
+CONDITIONAL             "if"|"else"
+RETURN                  "return"
 OPERATOR                "("|")"|","|";"|"{"|"}"|"["|"]"
-READ                    "read"
-WRITE                   "write"|"writeln"
+INPUT                   "read"
+OUTPUT                  "write"|"writeln"
 ID                      {LETTER}({LETTER}|{DIGIT}|{UNDERSCORE})*
 SYMBOL_ERROR            {DIGIT}+({LETTER}|{UNDERSCORE})+
 WHITESPACE              [ \t]+|[ \b]+
@@ -108,16 +110,18 @@ STR                     (\\.|[^"#{}\\])*
 {AR_OP}                         {createToken("Arithmetic Operation");}
 {LO_OP}                         {createToken("Logical Operation");}
 {RE_OP}                         {createToken("Relational Operation");}
-{KEYWORD}                       {createToken("Keyword");}
+{RETURN}                        {createToken("Return");}
+{CONDITIONAL}                   {createToken("Conditional");}
+{ITERATION}                     {createToken("Iteration");}
 {OPERATOR}                      {createToken("Operator");}
-{READ}                          {createToken("Read");}
-{WRITE}                         {createToken("Write");}
+{INPUT}                         {createToken("Input");}
+{OUTPUT}                        {createToken("Output");}
 <INITIAL,STRING>{QUOTES}        {
                                 createToken("Quotes");
                                 if(string_size)     { BEGIN(0);string_size--; }
                                 else                { BEGIN(STRING);string_size++; }
                                 }
-<STRING>.                       {printString();}
+<STRING>.                       {printChar();}
 {ID}                            {createToken("Identifier");}
 {INLINE_COMMENT}                {;}
 {START_COMMENT}                 {BEGIN(COMMENT);}
