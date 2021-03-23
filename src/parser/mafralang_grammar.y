@@ -57,6 +57,7 @@ declaration:
 statement:
   compound_statemennt
 | expression_statement
+| conditional_statement
 | iteration_statement
 | return_statement
 ;
@@ -71,10 +72,24 @@ expression_statement:
   expression SEMICOLON
 ;
 
+conditional_statement:
+  IF OPEN_PARENTHESES statement CLOSE_PARENTHESES statement
+| IF OPEN_PARENTHESES statement CLOSE_PARENTHESES ELSE statement
+;
+
+iteration_statement:
+  FOR OPEN_PARENTHESES statement SEMICOLON statement SEMICOLON statement CLOSE_PARENTHESES statement
+  FORALL OPEN_PARENTHESES statement SEMICOLON statement SEMICOLON statement CLOSE_PARENTHESES statement
+;
+
+return_statement:
+  RETURN OPEN_PARENTHESES statement CLOSE_PARENTHESES SEMICOLON
+;
+
 expression:
   expression COMMA expression
 | operation
-| constant
+| variable
 ;
 
 operation:
@@ -82,20 +97,53 @@ operation:
 | logical_operation
 | relational_operation
 | input_operation
+| output_operation
 | return_operation
 ;
 
 arithmetic_operation:
-  constant PLUS constant
-| constant MINUS constant
-| constant DIVIDE constant
-| constant MULT constant
+  variable PLUS variable
+| variable MINUS variable
+| variable DIVIDE variable
+| variable MULT variable
+| variable EQUAL variable
+;
+
+logical_operation:
+  NEGATE variable
+| variable IS_EQUAL variable
+| variable AND variable
+| variable OR variable
+;
+
+relational_operation:
+  variable CLT variable
+| variable CLE variable
+| variable CEQ variable
+| variable CGE variable
+| variable CGT variable
+| variable CNE variable
+;
+
+input_operation:
+  READ variable
+;
+
+output_operation:
+  WRITE variable
+| WRITELN variable
+
+;
+
+variable:
+  constant
+| ID
 ;
 
 constant:
   INTEGER
 | FLOAT
-| ID
+| EMPTY
 ;
 
 %%
