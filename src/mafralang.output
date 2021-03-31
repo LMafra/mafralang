@@ -1,0 +1,3666 @@
+Gramática
+
+    0 $accept: program $end
+
+    1 program: declarations
+
+    2 declarations: declarations declaration
+    3             | declaration
+
+    4 declaration: varDeclaration
+    5            | funcDeclaration
+
+    6 varDeclaration: TYPE ID SEMICOLON
+
+    7 funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement
+
+    8 paramaters: paramaters COMMA paramater
+    9           | paramater
+   10           | %empty
+
+   11 paramater: TYPE ID
+
+   12 statement: compound_statement
+   13          | expression_statement
+   14          | conditional_statement
+   15          | iteration_statement
+   16          | return_statement
+   17          | is_set_statement
+   18          | remove_statement
+   19          | add_statement
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET
+
+   21 expression_statement: expression SEMICOLON
+
+   22 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement
+   23                      | IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE compound_statement
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement
+   25                    | FORALL LEFT_PARENTHESES set_expression RIGHT_PARENTHESES statement
+
+   26 return_statement: RETURN LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON
+
+   27 is_set_statement: IS_SET LEFT_PARENTHESES set_expression RIGHT_PARENTHESES compound_statement
+
+   28 remove_statement: REMOVE LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON
+
+   29 add_statement: ADD LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON
+
+   30 set_expression: expression IN expression
+
+   31 expression: expression COMMA operation
+   32           | expression COMMA variable
+   33           | operation
+   34           | variable
+
+   35 operation: arithmetic_operation
+   36          | logical_operation
+   37          | relational_operation
+   38          | input_operation
+   39          | output_operation
+
+   40 arithmetic_operation: variable ADD_OP variable
+   41                     | variable SUB_OP variable
+   42                     | variable DIVIDE variable
+   43                     | variable MULT variable
+   44                     | variable ASSIGN variable
+
+   45 logical_operation: NEGATE variable
+   46                  | variable AND variable
+   47                  | variable OR variable
+
+   48 relational_operation: variable CLT variable
+   49                     | variable CLE variable
+   50                     | variable CEQ variable
+   51                     | variable CGE variable
+   52                     | variable CGT variable
+   53                     | variable CNE variable
+
+   54 input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable LEFT_PARENTHESES
+   56                 | WRITELN LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+   57 variable: constant
+   58         | QUOTES string QUOTES
+   59         | ID
+
+   60 string: STR
+
+   61 constant: INTEGER
+   62         | REAL
+   63         | EMPTY
+
+
+Terminais, com as regras onde eles aparecem
+
+    $end (0) 0
+    error (256)
+    REAL <fType> (258) 62
+    INTEGER <iType> (259) 61
+    ID <strType> (260) 6 7 11 59
+    EMPTY <strType> (261) 63
+    TYPE <strType> (262) 6 7 11
+    RETURN <strType> (263) 26
+    IF <strType> (264) 22 23
+    FOR <strType> (265) 24
+    FORALL <strType> (266) 25
+    READ <strType> (267) 54
+    WRITE <strType> (268) 55
+    WRITELN <strType> (269) 56
+    IS_SET <strType> (270) 27
+    REMOVE <strType> (271) 28
+    ADD <strType> (272) 29
+    IN <strType> (273) 30
+    STR <strType> (274) 60
+    LEFT_CURLY_BRACKET <symbol> (275) 20
+    RIGHT_CURLY_BRACKET <symbol> (276) 20
+    LEFT_PARENTHESES <symbol> (277) 7 22 23 24 25 26 27 28 29 54 55 56
+    RIGHT_PARENTHESES <symbol> (278) 7 22 23 24 25 26 27 28 29
+    QUOTES <symbol> (279) 58
+    SEMICOLON <symbol> (280) 6 21 24 26 28 29
+    COMMA <symbol> (281) 8 31 32
+    NEGATE <symbol> (282) 45
+    AND <symbol> (283) 46
+    OR <symbol> (284) 47
+    ADD_OP <symbol> (285) 40
+    SUB_OP <symbol> (286) 41
+    DIVIDE <symbol> (287) 42
+    MULT <symbol> (288) 43
+    ASSIGN <symbol> (289) 44
+    CLT <symbol> (290) 48
+    CLE <symbol> (291) 49
+    CEQ <symbol> (292) 50
+    CGE <symbol> (293) 51
+    CGT <symbol> (294) 52
+    CNE <symbol> (295) 53
+    ELSE (296) 23
+
+
+Não terminais com as regras onde eles aparecem
+
+    $accept (42)
+        à esquerda: 0
+    program <stmt> (43)
+        à esquerda: 1
+        à direita: 0
+    declarations <stmt> (44)
+        à esquerda: 2 3
+        à direita: 1 2
+    declaration <stmt> (45)
+        à esquerda: 4 5
+        à direita: 2 3
+    varDeclaration <stmt> (46)
+        à esquerda: 6
+        à direita: 4
+    funcDeclaration <stmt> (47)
+        à esquerda: 7
+        à direita: 5
+    paramaters <stmt> (48)
+        à esquerda: 8 9 10
+        à direita: 7 8
+    paramater <stmt> (49)
+        à esquerda: 11
+        à direita: 8 9
+    statement <stmt> (50)
+        à esquerda: 12 13 14 15 16 17 18 19
+        à direita: 20 22 24 25
+    compound_statement <stmt> (51)
+        à esquerda: 20
+        à direita: 7 12 23 27
+    expression_statement <stmt> (52)
+        à esquerda: 21
+        à direita: 13
+    conditional_statement <stmt> (53)
+        à esquerda: 22 23
+        à direita: 14
+    iteration_statement <stmt> (54)
+        à esquerda: 24 25
+        à direita: 15
+    return_statement <stmt> (55)
+        à esquerda: 26
+        à direita: 16
+    is_set_statement <stmt> (56)
+        à esquerda: 27
+        à direita: 17
+    remove_statement <stmt> (57)
+        à esquerda: 28
+        à direita: 18
+    add_statement <stmt> (58)
+        à esquerda: 29
+        à direita: 19
+    set_expression <stmt> (59)
+        à esquerda: 30
+        à direita: 25 27 28 29
+    expression <stmt> (60)
+        à esquerda: 31 32 33 34
+        à direita: 21 22 23 24 26 30 31 32
+    operation <stmt> (61)
+        à esquerda: 35 36 37 38 39
+        à direita: 31 33
+    arithmetic_operation <stmt> (62)
+        à esquerda: 40 41 42 43 44
+        à direita: 35
+    logical_operation <stmt> (63)
+        à esquerda: 45 46 47
+        à direita: 36
+    relational_operation <stmt> (64)
+        à esquerda: 48 49 50 51 52 53
+        à direita: 37
+    input_operation <stmt> (65)
+        à esquerda: 54
+        à direita: 38
+    output_operation <stmt> (66)
+        à esquerda: 55 56
+        à direita: 39
+    variable <stmt> (67)
+        à esquerda: 57 58 59
+        à direita: 32 34 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+    string <stmt> (68)
+        à esquerda: 60
+        à direita: 58
+    constant <stmt> (69)
+        à esquerda: 61 62 63
+        à direita: 57
+
+
+Estado 0
+
+    0 $accept: • program $end
+
+    TYPE  deslocar, e ir ao estado 1
+
+    program          ir ao estado 2
+    declarations     ir ao estado 3
+    declaration      ir ao estado 4
+    varDeclaration   ir ao estado 5
+    funcDeclaration  ir ao estado 6
+
+
+Estado 1
+
+    6 varDeclaration: TYPE • ID SEMICOLON
+    7 funcDeclaration: TYPE • ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement
+
+    ID  deslocar, e ir ao estado 7
+
+
+Estado 2
+
+    0 $accept: program • $end
+
+    $end  deslocar, e ir ao estado 8
+
+
+Estado 3
+
+    1 program: declarations •
+    2 declarations: declarations • declaration
+
+    TYPE  deslocar, e ir ao estado 1
+
+    $end  reduzir usando a regra 1 (program)
+
+    declaration      ir ao estado 9
+    varDeclaration   ir ao estado 5
+    funcDeclaration  ir ao estado 6
+
+
+Estado 4
+
+    3 declarations: declaration •
+
+    $end  reduzir usando a regra 3 (declarations)
+    TYPE  reduzir usando a regra 3 (declarations)
+
+
+Estado 5
+
+    4 declaration: varDeclaration •
+
+    $end  reduzir usando a regra 4 (declaration)
+    TYPE  reduzir usando a regra 4 (declaration)
+
+
+Estado 6
+
+    5 declaration: funcDeclaration •
+
+    $end  reduzir usando a regra 5 (declaration)
+    TYPE  reduzir usando a regra 5 (declaration)
+
+
+Estado 7
+
+    6 varDeclaration: TYPE ID • SEMICOLON
+    7 funcDeclaration: TYPE ID • LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 10
+    SEMICOLON         deslocar, e ir ao estado 11
+
+
+Estado 8
+
+    0 $accept: program $end •
+
+    $padrão  aceitar
+
+
+Estado 9
+
+    2 declarations: declarations declaration •
+
+    $end  reduzir usando a regra 2 (declarations)
+    TYPE  reduzir usando a regra 2 (declarations)
+
+
+Estado 10
+
+    7 funcDeclaration: TYPE ID LEFT_PARENTHESES • paramaters RIGHT_PARENTHESES compound_statement
+
+    TYPE  deslocar, e ir ao estado 12
+
+    RIGHT_PARENTHESES  reduzir usando a regra 10 (paramaters)
+    COMMA              reduzir usando a regra 10 (paramaters)
+
+    paramaters  ir ao estado 13
+    paramater   ir ao estado 14
+
+
+Estado 11
+
+    6 varDeclaration: TYPE ID SEMICOLON •
+
+    $end  reduzir usando a regra 6 (varDeclaration)
+    TYPE  reduzir usando a regra 6 (varDeclaration)
+
+
+Estado 12
+
+   11 paramater: TYPE • ID
+
+    ID  deslocar, e ir ao estado 15
+
+
+Estado 13
+
+    7 funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters • RIGHT_PARENTHESES compound_statement
+    8 paramaters: paramaters • COMMA paramater
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 16
+    COMMA              deslocar, e ir ao estado 17
+
+
+Estado 14
+
+    9 paramaters: paramater •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 9 (paramaters)
+    COMMA              reduzir usando a regra 9 (paramaters)
+
+
+Estado 15
+
+   11 paramater: TYPE ID •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 11 (paramater)
+    COMMA              reduzir usando a regra 11 (paramater)
+
+
+Estado 16
+
+    7 funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES • compound_statement
+
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 18
+
+    compound_statement  ir ao estado 19
+
+
+Estado 17
+
+    8 paramaters: paramaters COMMA • paramater
+
+    TYPE  deslocar, e ir ao estado 12
+
+    paramater  ir ao estado 20
+
+
+Estado 18
+
+   20 compound_statement: LEFT_CURLY_BRACKET • statement RIGHT_CURLY_BRACKET
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 37
+    compound_statement     ir ao estado 38
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 19
+
+    7 funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement •
+
+    $end  reduzir usando a regra 7 (funcDeclaration)
+    TYPE  reduzir usando a regra 7 (funcDeclaration)
+
+
+Estado 20
+
+    8 paramaters: paramaters COMMA paramater •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 8 (paramaters)
+    COMMA              reduzir usando a regra 8 (paramaters)
+
+
+Estado 21
+
+   62 constant: REAL •
+
+    SEMICOLON  reduzir usando a regra 62 (constant)
+    COMMA      reduzir usando a regra 62 (constant)
+    AND        reduzir usando a regra 62 (constant)
+    OR         reduzir usando a regra 62 (constant)
+    ADD_OP     reduzir usando a regra 62 (constant)
+    SUB_OP     reduzir usando a regra 62 (constant)
+    DIVIDE     reduzir usando a regra 62 (constant)
+    MULT       reduzir usando a regra 62 (constant)
+    ASSIGN     reduzir usando a regra 62 (constant)
+    CLT        reduzir usando a regra 62 (constant)
+    CLE        reduzir usando a regra 62 (constant)
+    CEQ        reduzir usando a regra 62 (constant)
+    CGE        reduzir usando a regra 62 (constant)
+    CGT        reduzir usando a regra 62 (constant)
+    CNE        reduzir usando a regra 62 (constant)
+
+
+Estado 22
+
+   61 constant: INTEGER •
+
+    SEMICOLON  reduzir usando a regra 61 (constant)
+    COMMA      reduzir usando a regra 61 (constant)
+    AND        reduzir usando a regra 61 (constant)
+    OR         reduzir usando a regra 61 (constant)
+    ADD_OP     reduzir usando a regra 61 (constant)
+    SUB_OP     reduzir usando a regra 61 (constant)
+    DIVIDE     reduzir usando a regra 61 (constant)
+    MULT       reduzir usando a regra 61 (constant)
+    ASSIGN     reduzir usando a regra 61 (constant)
+    CLT        reduzir usando a regra 61 (constant)
+    CLE        reduzir usando a regra 61 (constant)
+    CEQ        reduzir usando a regra 61 (constant)
+    CGE        reduzir usando a regra 61 (constant)
+    CGT        reduzir usando a regra 61 (constant)
+    CNE        reduzir usando a regra 61 (constant)
+
+
+Estado 23
+
+   59 variable: ID •
+
+    SEMICOLON  reduzir usando a regra 59 (variable)
+    COMMA      reduzir usando a regra 59 (variable)
+    AND        reduzir usando a regra 59 (variable)
+    OR         reduzir usando a regra 59 (variable)
+    ADD_OP     reduzir usando a regra 59 (variable)
+    SUB_OP     reduzir usando a regra 59 (variable)
+    DIVIDE     reduzir usando a regra 59 (variable)
+    MULT       reduzir usando a regra 59 (variable)
+    ASSIGN     reduzir usando a regra 59 (variable)
+    CLT        reduzir usando a regra 59 (variable)
+    CLE        reduzir usando a regra 59 (variable)
+    CEQ        reduzir usando a regra 59 (variable)
+    CGE        reduzir usando a regra 59 (variable)
+    CGT        reduzir usando a regra 59 (variable)
+    CNE        reduzir usando a regra 59 (variable)
+
+
+Estado 24
+
+   63 constant: EMPTY •
+
+    SEMICOLON  reduzir usando a regra 63 (constant)
+    COMMA      reduzir usando a regra 63 (constant)
+    AND        reduzir usando a regra 63 (constant)
+    OR         reduzir usando a regra 63 (constant)
+    ADD_OP     reduzir usando a regra 63 (constant)
+    SUB_OP     reduzir usando a regra 63 (constant)
+    DIVIDE     reduzir usando a regra 63 (constant)
+    MULT       reduzir usando a regra 63 (constant)
+    ASSIGN     reduzir usando a regra 63 (constant)
+    CLT        reduzir usando a regra 63 (constant)
+    CLE        reduzir usando a regra 63 (constant)
+    CEQ        reduzir usando a regra 63 (constant)
+    CGE        reduzir usando a regra 63 (constant)
+    CGT        reduzir usando a regra 63 (constant)
+    CNE        reduzir usando a regra 63 (constant)
+
+
+Estado 25
+
+   26 return_statement: RETURN • LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 55
+
+
+Estado 26
+
+   22 conditional_statement: IF • LEFT_PARENTHESES expression RIGHT_PARENTHESES statement
+   23                      | IF • LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE compound_statement
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 56
+
+
+Estado 27
+
+   24 iteration_statement: FOR • LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 57
+
+
+Estado 28
+
+   25 iteration_statement: FORALL • LEFT_PARENTHESES set_expression RIGHT_PARENTHESES statement
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 58
+
+
+Estado 29
+
+   54 input_operation: READ • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 59
+
+
+Estado 30
+
+   55 output_operation: WRITE • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 60
+
+
+Estado 31
+
+   56 output_operation: WRITELN • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 61
+
+
+Estado 32
+
+   27 is_set_statement: IS_SET • LEFT_PARENTHESES set_expression RIGHT_PARENTHESES compound_statement
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 62
+
+
+Estado 33
+
+   28 remove_statement: REMOVE • LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 63
+
+
+Estado 34
+
+   29 add_statement: ADD • LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 64
+
+
+Estado 35
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 66
+
+
+Estado 36
+
+   45 logical_operation: NEGATE • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 67
+    constant  ir ao estado 143
+
+
+Estado 37
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement • RIGHT_CURLY_BRACKET
+
+    RIGHT_CURLY_BRACKET  deslocar, e ir ao estado 68
+
+
+Estado 38
+
+   12 statement: compound_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 12 (statement)
+
+
+Estado 39
+
+   13 statement: expression_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 13 (statement)
+
+
+Estado 40
+
+   14 statement: conditional_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 14 (statement)
+
+
+Estado 41
+
+   15 statement: iteration_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 15 (statement)
+
+
+Estado 42
+
+   16 statement: return_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 16 (statement)
+
+
+Estado 43
+
+   17 statement: is_set_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 17 (statement)
+
+
+Estado 44
+
+   18 statement: remove_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 18 (statement)
+
+
+Estado 45
+
+   19 statement: add_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 19 (statement)
+
+
+Estado 46
+
+   21 expression_statement: expression • SEMICOLON
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    SEMICOLON  deslocar, e ir ao estado 69
+    COMMA      deslocar, e ir ao estado 70
+
+
+Estado 47
+
+   33 expression: operation •
+
+    SEMICOLON  reduzir usando a regra 33 (expression)
+    COMMA      reduzir usando a regra 33 (expression)
+
+
+Estado 48
+
+   35 operation: arithmetic_operation •
+
+    SEMICOLON  reduzir usando a regra 35 (operation)
+    COMMA      reduzir usando a regra 35 (operation)
+
+
+Estado 49
+
+   36 operation: logical_operation •
+
+    SEMICOLON  reduzir usando a regra 36 (operation)
+    COMMA      reduzir usando a regra 36 (operation)
+
+
+Estado 50
+
+   37 operation: relational_operation •
+
+    SEMICOLON  reduzir usando a regra 37 (operation)
+    COMMA      reduzir usando a regra 37 (operation)
+
+
+Estado 51
+
+   38 operation: input_operation •
+
+    SEMICOLON  reduzir usando a regra 38 (operation)
+    COMMA      reduzir usando a regra 38 (operation)
+
+
+Estado 52
+
+   39 operation: output_operation •
+
+    SEMICOLON  reduzir usando a regra 39 (operation)
+    COMMA      reduzir usando a regra 39 (operation)
+
+
+Estado 53
+
+   34 expression: variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 71
+    OR      deslocar, e ir ao estado 72
+    ADD_OP  deslocar, e ir ao estado 73
+    SUB_OP  deslocar, e ir ao estado 74
+    DIVIDE  deslocar, e ir ao estado 75
+    MULT    deslocar, e ir ao estado 76
+    ASSIGN  deslocar, e ir ao estado 77
+    CLT     deslocar, e ir ao estado 78
+    CLE     deslocar, e ir ao estado 79
+    CEQ     deslocar, e ir ao estado 80
+    CGE     deslocar, e ir ao estado 81
+    CGT     deslocar, e ir ao estado 82
+    CNE     deslocar, e ir ao estado 83
+
+    SEMICOLON  reduzir usando a regra 34 (expression)
+    COMMA      reduzir usando a regra 34 (expression)
+
+
+Estado 54
+
+   57 variable: constant •
+
+    SEMICOLON  reduzir usando a regra 57 (variable)
+    COMMA      reduzir usando a regra 57 (variable)
+    AND        reduzir usando a regra 57 (variable)
+    OR         reduzir usando a regra 57 (variable)
+    ADD_OP     reduzir usando a regra 57 (variable)
+    SUB_OP     reduzir usando a regra 57 (variable)
+    DIVIDE     reduzir usando a regra 57 (variable)
+    MULT       reduzir usando a regra 57 (variable)
+    ASSIGN     reduzir usando a regra 57 (variable)
+    CLT        reduzir usando a regra 57 (variable)
+    CLE        reduzir usando a regra 57 (variable)
+    CEQ        reduzir usando a regra 57 (variable)
+    CGE        reduzir usando a regra 57 (variable)
+    CGT        reduzir usando a regra 57 (variable)
+    CNE        reduzir usando a regra 57 (variable)
+
+
+Estado 55
+
+   26 return_statement: RETURN LEFT_PARENTHESES • expression RIGHT_PARENTHESES SEMICOLON
+
+    REAL     deslocar, e ir ao estado 144
+    INTEGER  deslocar, e ir ao estado 145
+    ID       deslocar, e ir ao estado 146
+    EMPTY    deslocar, e ir ao estado 147
+    READ     deslocar, e ir ao estado 148
+    WRITE    deslocar, e ir ao estado 149
+    WRITELN  deslocar, e ir ao estado 150
+    QUOTES   deslocar, e ir ao estado 151
+    NEGATE   deslocar, e ir ao estado 152
+
+    expression            ir ao estado 84
+    operation             ir ao estado 153
+    arithmetic_operation  ir ao estado 154
+    logical_operation     ir ao estado 155
+    relational_operation  ir ao estado 156
+    input_operation       ir ao estado 157
+    output_operation      ir ao estado 158
+    variable              ir ao estado 159
+    constant              ir ao estado 160
+
+
+Estado 56
+
+   22 conditional_statement: IF LEFT_PARENTHESES • expression RIGHT_PARENTHESES statement
+   23                      | IF LEFT_PARENTHESES • expression RIGHT_PARENTHESES compound_statement ELSE compound_statement
+
+    REAL     deslocar, e ir ao estado 144
+    INTEGER  deslocar, e ir ao estado 145
+    ID       deslocar, e ir ao estado 146
+    EMPTY    deslocar, e ir ao estado 147
+    READ     deslocar, e ir ao estado 148
+    WRITE    deslocar, e ir ao estado 149
+    WRITELN  deslocar, e ir ao estado 150
+    QUOTES   deslocar, e ir ao estado 151
+    NEGATE   deslocar, e ir ao estado 152
+
+    expression            ir ao estado 85
+    operation             ir ao estado 153
+    arithmetic_operation  ir ao estado 154
+    logical_operation     ir ao estado 155
+    relational_operation  ir ao estado 156
+    input_operation       ir ao estado 157
+    output_operation      ir ao estado 158
+    variable              ir ao estado 159
+    constant              ir ao estado 160
+
+
+Estado 57
+
+   24 iteration_statement: FOR LEFT_PARENTHESES • expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement
+
+    REAL     deslocar, e ir ao estado 21
+    INTEGER  deslocar, e ir ao estado 22
+    ID       deslocar, e ir ao estado 23
+    EMPTY    deslocar, e ir ao estado 24
+    READ     deslocar, e ir ao estado 29
+    WRITE    deslocar, e ir ao estado 30
+    WRITELN  deslocar, e ir ao estado 31
+    QUOTES   deslocar, e ir ao estado 35
+    NEGATE   deslocar, e ir ao estado 36
+
+    expression            ir ao estado 86
+    operation             ir ao estado 47
+    arithmetic_operation  ir ao estado 48
+    logical_operation     ir ao estado 49
+    relational_operation  ir ao estado 50
+    input_operation       ir ao estado 51
+    output_operation      ir ao estado 52
+    variable              ir ao estado 53
+    constant              ir ao estado 54
+
+
+Estado 58
+
+   25 iteration_statement: FORALL LEFT_PARENTHESES • set_expression RIGHT_PARENTHESES statement
+
+    REAL     deslocar, e ir ao estado 161
+    INTEGER  deslocar, e ir ao estado 162
+    ID       deslocar, e ir ao estado 163
+    EMPTY    deslocar, e ir ao estado 164
+    READ     deslocar, e ir ao estado 165
+    WRITE    deslocar, e ir ao estado 166
+    WRITELN  deslocar, e ir ao estado 167
+    QUOTES   deslocar, e ir ao estado 168
+    NEGATE   deslocar, e ir ao estado 169
+
+    set_expression        ir ao estado 87
+    expression            ir ao estado 88
+    operation             ir ao estado 170
+    arithmetic_operation  ir ao estado 171
+    logical_operation     ir ao estado 172
+    relational_operation  ir ao estado 173
+    input_operation       ir ao estado 174
+    output_operation      ir ao estado 175
+    variable              ir ao estado 176
+    constant              ir ao estado 177
+
+
+Estado 59
+
+   54 input_operation: READ LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 89
+    constant  ir ao estado 183
+
+
+Estado 60
+
+   55 output_operation: WRITE LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 90
+    constant  ir ao estado 183
+
+
+Estado 61
+
+   56 output_operation: WRITELN LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 91
+    constant  ir ao estado 183
+
+
+Estado 62
+
+   27 is_set_statement: IS_SET LEFT_PARENTHESES • set_expression RIGHT_PARENTHESES compound_statement
+
+    REAL     deslocar, e ir ao estado 161
+    INTEGER  deslocar, e ir ao estado 162
+    ID       deslocar, e ir ao estado 163
+    EMPTY    deslocar, e ir ao estado 164
+    READ     deslocar, e ir ao estado 165
+    WRITE    deslocar, e ir ao estado 166
+    WRITELN  deslocar, e ir ao estado 167
+    QUOTES   deslocar, e ir ao estado 168
+    NEGATE   deslocar, e ir ao estado 169
+
+    set_expression        ir ao estado 92
+    expression            ir ao estado 88
+    operation             ir ao estado 170
+    arithmetic_operation  ir ao estado 171
+    logical_operation     ir ao estado 172
+    relational_operation  ir ao estado 173
+    input_operation       ir ao estado 174
+    output_operation      ir ao estado 175
+    variable              ir ao estado 176
+    constant              ir ao estado 177
+
+
+Estado 63
+
+   28 remove_statement: REMOVE LEFT_PARENTHESES • set_expression RIGHT_PARENTHESES SEMICOLON
+
+    REAL     deslocar, e ir ao estado 161
+    INTEGER  deslocar, e ir ao estado 162
+    ID       deslocar, e ir ao estado 163
+    EMPTY    deslocar, e ir ao estado 164
+    READ     deslocar, e ir ao estado 165
+    WRITE    deslocar, e ir ao estado 166
+    WRITELN  deslocar, e ir ao estado 167
+    QUOTES   deslocar, e ir ao estado 168
+    NEGATE   deslocar, e ir ao estado 169
+
+    set_expression        ir ao estado 93
+    expression            ir ao estado 88
+    operation             ir ao estado 170
+    arithmetic_operation  ir ao estado 171
+    logical_operation     ir ao estado 172
+    relational_operation  ir ao estado 173
+    input_operation       ir ao estado 174
+    output_operation      ir ao estado 175
+    variable              ir ao estado 176
+    constant              ir ao estado 177
+
+
+Estado 64
+
+   29 add_statement: ADD LEFT_PARENTHESES • set_expression RIGHT_PARENTHESES SEMICOLON
+
+    REAL     deslocar, e ir ao estado 161
+    INTEGER  deslocar, e ir ao estado 162
+    ID       deslocar, e ir ao estado 163
+    EMPTY    deslocar, e ir ao estado 164
+    READ     deslocar, e ir ao estado 165
+    WRITE    deslocar, e ir ao estado 166
+    WRITELN  deslocar, e ir ao estado 167
+    QUOTES   deslocar, e ir ao estado 168
+    NEGATE   deslocar, e ir ao estado 169
+
+    set_expression        ir ao estado 94
+    expression            ir ao estado 88
+    operation             ir ao estado 170
+    arithmetic_operation  ir ao estado 171
+    logical_operation     ir ao estado 172
+    relational_operation  ir ao estado 173
+    input_operation       ir ao estado 174
+    output_operation      ir ao estado 175
+    variable              ir ao estado 176
+    constant              ir ao estado 177
+
+
+Estado 65
+
+   60 string: STR •
+
+    QUOTES  reduzir usando a regra 60 (string)
+
+
+Estado 66
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 95
+
+
+Estado 67
+
+   45 logical_operation: NEGATE variable •
+
+    SEMICOLON  reduzir usando a regra 45 (logical_operation)
+    COMMA      reduzir usando a regra 45 (logical_operation)
+
+
+Estado 68
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET •
+
+    $end  reduzir usando a regra 20 (compound_statement)
+    TYPE  reduzir usando a regra 20 (compound_statement)
+
+
+Estado 69
+
+   21 expression_statement: expression SEMICOLON •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 21 (expression_statement)
+
+
+Estado 70
+
+   31 expression: expression COMMA • operation
+   32           | expression COMMA • variable
+
+    REAL     deslocar, e ir ao estado 21
+    INTEGER  deslocar, e ir ao estado 22
+    ID       deslocar, e ir ao estado 23
+    EMPTY    deslocar, e ir ao estado 24
+    READ     deslocar, e ir ao estado 29
+    WRITE    deslocar, e ir ao estado 30
+    WRITELN  deslocar, e ir ao estado 31
+    QUOTES   deslocar, e ir ao estado 35
+    NEGATE   deslocar, e ir ao estado 36
+
+    operation             ir ao estado 96
+    arithmetic_operation  ir ao estado 48
+    logical_operation     ir ao estado 49
+    relational_operation  ir ao estado 50
+    input_operation       ir ao estado 51
+    output_operation      ir ao estado 52
+    variable              ir ao estado 97
+    constant              ir ao estado 54
+
+
+Estado 71
+
+   46 logical_operation: variable AND • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 98
+    constant  ir ao estado 143
+
+
+Estado 72
+
+   47 logical_operation: variable OR • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 99
+    constant  ir ao estado 143
+
+
+Estado 73
+
+   40 arithmetic_operation: variable ADD_OP • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 100
+    constant  ir ao estado 143
+
+
+Estado 74
+
+   41 arithmetic_operation: variable SUB_OP • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 101
+    constant  ir ao estado 143
+
+
+Estado 75
+
+   42 arithmetic_operation: variable DIVIDE • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 102
+    constant  ir ao estado 143
+
+
+Estado 76
+
+   43 arithmetic_operation: variable MULT • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 103
+    constant  ir ao estado 143
+
+
+Estado 77
+
+   44 arithmetic_operation: variable ASSIGN • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 104
+    constant  ir ao estado 143
+
+
+Estado 78
+
+   48 relational_operation: variable CLT • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 105
+    constant  ir ao estado 143
+
+
+Estado 79
+
+   49 relational_operation: variable CLE • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 106
+    constant  ir ao estado 143
+
+
+Estado 80
+
+   50 relational_operation: variable CEQ • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 107
+    constant  ir ao estado 143
+
+
+Estado 81
+
+   51 relational_operation: variable CGE • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 108
+    constant  ir ao estado 143
+
+
+Estado 82
+
+   52 relational_operation: variable CGT • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 109
+    constant  ir ao estado 143
+
+
+Estado 83
+
+   53 relational_operation: variable CNE • variable
+
+    REAL     deslocar, e ir ao estado 138
+    INTEGER  deslocar, e ir ao estado 139
+    ID       deslocar, e ir ao estado 140
+    EMPTY    deslocar, e ir ao estado 141
+    QUOTES   deslocar, e ir ao estado 142
+
+    variable  ir ao estado 110
+    constant  ir ao estado 143
+
+
+Estado 84
+
+   26 return_statement: RETURN LEFT_PARENTHESES expression • RIGHT_PARENTHESES SEMICOLON
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 111
+    COMMA              deslocar, e ir ao estado 184
+
+
+Estado 85
+
+   22 conditional_statement: IF LEFT_PARENTHESES expression • RIGHT_PARENTHESES statement
+   23                      | IF LEFT_PARENTHESES expression • RIGHT_PARENTHESES compound_statement ELSE compound_statement
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 112
+    COMMA              deslocar, e ir ao estado 184
+
+
+Estado 86
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression • SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    SEMICOLON  deslocar, e ir ao estado 113
+    COMMA      deslocar, e ir ao estado 70
+
+
+Estado 87
+
+   25 iteration_statement: FORALL LEFT_PARENTHESES set_expression • RIGHT_PARENTHESES statement
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 114
+
+
+Estado 88
+
+   30 set_expression: expression • IN expression
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    IN     deslocar, e ir ao estado 115
+    COMMA  deslocar, e ir ao estado 185
+
+
+Estado 89
+
+   54 input_operation: READ LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 116
+
+
+Estado 90
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 117
+
+
+Estado 91
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 118
+
+
+Estado 92
+
+   27 is_set_statement: IS_SET LEFT_PARENTHESES set_expression • RIGHT_PARENTHESES compound_statement
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 119
+
+
+Estado 93
+
+   28 remove_statement: REMOVE LEFT_PARENTHESES set_expression • RIGHT_PARENTHESES SEMICOLON
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 120
+
+
+Estado 94
+
+   29 add_statement: ADD LEFT_PARENTHESES set_expression • RIGHT_PARENTHESES SEMICOLON
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 121
+
+
+Estado 95
+
+   58 variable: QUOTES string QUOTES •
+
+    SEMICOLON  reduzir usando a regra 58 (variable)
+    COMMA      reduzir usando a regra 58 (variable)
+    AND        reduzir usando a regra 58 (variable)
+    OR         reduzir usando a regra 58 (variable)
+    ADD_OP     reduzir usando a regra 58 (variable)
+    SUB_OP     reduzir usando a regra 58 (variable)
+    DIVIDE     reduzir usando a regra 58 (variable)
+    MULT       reduzir usando a regra 58 (variable)
+    ASSIGN     reduzir usando a regra 58 (variable)
+    CLT        reduzir usando a regra 58 (variable)
+    CLE        reduzir usando a regra 58 (variable)
+    CEQ        reduzir usando a regra 58 (variable)
+    CGE        reduzir usando a regra 58 (variable)
+    CGT        reduzir usando a regra 58 (variable)
+    CNE        reduzir usando a regra 58 (variable)
+
+
+Estado 96
+
+   31 expression: expression COMMA operation •
+
+    SEMICOLON  reduzir usando a regra 31 (expression)
+    COMMA      reduzir usando a regra 31 (expression)
+
+
+Estado 97
+
+   32 expression: expression COMMA variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 71
+    OR      deslocar, e ir ao estado 72
+    ADD_OP  deslocar, e ir ao estado 73
+    SUB_OP  deslocar, e ir ao estado 74
+    DIVIDE  deslocar, e ir ao estado 75
+    MULT    deslocar, e ir ao estado 76
+    ASSIGN  deslocar, e ir ao estado 77
+    CLT     deslocar, e ir ao estado 78
+    CLE     deslocar, e ir ao estado 79
+    CEQ     deslocar, e ir ao estado 80
+    CGE     deslocar, e ir ao estado 81
+    CGT     deslocar, e ir ao estado 82
+    CNE     deslocar, e ir ao estado 83
+
+    SEMICOLON  reduzir usando a regra 32 (expression)
+    COMMA      reduzir usando a regra 32 (expression)
+
+
+Estado 98
+
+   46 logical_operation: variable AND variable •
+
+    SEMICOLON  reduzir usando a regra 46 (logical_operation)
+    COMMA      reduzir usando a regra 46 (logical_operation)
+
+
+Estado 99
+
+   47 logical_operation: variable OR variable •
+
+    SEMICOLON  reduzir usando a regra 47 (logical_operation)
+    COMMA      reduzir usando a regra 47 (logical_operation)
+
+
+Estado 100
+
+   40 arithmetic_operation: variable ADD_OP variable •
+
+    SEMICOLON  reduzir usando a regra 40 (arithmetic_operation)
+    COMMA      reduzir usando a regra 40 (arithmetic_operation)
+
+
+Estado 101
+
+   41 arithmetic_operation: variable SUB_OP variable •
+
+    SEMICOLON  reduzir usando a regra 41 (arithmetic_operation)
+    COMMA      reduzir usando a regra 41 (arithmetic_operation)
+
+
+Estado 102
+
+   42 arithmetic_operation: variable DIVIDE variable •
+
+    SEMICOLON  reduzir usando a regra 42 (arithmetic_operation)
+    COMMA      reduzir usando a regra 42 (arithmetic_operation)
+
+
+Estado 103
+
+   43 arithmetic_operation: variable MULT variable •
+
+    SEMICOLON  reduzir usando a regra 43 (arithmetic_operation)
+    COMMA      reduzir usando a regra 43 (arithmetic_operation)
+
+
+Estado 104
+
+   44 arithmetic_operation: variable ASSIGN variable •
+
+    SEMICOLON  reduzir usando a regra 44 (arithmetic_operation)
+    COMMA      reduzir usando a regra 44 (arithmetic_operation)
+
+
+Estado 105
+
+   48 relational_operation: variable CLT variable •
+
+    SEMICOLON  reduzir usando a regra 48 (relational_operation)
+    COMMA      reduzir usando a regra 48 (relational_operation)
+
+
+Estado 106
+
+   49 relational_operation: variable CLE variable •
+
+    SEMICOLON  reduzir usando a regra 49 (relational_operation)
+    COMMA      reduzir usando a regra 49 (relational_operation)
+
+
+Estado 107
+
+   50 relational_operation: variable CEQ variable •
+
+    SEMICOLON  reduzir usando a regra 50 (relational_operation)
+    COMMA      reduzir usando a regra 50 (relational_operation)
+
+
+Estado 108
+
+   51 relational_operation: variable CGE variable •
+
+    SEMICOLON  reduzir usando a regra 51 (relational_operation)
+    COMMA      reduzir usando a regra 51 (relational_operation)
+
+
+Estado 109
+
+   52 relational_operation: variable CGT variable •
+
+    SEMICOLON  reduzir usando a regra 52 (relational_operation)
+    COMMA      reduzir usando a regra 52 (relational_operation)
+
+
+Estado 110
+
+   53 relational_operation: variable CNE variable •
+
+    SEMICOLON  reduzir usando a regra 53 (relational_operation)
+    COMMA      reduzir usando a regra 53 (relational_operation)
+
+
+Estado 111
+
+   26 return_statement: RETURN LEFT_PARENTHESES expression RIGHT_PARENTHESES • SEMICOLON
+
+    SEMICOLON  deslocar, e ir ao estado 122
+
+
+Estado 112
+
+   22 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES • statement
+   23                      | IF LEFT_PARENTHESES expression RIGHT_PARENTHESES • compound_statement ELSE compound_statement
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 186
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 123
+    compound_statement     ir ao estado 124
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 113
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON • expression SEMICOLON expression RIGHT_PARENTHESES statement
+
+    REAL     deslocar, e ir ao estado 21
+    INTEGER  deslocar, e ir ao estado 22
+    ID       deslocar, e ir ao estado 23
+    EMPTY    deslocar, e ir ao estado 24
+    READ     deslocar, e ir ao estado 29
+    WRITE    deslocar, e ir ao estado 30
+    WRITELN  deslocar, e ir ao estado 31
+    QUOTES   deslocar, e ir ao estado 35
+    NEGATE   deslocar, e ir ao estado 36
+
+    expression            ir ao estado 125
+    operation             ir ao estado 47
+    arithmetic_operation  ir ao estado 48
+    logical_operation     ir ao estado 49
+    relational_operation  ir ao estado 50
+    input_operation       ir ao estado 51
+    output_operation      ir ao estado 52
+    variable              ir ao estado 53
+    constant              ir ao estado 54
+
+
+Estado 114
+
+   25 iteration_statement: FORALL LEFT_PARENTHESES set_expression RIGHT_PARENTHESES • statement
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 126
+    compound_statement     ir ao estado 38
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 115
+
+   30 set_expression: expression IN • expression
+
+    REAL     deslocar, e ir ao estado 144
+    INTEGER  deslocar, e ir ao estado 145
+    ID       deslocar, e ir ao estado 146
+    EMPTY    deslocar, e ir ao estado 147
+    READ     deslocar, e ir ao estado 148
+    WRITE    deslocar, e ir ao estado 149
+    WRITELN  deslocar, e ir ao estado 150
+    QUOTES   deslocar, e ir ao estado 151
+    NEGATE   deslocar, e ir ao estado 152
+
+    expression            ir ao estado 127
+    operation             ir ao estado 153
+    arithmetic_operation  ir ao estado 154
+    logical_operation     ir ao estado 155
+    relational_operation  ir ao estado 156
+    input_operation       ir ao estado 157
+    output_operation      ir ao estado 158
+    variable              ir ao estado 159
+    constant              ir ao estado 160
+
+
+Estado 116
+
+   54 input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    SEMICOLON  reduzir usando a regra 54 (input_operation)
+    COMMA      reduzir usando a regra 54 (input_operation)
+
+
+Estado 117
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    SEMICOLON  reduzir usando a regra 55 (output_operation)
+    COMMA      reduzir usando a regra 55 (output_operation)
+
+
+Estado 118
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    SEMICOLON  reduzir usando a regra 56 (output_operation)
+    COMMA      reduzir usando a regra 56 (output_operation)
+
+
+Estado 119
+
+   27 is_set_statement: IS_SET LEFT_PARENTHESES set_expression RIGHT_PARENTHESES • compound_statement
+
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+
+    compound_statement  ir ao estado 128
+
+
+Estado 120
+
+   28 remove_statement: REMOVE LEFT_PARENTHESES set_expression RIGHT_PARENTHESES • SEMICOLON
+
+    SEMICOLON  deslocar, e ir ao estado 129
+
+
+Estado 121
+
+   29 add_statement: ADD LEFT_PARENTHESES set_expression RIGHT_PARENTHESES • SEMICOLON
+
+    SEMICOLON  deslocar, e ir ao estado 130
+
+
+Estado 122
+
+   26 return_statement: RETURN LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 26 (return_statement)
+
+
+Estado 123
+
+   22 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 22 (conditional_statement)
+
+
+Estado 124
+
+   12 statement: compound_statement •
+   23 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement • ELSE compound_statement
+
+    ELSE  deslocar, e ir ao estado 131
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 12 (statement)
+
+
+Estado 125
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression • SEMICOLON expression RIGHT_PARENTHESES statement
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    SEMICOLON  deslocar, e ir ao estado 132
+    COMMA      deslocar, e ir ao estado 70
+
+
+Estado 126
+
+   25 iteration_statement: FORALL LEFT_PARENTHESES set_expression RIGHT_PARENTHESES statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 25 (iteration_statement)
+
+
+Estado 127
+
+   30 set_expression: expression IN expression •
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    COMMA  deslocar, e ir ao estado 184
+
+    RIGHT_PARENTHESES  reduzir usando a regra 30 (set_expression)
+
+
+Estado 128
+
+   27 is_set_statement: IS_SET LEFT_PARENTHESES set_expression RIGHT_PARENTHESES compound_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 27 (is_set_statement)
+
+
+Estado 129
+
+   28 remove_statement: REMOVE LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 28 (remove_statement)
+
+
+Estado 130
+
+   29 add_statement: ADD LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 29 (add_statement)
+
+
+Estado 131
+
+   23 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE • compound_statement
+
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+
+    compound_statement  ir ao estado 133
+
+
+Estado 132
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON • expression RIGHT_PARENTHESES statement
+
+    REAL     deslocar, e ir ao estado 144
+    INTEGER  deslocar, e ir ao estado 145
+    ID       deslocar, e ir ao estado 146
+    EMPTY    deslocar, e ir ao estado 147
+    READ     deslocar, e ir ao estado 148
+    WRITE    deslocar, e ir ao estado 149
+    WRITELN  deslocar, e ir ao estado 150
+    QUOTES   deslocar, e ir ao estado 151
+    NEGATE   deslocar, e ir ao estado 152
+
+    expression            ir ao estado 134
+    operation             ir ao estado 153
+    arithmetic_operation  ir ao estado 154
+    logical_operation     ir ao estado 155
+    relational_operation  ir ao estado 156
+    input_operation       ir ao estado 157
+    output_operation      ir ao estado 158
+    variable              ir ao estado 159
+    constant              ir ao estado 160
+
+
+Estado 133
+
+   23 conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE compound_statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 23 (conditional_statement)
+
+
+Estado 134
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression • RIGHT_PARENTHESES statement
+   31 expression: expression • COMMA operation
+   32           | expression • COMMA variable
+
+    RIGHT_PARENTHESES  deslocar, e ir ao estado 135
+    COMMA              deslocar, e ir ao estado 184
+
+
+Estado 135
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES • statement
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 136
+    compound_statement     ir ao estado 38
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 136
+
+   24 iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 24 (iteration_statement)
+
+
+Estado 137
+
+   20 compound_statement: LEFT_CURLY_BRACKET • statement RIGHT_CURLY_BRACKET
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 187
+    compound_statement     ir ao estado 38
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 138
+
+   62 constant: REAL •
+
+    SEMICOLON  reduzir usando a regra 62 (constant)
+    COMMA      reduzir usando a regra 62 (constant)
+
+
+Estado 139
+
+   61 constant: INTEGER •
+
+    SEMICOLON  reduzir usando a regra 61 (constant)
+    COMMA      reduzir usando a regra 61 (constant)
+
+
+Estado 140
+
+   59 variable: ID •
+
+    SEMICOLON  reduzir usando a regra 59 (variable)
+    COMMA      reduzir usando a regra 59 (variable)
+
+
+Estado 141
+
+   63 constant: EMPTY •
+
+    SEMICOLON  reduzir usando a regra 63 (constant)
+    COMMA      reduzir usando a regra 63 (constant)
+
+
+Estado 142
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 188
+
+
+Estado 143
+
+   57 variable: constant •
+
+    SEMICOLON  reduzir usando a regra 57 (variable)
+    COMMA      reduzir usando a regra 57 (variable)
+
+
+Estado 144
+
+   62 constant: REAL •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 62 (constant)
+    COMMA              reduzir usando a regra 62 (constant)
+    AND                reduzir usando a regra 62 (constant)
+    OR                 reduzir usando a regra 62 (constant)
+    ADD_OP             reduzir usando a regra 62 (constant)
+    SUB_OP             reduzir usando a regra 62 (constant)
+    DIVIDE             reduzir usando a regra 62 (constant)
+    MULT               reduzir usando a regra 62 (constant)
+    ASSIGN             reduzir usando a regra 62 (constant)
+    CLT                reduzir usando a regra 62 (constant)
+    CLE                reduzir usando a regra 62 (constant)
+    CEQ                reduzir usando a regra 62 (constant)
+    CGE                reduzir usando a regra 62 (constant)
+    CGT                reduzir usando a regra 62 (constant)
+    CNE                reduzir usando a regra 62 (constant)
+
+
+Estado 145
+
+   61 constant: INTEGER •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 61 (constant)
+    COMMA              reduzir usando a regra 61 (constant)
+    AND                reduzir usando a regra 61 (constant)
+    OR                 reduzir usando a regra 61 (constant)
+    ADD_OP             reduzir usando a regra 61 (constant)
+    SUB_OP             reduzir usando a regra 61 (constant)
+    DIVIDE             reduzir usando a regra 61 (constant)
+    MULT               reduzir usando a regra 61 (constant)
+    ASSIGN             reduzir usando a regra 61 (constant)
+    CLT                reduzir usando a regra 61 (constant)
+    CLE                reduzir usando a regra 61 (constant)
+    CEQ                reduzir usando a regra 61 (constant)
+    CGE                reduzir usando a regra 61 (constant)
+    CGT                reduzir usando a regra 61 (constant)
+    CNE                reduzir usando a regra 61 (constant)
+
+
+Estado 146
+
+   59 variable: ID •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 59 (variable)
+    COMMA              reduzir usando a regra 59 (variable)
+    AND                reduzir usando a regra 59 (variable)
+    OR                 reduzir usando a regra 59 (variable)
+    ADD_OP             reduzir usando a regra 59 (variable)
+    SUB_OP             reduzir usando a regra 59 (variable)
+    DIVIDE             reduzir usando a regra 59 (variable)
+    MULT               reduzir usando a regra 59 (variable)
+    ASSIGN             reduzir usando a regra 59 (variable)
+    CLT                reduzir usando a regra 59 (variable)
+    CLE                reduzir usando a regra 59 (variable)
+    CEQ                reduzir usando a regra 59 (variable)
+    CGE                reduzir usando a regra 59 (variable)
+    CGT                reduzir usando a regra 59 (variable)
+    CNE                reduzir usando a regra 59 (variable)
+
+
+Estado 147
+
+   63 constant: EMPTY •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 63 (constant)
+    COMMA              reduzir usando a regra 63 (constant)
+    AND                reduzir usando a regra 63 (constant)
+    OR                 reduzir usando a regra 63 (constant)
+    ADD_OP             reduzir usando a regra 63 (constant)
+    SUB_OP             reduzir usando a regra 63 (constant)
+    DIVIDE             reduzir usando a regra 63 (constant)
+    MULT               reduzir usando a regra 63 (constant)
+    ASSIGN             reduzir usando a regra 63 (constant)
+    CLT                reduzir usando a regra 63 (constant)
+    CLE                reduzir usando a regra 63 (constant)
+    CEQ                reduzir usando a regra 63 (constant)
+    CGE                reduzir usando a regra 63 (constant)
+    CGT                reduzir usando a regra 63 (constant)
+    CNE                reduzir usando a regra 63 (constant)
+
+
+Estado 148
+
+   54 input_operation: READ • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 189
+
+
+Estado 149
+
+   55 output_operation: WRITE • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 190
+
+
+Estado 150
+
+   56 output_operation: WRITELN • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 191
+
+
+Estado 151
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 192
+
+
+Estado 152
+
+   45 logical_operation: NEGATE • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 198
+    constant  ir ao estado 199
+
+
+Estado 153
+
+   33 expression: operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 33 (expression)
+    COMMA              reduzir usando a regra 33 (expression)
+
+
+Estado 154
+
+   35 operation: arithmetic_operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 35 (operation)
+    COMMA              reduzir usando a regra 35 (operation)
+
+
+Estado 155
+
+   36 operation: logical_operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 36 (operation)
+    COMMA              reduzir usando a regra 36 (operation)
+
+
+Estado 156
+
+   37 operation: relational_operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 37 (operation)
+    COMMA              reduzir usando a regra 37 (operation)
+
+
+Estado 157
+
+   38 operation: input_operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 38 (operation)
+    COMMA              reduzir usando a regra 38 (operation)
+
+
+Estado 158
+
+   39 operation: output_operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 39 (operation)
+    COMMA              reduzir usando a regra 39 (operation)
+
+
+Estado 159
+
+   34 expression: variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 200
+    OR      deslocar, e ir ao estado 201
+    ADD_OP  deslocar, e ir ao estado 202
+    SUB_OP  deslocar, e ir ao estado 203
+    DIVIDE  deslocar, e ir ao estado 204
+    MULT    deslocar, e ir ao estado 205
+    ASSIGN  deslocar, e ir ao estado 206
+    CLT     deslocar, e ir ao estado 207
+    CLE     deslocar, e ir ao estado 208
+    CEQ     deslocar, e ir ao estado 209
+    CGE     deslocar, e ir ao estado 210
+    CGT     deslocar, e ir ao estado 211
+    CNE     deslocar, e ir ao estado 212
+
+    RIGHT_PARENTHESES  reduzir usando a regra 34 (expression)
+    COMMA              reduzir usando a regra 34 (expression)
+
+
+Estado 160
+
+   57 variable: constant •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 57 (variable)
+    COMMA              reduzir usando a regra 57 (variable)
+    AND                reduzir usando a regra 57 (variable)
+    OR                 reduzir usando a regra 57 (variable)
+    ADD_OP             reduzir usando a regra 57 (variable)
+    SUB_OP             reduzir usando a regra 57 (variable)
+    DIVIDE             reduzir usando a regra 57 (variable)
+    MULT               reduzir usando a regra 57 (variable)
+    ASSIGN             reduzir usando a regra 57 (variable)
+    CLT                reduzir usando a regra 57 (variable)
+    CLE                reduzir usando a regra 57 (variable)
+    CEQ                reduzir usando a regra 57 (variable)
+    CGE                reduzir usando a regra 57 (variable)
+    CGT                reduzir usando a regra 57 (variable)
+    CNE                reduzir usando a regra 57 (variable)
+
+
+Estado 161
+
+   62 constant: REAL •
+
+    IN      reduzir usando a regra 62 (constant)
+    COMMA   reduzir usando a regra 62 (constant)
+    AND     reduzir usando a regra 62 (constant)
+    OR      reduzir usando a regra 62 (constant)
+    ADD_OP  reduzir usando a regra 62 (constant)
+    SUB_OP  reduzir usando a regra 62 (constant)
+    DIVIDE  reduzir usando a regra 62 (constant)
+    MULT    reduzir usando a regra 62 (constant)
+    ASSIGN  reduzir usando a regra 62 (constant)
+    CLT     reduzir usando a regra 62 (constant)
+    CLE     reduzir usando a regra 62 (constant)
+    CEQ     reduzir usando a regra 62 (constant)
+    CGE     reduzir usando a regra 62 (constant)
+    CGT     reduzir usando a regra 62 (constant)
+    CNE     reduzir usando a regra 62 (constant)
+
+
+Estado 162
+
+   61 constant: INTEGER •
+
+    IN      reduzir usando a regra 61 (constant)
+    COMMA   reduzir usando a regra 61 (constant)
+    AND     reduzir usando a regra 61 (constant)
+    OR      reduzir usando a regra 61 (constant)
+    ADD_OP  reduzir usando a regra 61 (constant)
+    SUB_OP  reduzir usando a regra 61 (constant)
+    DIVIDE  reduzir usando a regra 61 (constant)
+    MULT    reduzir usando a regra 61 (constant)
+    ASSIGN  reduzir usando a regra 61 (constant)
+    CLT     reduzir usando a regra 61 (constant)
+    CLE     reduzir usando a regra 61 (constant)
+    CEQ     reduzir usando a regra 61 (constant)
+    CGE     reduzir usando a regra 61 (constant)
+    CGT     reduzir usando a regra 61 (constant)
+    CNE     reduzir usando a regra 61 (constant)
+
+
+Estado 163
+
+   59 variable: ID •
+
+    IN      reduzir usando a regra 59 (variable)
+    COMMA   reduzir usando a regra 59 (variable)
+    AND     reduzir usando a regra 59 (variable)
+    OR      reduzir usando a regra 59 (variable)
+    ADD_OP  reduzir usando a regra 59 (variable)
+    SUB_OP  reduzir usando a regra 59 (variable)
+    DIVIDE  reduzir usando a regra 59 (variable)
+    MULT    reduzir usando a regra 59 (variable)
+    ASSIGN  reduzir usando a regra 59 (variable)
+    CLT     reduzir usando a regra 59 (variable)
+    CLE     reduzir usando a regra 59 (variable)
+    CEQ     reduzir usando a regra 59 (variable)
+    CGE     reduzir usando a regra 59 (variable)
+    CGT     reduzir usando a regra 59 (variable)
+    CNE     reduzir usando a regra 59 (variable)
+
+
+Estado 164
+
+   63 constant: EMPTY •
+
+    IN      reduzir usando a regra 63 (constant)
+    COMMA   reduzir usando a regra 63 (constant)
+    AND     reduzir usando a regra 63 (constant)
+    OR      reduzir usando a regra 63 (constant)
+    ADD_OP  reduzir usando a regra 63 (constant)
+    SUB_OP  reduzir usando a regra 63 (constant)
+    DIVIDE  reduzir usando a regra 63 (constant)
+    MULT    reduzir usando a regra 63 (constant)
+    ASSIGN  reduzir usando a regra 63 (constant)
+    CLT     reduzir usando a regra 63 (constant)
+    CLE     reduzir usando a regra 63 (constant)
+    CEQ     reduzir usando a regra 63 (constant)
+    CGE     reduzir usando a regra 63 (constant)
+    CGT     reduzir usando a regra 63 (constant)
+    CNE     reduzir usando a regra 63 (constant)
+
+
+Estado 165
+
+   54 input_operation: READ • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 213
+
+
+Estado 166
+
+   55 output_operation: WRITE • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 214
+
+
+Estado 167
+
+   56 output_operation: WRITELN • LEFT_PARENTHESES variable LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 215
+
+
+Estado 168
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 216
+
+
+Estado 169
+
+   45 logical_operation: NEGATE • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 222
+    constant  ir ao estado 223
+
+
+Estado 170
+
+   33 expression: operation •
+
+    IN     reduzir usando a regra 33 (expression)
+    COMMA  reduzir usando a regra 33 (expression)
+
+
+Estado 171
+
+   35 operation: arithmetic_operation •
+
+    IN     reduzir usando a regra 35 (operation)
+    COMMA  reduzir usando a regra 35 (operation)
+
+
+Estado 172
+
+   36 operation: logical_operation •
+
+    IN     reduzir usando a regra 36 (operation)
+    COMMA  reduzir usando a regra 36 (operation)
+
+
+Estado 173
+
+   37 operation: relational_operation •
+
+    IN     reduzir usando a regra 37 (operation)
+    COMMA  reduzir usando a regra 37 (operation)
+
+
+Estado 174
+
+   38 operation: input_operation •
+
+    IN     reduzir usando a regra 38 (operation)
+    COMMA  reduzir usando a regra 38 (operation)
+
+
+Estado 175
+
+   39 operation: output_operation •
+
+    IN     reduzir usando a regra 39 (operation)
+    COMMA  reduzir usando a regra 39 (operation)
+
+
+Estado 176
+
+   34 expression: variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 224
+    OR      deslocar, e ir ao estado 225
+    ADD_OP  deslocar, e ir ao estado 226
+    SUB_OP  deslocar, e ir ao estado 227
+    DIVIDE  deslocar, e ir ao estado 228
+    MULT    deslocar, e ir ao estado 229
+    ASSIGN  deslocar, e ir ao estado 230
+    CLT     deslocar, e ir ao estado 231
+    CLE     deslocar, e ir ao estado 232
+    CEQ     deslocar, e ir ao estado 233
+    CGE     deslocar, e ir ao estado 234
+    CGT     deslocar, e ir ao estado 235
+    CNE     deslocar, e ir ao estado 236
+
+    IN     reduzir usando a regra 34 (expression)
+    COMMA  reduzir usando a regra 34 (expression)
+
+
+Estado 177
+
+   57 variable: constant •
+
+    IN      reduzir usando a regra 57 (variable)
+    COMMA   reduzir usando a regra 57 (variable)
+    AND     reduzir usando a regra 57 (variable)
+    OR      reduzir usando a regra 57 (variable)
+    ADD_OP  reduzir usando a regra 57 (variable)
+    SUB_OP  reduzir usando a regra 57 (variable)
+    DIVIDE  reduzir usando a regra 57 (variable)
+    MULT    reduzir usando a regra 57 (variable)
+    ASSIGN  reduzir usando a regra 57 (variable)
+    CLT     reduzir usando a regra 57 (variable)
+    CLE     reduzir usando a regra 57 (variable)
+    CEQ     reduzir usando a regra 57 (variable)
+    CGE     reduzir usando a regra 57 (variable)
+    CGT     reduzir usando a regra 57 (variable)
+    CNE     reduzir usando a regra 57 (variable)
+
+
+Estado 178
+
+   62 constant: REAL •
+
+    LEFT_PARENTHESES  reduzir usando a regra 62 (constant)
+
+
+Estado 179
+
+   61 constant: INTEGER •
+
+    LEFT_PARENTHESES  reduzir usando a regra 61 (constant)
+
+
+Estado 180
+
+   59 variable: ID •
+
+    LEFT_PARENTHESES  reduzir usando a regra 59 (variable)
+
+
+Estado 181
+
+   63 constant: EMPTY •
+
+    LEFT_PARENTHESES  reduzir usando a regra 63 (constant)
+
+
+Estado 182
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 237
+
+
+Estado 183
+
+   57 variable: constant •
+
+    LEFT_PARENTHESES  reduzir usando a regra 57 (variable)
+
+
+Estado 184
+
+   31 expression: expression COMMA • operation
+   32           | expression COMMA • variable
+
+    REAL     deslocar, e ir ao estado 144
+    INTEGER  deslocar, e ir ao estado 145
+    ID       deslocar, e ir ao estado 146
+    EMPTY    deslocar, e ir ao estado 147
+    READ     deslocar, e ir ao estado 148
+    WRITE    deslocar, e ir ao estado 149
+    WRITELN  deslocar, e ir ao estado 150
+    QUOTES   deslocar, e ir ao estado 151
+    NEGATE   deslocar, e ir ao estado 152
+
+    operation             ir ao estado 238
+    arithmetic_operation  ir ao estado 154
+    logical_operation     ir ao estado 155
+    relational_operation  ir ao estado 156
+    input_operation       ir ao estado 157
+    output_operation      ir ao estado 158
+    variable              ir ao estado 239
+    constant              ir ao estado 160
+
+
+Estado 185
+
+   31 expression: expression COMMA • operation
+   32           | expression COMMA • variable
+
+    REAL     deslocar, e ir ao estado 161
+    INTEGER  deslocar, e ir ao estado 162
+    ID       deslocar, e ir ao estado 163
+    EMPTY    deslocar, e ir ao estado 164
+    READ     deslocar, e ir ao estado 165
+    WRITE    deslocar, e ir ao estado 166
+    WRITELN  deslocar, e ir ao estado 167
+    QUOTES   deslocar, e ir ao estado 168
+    NEGATE   deslocar, e ir ao estado 169
+
+    operation             ir ao estado 240
+    arithmetic_operation  ir ao estado 171
+    logical_operation     ir ao estado 172
+    relational_operation  ir ao estado 173
+    input_operation       ir ao estado 174
+    output_operation      ir ao estado 175
+    variable              ir ao estado 241
+    constant              ir ao estado 177
+
+
+Estado 186
+
+   20 compound_statement: LEFT_CURLY_BRACKET • statement RIGHT_CURLY_BRACKET
+
+    REAL                deslocar, e ir ao estado 21
+    INTEGER             deslocar, e ir ao estado 22
+    ID                  deslocar, e ir ao estado 23
+    EMPTY               deslocar, e ir ao estado 24
+    RETURN              deslocar, e ir ao estado 25
+    IF                  deslocar, e ir ao estado 26
+    FOR                 deslocar, e ir ao estado 27
+    FORALL              deslocar, e ir ao estado 28
+    READ                deslocar, e ir ao estado 29
+    WRITE               deslocar, e ir ao estado 30
+    WRITELN             deslocar, e ir ao estado 31
+    IS_SET              deslocar, e ir ao estado 32
+    REMOVE              deslocar, e ir ao estado 33
+    ADD                 deslocar, e ir ao estado 34
+    LEFT_CURLY_BRACKET  deslocar, e ir ao estado 137
+    QUOTES              deslocar, e ir ao estado 35
+    NEGATE              deslocar, e ir ao estado 36
+
+    statement              ir ao estado 242
+    compound_statement     ir ao estado 38
+    expression_statement   ir ao estado 39
+    conditional_statement  ir ao estado 40
+    iteration_statement    ir ao estado 41
+    return_statement       ir ao estado 42
+    is_set_statement       ir ao estado 43
+    remove_statement       ir ao estado 44
+    add_statement          ir ao estado 45
+    expression             ir ao estado 46
+    operation              ir ao estado 47
+    arithmetic_operation   ir ao estado 48
+    logical_operation      ir ao estado 49
+    relational_operation   ir ao estado 50
+    input_operation        ir ao estado 51
+    output_operation       ir ao estado 52
+    variable               ir ao estado 53
+    constant               ir ao estado 54
+
+
+Estado 187
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement • RIGHT_CURLY_BRACKET
+
+    RIGHT_CURLY_BRACKET  deslocar, e ir ao estado 243
+
+
+Estado 188
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 244
+
+
+Estado 189
+
+   54 input_operation: READ LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 245
+    constant  ir ao estado 183
+
+
+Estado 190
+
+   55 output_operation: WRITE LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 246
+    constant  ir ao estado 183
+
+
+Estado 191
+
+   56 output_operation: WRITELN LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 247
+    constant  ir ao estado 183
+
+
+Estado 192
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 248
+
+
+Estado 193
+
+   62 constant: REAL •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 62 (constant)
+    COMMA              reduzir usando a regra 62 (constant)
+
+
+Estado 194
+
+   61 constant: INTEGER •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 61 (constant)
+    COMMA              reduzir usando a regra 61 (constant)
+
+
+Estado 195
+
+   59 variable: ID •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 59 (variable)
+    COMMA              reduzir usando a regra 59 (variable)
+
+
+Estado 196
+
+   63 constant: EMPTY •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 63 (constant)
+    COMMA              reduzir usando a regra 63 (constant)
+
+
+Estado 197
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 249
+
+
+Estado 198
+
+   45 logical_operation: NEGATE variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 45 (logical_operation)
+    COMMA              reduzir usando a regra 45 (logical_operation)
+
+
+Estado 199
+
+   57 variable: constant •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 57 (variable)
+    COMMA              reduzir usando a regra 57 (variable)
+
+
+Estado 200
+
+   46 logical_operation: variable AND • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 250
+    constant  ir ao estado 199
+
+
+Estado 201
+
+   47 logical_operation: variable OR • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 251
+    constant  ir ao estado 199
+
+
+Estado 202
+
+   40 arithmetic_operation: variable ADD_OP • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 252
+    constant  ir ao estado 199
+
+
+Estado 203
+
+   41 arithmetic_operation: variable SUB_OP • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 253
+    constant  ir ao estado 199
+
+
+Estado 204
+
+   42 arithmetic_operation: variable DIVIDE • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 254
+    constant  ir ao estado 199
+
+
+Estado 205
+
+   43 arithmetic_operation: variable MULT • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 255
+    constant  ir ao estado 199
+
+
+Estado 206
+
+   44 arithmetic_operation: variable ASSIGN • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 256
+    constant  ir ao estado 199
+
+
+Estado 207
+
+   48 relational_operation: variable CLT • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 257
+    constant  ir ao estado 199
+
+
+Estado 208
+
+   49 relational_operation: variable CLE • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 258
+    constant  ir ao estado 199
+
+
+Estado 209
+
+   50 relational_operation: variable CEQ • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 259
+    constant  ir ao estado 199
+
+
+Estado 210
+
+   51 relational_operation: variable CGE • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 260
+    constant  ir ao estado 199
+
+
+Estado 211
+
+   52 relational_operation: variable CGT • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 261
+    constant  ir ao estado 199
+
+
+Estado 212
+
+   53 relational_operation: variable CNE • variable
+
+    REAL     deslocar, e ir ao estado 193
+    INTEGER  deslocar, e ir ao estado 194
+    ID       deslocar, e ir ao estado 195
+    EMPTY    deslocar, e ir ao estado 196
+    QUOTES   deslocar, e ir ao estado 197
+
+    variable  ir ao estado 262
+    constant  ir ao estado 199
+
+
+Estado 213
+
+   54 input_operation: READ LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 263
+    constant  ir ao estado 183
+
+
+Estado 214
+
+   55 output_operation: WRITE LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 264
+    constant  ir ao estado 183
+
+
+Estado 215
+
+   56 output_operation: WRITELN LEFT_PARENTHESES • variable LEFT_PARENTHESES
+
+    REAL     deslocar, e ir ao estado 178
+    INTEGER  deslocar, e ir ao estado 179
+    ID       deslocar, e ir ao estado 180
+    EMPTY    deslocar, e ir ao estado 181
+    QUOTES   deslocar, e ir ao estado 182
+
+    variable  ir ao estado 265
+    constant  ir ao estado 183
+
+
+Estado 216
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 266
+
+
+Estado 217
+
+   62 constant: REAL •
+
+    IN     reduzir usando a regra 62 (constant)
+    COMMA  reduzir usando a regra 62 (constant)
+
+
+Estado 218
+
+   61 constant: INTEGER •
+
+    IN     reduzir usando a regra 61 (constant)
+    COMMA  reduzir usando a regra 61 (constant)
+
+
+Estado 219
+
+   59 variable: ID •
+
+    IN     reduzir usando a regra 59 (variable)
+    COMMA  reduzir usando a regra 59 (variable)
+
+
+Estado 220
+
+   63 constant: EMPTY •
+
+    IN     reduzir usando a regra 63 (constant)
+    COMMA  reduzir usando a regra 63 (constant)
+
+
+Estado 221
+
+   58 variable: QUOTES • string QUOTES
+
+    STR  deslocar, e ir ao estado 65
+
+    string  ir ao estado 267
+
+
+Estado 222
+
+   45 logical_operation: NEGATE variable •
+
+    IN     reduzir usando a regra 45 (logical_operation)
+    COMMA  reduzir usando a regra 45 (logical_operation)
+
+
+Estado 223
+
+   57 variable: constant •
+
+    IN     reduzir usando a regra 57 (variable)
+    COMMA  reduzir usando a regra 57 (variable)
+
+
+Estado 224
+
+   46 logical_operation: variable AND • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 268
+    constant  ir ao estado 223
+
+
+Estado 225
+
+   47 logical_operation: variable OR • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 269
+    constant  ir ao estado 223
+
+
+Estado 226
+
+   40 arithmetic_operation: variable ADD_OP • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 270
+    constant  ir ao estado 223
+
+
+Estado 227
+
+   41 arithmetic_operation: variable SUB_OP • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 271
+    constant  ir ao estado 223
+
+
+Estado 228
+
+   42 arithmetic_operation: variable DIVIDE • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 272
+    constant  ir ao estado 223
+
+
+Estado 229
+
+   43 arithmetic_operation: variable MULT • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 273
+    constant  ir ao estado 223
+
+
+Estado 230
+
+   44 arithmetic_operation: variable ASSIGN • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 274
+    constant  ir ao estado 223
+
+
+Estado 231
+
+   48 relational_operation: variable CLT • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 275
+    constant  ir ao estado 223
+
+
+Estado 232
+
+   49 relational_operation: variable CLE • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 276
+    constant  ir ao estado 223
+
+
+Estado 233
+
+   50 relational_operation: variable CEQ • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 277
+    constant  ir ao estado 223
+
+
+Estado 234
+
+   51 relational_operation: variable CGE • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 278
+    constant  ir ao estado 223
+
+
+Estado 235
+
+   52 relational_operation: variable CGT • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 279
+    constant  ir ao estado 223
+
+
+Estado 236
+
+   53 relational_operation: variable CNE • variable
+
+    REAL     deslocar, e ir ao estado 217
+    INTEGER  deslocar, e ir ao estado 218
+    ID       deslocar, e ir ao estado 219
+    EMPTY    deslocar, e ir ao estado 220
+    QUOTES   deslocar, e ir ao estado 221
+
+    variable  ir ao estado 280
+    constant  ir ao estado 223
+
+
+Estado 237
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 281
+
+
+Estado 238
+
+   31 expression: expression COMMA operation •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 31 (expression)
+    COMMA              reduzir usando a regra 31 (expression)
+
+
+Estado 239
+
+   32 expression: expression COMMA variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 200
+    OR      deslocar, e ir ao estado 201
+    ADD_OP  deslocar, e ir ao estado 202
+    SUB_OP  deslocar, e ir ao estado 203
+    DIVIDE  deslocar, e ir ao estado 204
+    MULT    deslocar, e ir ao estado 205
+    ASSIGN  deslocar, e ir ao estado 206
+    CLT     deslocar, e ir ao estado 207
+    CLE     deslocar, e ir ao estado 208
+    CEQ     deslocar, e ir ao estado 209
+    CGE     deslocar, e ir ao estado 210
+    CGT     deslocar, e ir ao estado 211
+    CNE     deslocar, e ir ao estado 212
+
+    RIGHT_PARENTHESES  reduzir usando a regra 32 (expression)
+    COMMA              reduzir usando a regra 32 (expression)
+
+
+Estado 240
+
+   31 expression: expression COMMA operation •
+
+    IN     reduzir usando a regra 31 (expression)
+    COMMA  reduzir usando a regra 31 (expression)
+
+
+Estado 241
+
+   32 expression: expression COMMA variable •
+   40 arithmetic_operation: variable • ADD_OP variable
+   41                     | variable • SUB_OP variable
+   42                     | variable • DIVIDE variable
+   43                     | variable • MULT variable
+   44                     | variable • ASSIGN variable
+   46 logical_operation: variable • AND variable
+   47                  | variable • OR variable
+   48 relational_operation: variable • CLT variable
+   49                     | variable • CLE variable
+   50                     | variable • CEQ variable
+   51                     | variable • CGE variable
+   52                     | variable • CGT variable
+   53                     | variable • CNE variable
+
+    AND     deslocar, e ir ao estado 224
+    OR      deslocar, e ir ao estado 225
+    ADD_OP  deslocar, e ir ao estado 226
+    SUB_OP  deslocar, e ir ao estado 227
+    DIVIDE  deslocar, e ir ao estado 228
+    MULT    deslocar, e ir ao estado 229
+    ASSIGN  deslocar, e ir ao estado 230
+    CLT     deslocar, e ir ao estado 231
+    CLE     deslocar, e ir ao estado 232
+    CEQ     deslocar, e ir ao estado 233
+    CGE     deslocar, e ir ao estado 234
+    CGT     deslocar, e ir ao estado 235
+    CNE     deslocar, e ir ao estado 236
+
+    IN     reduzir usando a regra 32 (expression)
+    COMMA  reduzir usando a regra 32 (expression)
+
+
+Estado 242
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement • RIGHT_CURLY_BRACKET
+
+    RIGHT_CURLY_BRACKET  deslocar, e ir ao estado 282
+
+
+Estado 243
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 20 (compound_statement)
+
+
+Estado 244
+
+   58 variable: QUOTES string QUOTES •
+
+    SEMICOLON  reduzir usando a regra 58 (variable)
+    COMMA      reduzir usando a regra 58 (variable)
+
+
+Estado 245
+
+   54 input_operation: READ LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 283
+
+
+Estado 246
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 284
+
+
+Estado 247
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 285
+
+
+Estado 248
+
+   58 variable: QUOTES string QUOTES •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 58 (variable)
+    COMMA              reduzir usando a regra 58 (variable)
+    AND                reduzir usando a regra 58 (variable)
+    OR                 reduzir usando a regra 58 (variable)
+    ADD_OP             reduzir usando a regra 58 (variable)
+    SUB_OP             reduzir usando a regra 58 (variable)
+    DIVIDE             reduzir usando a regra 58 (variable)
+    MULT               reduzir usando a regra 58 (variable)
+    ASSIGN             reduzir usando a regra 58 (variable)
+    CLT                reduzir usando a regra 58 (variable)
+    CLE                reduzir usando a regra 58 (variable)
+    CEQ                reduzir usando a regra 58 (variable)
+    CGE                reduzir usando a regra 58 (variable)
+    CGT                reduzir usando a regra 58 (variable)
+    CNE                reduzir usando a regra 58 (variable)
+
+
+Estado 249
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 286
+
+
+Estado 250
+
+   46 logical_operation: variable AND variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 46 (logical_operation)
+    COMMA              reduzir usando a regra 46 (logical_operation)
+
+
+Estado 251
+
+   47 logical_operation: variable OR variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 47 (logical_operation)
+    COMMA              reduzir usando a regra 47 (logical_operation)
+
+
+Estado 252
+
+   40 arithmetic_operation: variable ADD_OP variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 40 (arithmetic_operation)
+    COMMA              reduzir usando a regra 40 (arithmetic_operation)
+
+
+Estado 253
+
+   41 arithmetic_operation: variable SUB_OP variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 41 (arithmetic_operation)
+    COMMA              reduzir usando a regra 41 (arithmetic_operation)
+
+
+Estado 254
+
+   42 arithmetic_operation: variable DIVIDE variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 42 (arithmetic_operation)
+    COMMA              reduzir usando a regra 42 (arithmetic_operation)
+
+
+Estado 255
+
+   43 arithmetic_operation: variable MULT variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 43 (arithmetic_operation)
+    COMMA              reduzir usando a regra 43 (arithmetic_operation)
+
+
+Estado 256
+
+   44 arithmetic_operation: variable ASSIGN variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 44 (arithmetic_operation)
+    COMMA              reduzir usando a regra 44 (arithmetic_operation)
+
+
+Estado 257
+
+   48 relational_operation: variable CLT variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 48 (relational_operation)
+    COMMA              reduzir usando a regra 48 (relational_operation)
+
+
+Estado 258
+
+   49 relational_operation: variable CLE variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 49 (relational_operation)
+    COMMA              reduzir usando a regra 49 (relational_operation)
+
+
+Estado 259
+
+   50 relational_operation: variable CEQ variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 50 (relational_operation)
+    COMMA              reduzir usando a regra 50 (relational_operation)
+
+
+Estado 260
+
+   51 relational_operation: variable CGE variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 51 (relational_operation)
+    COMMA              reduzir usando a regra 51 (relational_operation)
+
+
+Estado 261
+
+   52 relational_operation: variable CGT variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 52 (relational_operation)
+    COMMA              reduzir usando a regra 52 (relational_operation)
+
+
+Estado 262
+
+   53 relational_operation: variable CNE variable •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 53 (relational_operation)
+    COMMA              reduzir usando a regra 53 (relational_operation)
+
+
+Estado 263
+
+   54 input_operation: READ LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 287
+
+
+Estado 264
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 288
+
+
+Estado 265
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable • LEFT_PARENTHESES
+
+    LEFT_PARENTHESES  deslocar, e ir ao estado 289
+
+
+Estado 266
+
+   58 variable: QUOTES string QUOTES •
+
+    IN      reduzir usando a regra 58 (variable)
+    COMMA   reduzir usando a regra 58 (variable)
+    AND     reduzir usando a regra 58 (variable)
+    OR      reduzir usando a regra 58 (variable)
+    ADD_OP  reduzir usando a regra 58 (variable)
+    SUB_OP  reduzir usando a regra 58 (variable)
+    DIVIDE  reduzir usando a regra 58 (variable)
+    MULT    reduzir usando a regra 58 (variable)
+    ASSIGN  reduzir usando a regra 58 (variable)
+    CLT     reduzir usando a regra 58 (variable)
+    CLE     reduzir usando a regra 58 (variable)
+    CEQ     reduzir usando a regra 58 (variable)
+    CGE     reduzir usando a regra 58 (variable)
+    CGT     reduzir usando a regra 58 (variable)
+    CNE     reduzir usando a regra 58 (variable)
+
+
+Estado 267
+
+   58 variable: QUOTES string • QUOTES
+
+    QUOTES  deslocar, e ir ao estado 290
+
+
+Estado 268
+
+   46 logical_operation: variable AND variable •
+
+    IN     reduzir usando a regra 46 (logical_operation)
+    COMMA  reduzir usando a regra 46 (logical_operation)
+
+
+Estado 269
+
+   47 logical_operation: variable OR variable •
+
+    IN     reduzir usando a regra 47 (logical_operation)
+    COMMA  reduzir usando a regra 47 (logical_operation)
+
+
+Estado 270
+
+   40 arithmetic_operation: variable ADD_OP variable •
+
+    IN     reduzir usando a regra 40 (arithmetic_operation)
+    COMMA  reduzir usando a regra 40 (arithmetic_operation)
+
+
+Estado 271
+
+   41 arithmetic_operation: variable SUB_OP variable •
+
+    IN     reduzir usando a regra 41 (arithmetic_operation)
+    COMMA  reduzir usando a regra 41 (arithmetic_operation)
+
+
+Estado 272
+
+   42 arithmetic_operation: variable DIVIDE variable •
+
+    IN     reduzir usando a regra 42 (arithmetic_operation)
+    COMMA  reduzir usando a regra 42 (arithmetic_operation)
+
+
+Estado 273
+
+   43 arithmetic_operation: variable MULT variable •
+
+    IN     reduzir usando a regra 43 (arithmetic_operation)
+    COMMA  reduzir usando a regra 43 (arithmetic_operation)
+
+
+Estado 274
+
+   44 arithmetic_operation: variable ASSIGN variable •
+
+    IN     reduzir usando a regra 44 (arithmetic_operation)
+    COMMA  reduzir usando a regra 44 (arithmetic_operation)
+
+
+Estado 275
+
+   48 relational_operation: variable CLT variable •
+
+    IN     reduzir usando a regra 48 (relational_operation)
+    COMMA  reduzir usando a regra 48 (relational_operation)
+
+
+Estado 276
+
+   49 relational_operation: variable CLE variable •
+
+    IN     reduzir usando a regra 49 (relational_operation)
+    COMMA  reduzir usando a regra 49 (relational_operation)
+
+
+Estado 277
+
+   50 relational_operation: variable CEQ variable •
+
+    IN     reduzir usando a regra 50 (relational_operation)
+    COMMA  reduzir usando a regra 50 (relational_operation)
+
+
+Estado 278
+
+   51 relational_operation: variable CGE variable •
+
+    IN     reduzir usando a regra 51 (relational_operation)
+    COMMA  reduzir usando a regra 51 (relational_operation)
+
+
+Estado 279
+
+   52 relational_operation: variable CGT variable •
+
+    IN     reduzir usando a regra 52 (relational_operation)
+    COMMA  reduzir usando a regra 52 (relational_operation)
+
+
+Estado 280
+
+   53 relational_operation: variable CNE variable •
+
+    IN     reduzir usando a regra 53 (relational_operation)
+    COMMA  reduzir usando a regra 53 (relational_operation)
+
+
+Estado 281
+
+   58 variable: QUOTES string QUOTES •
+
+    LEFT_PARENTHESES  reduzir usando a regra 58 (variable)
+
+
+Estado 282
+
+   20 compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET •
+
+    RIGHT_CURLY_BRACKET  reduzir usando a regra 20 (compound_statement)
+    ELSE                 reduzir usando a regra 20 (compound_statement)
+
+
+Estado 283
+
+   54 input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 54 (input_operation)
+    COMMA              reduzir usando a regra 54 (input_operation)
+
+
+Estado 284
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 55 (output_operation)
+    COMMA              reduzir usando a regra 55 (output_operation)
+
+
+Estado 285
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 56 (output_operation)
+    COMMA              reduzir usando a regra 56 (output_operation)
+
+
+Estado 286
+
+   58 variable: QUOTES string QUOTES •
+
+    RIGHT_PARENTHESES  reduzir usando a regra 58 (variable)
+    COMMA              reduzir usando a regra 58 (variable)
+
+
+Estado 287
+
+   54 input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    IN     reduzir usando a regra 54 (input_operation)
+    COMMA  reduzir usando a regra 54 (input_operation)
+
+
+Estado 288
+
+   55 output_operation: WRITE LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    IN     reduzir usando a regra 55 (output_operation)
+    COMMA  reduzir usando a regra 55 (output_operation)
+
+
+Estado 289
+
+   56 output_operation: WRITELN LEFT_PARENTHESES variable LEFT_PARENTHESES •
+
+    IN     reduzir usando a regra 56 (output_operation)
+    COMMA  reduzir usando a regra 56 (output_operation)
+
+
+Estado 290
+
+   58 variable: QUOTES string QUOTES •
+
+    IN     reduzir usando a regra 58 (variable)
+    COMMA  reduzir usando a regra 58 (variable)

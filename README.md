@@ -11,13 +11,14 @@ Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 * flex 2.6.4
-* bison (GNU Bison) 3.5.1
+* bison (GNU Bison) 3.7
 Escrito por Robert Corbett e Richard Stallman.
 
 Copyright © 2020 Free Software Foundation, Inc.
 Este é um software livre; veja o código fonte para condições de cópia.
 NÃO HÁ QUALQUER GARANTIA; nem mesmo para COMERCIALIZAÇÃO ou de ADEQUAÇÃO A
 QUALQUER PROPÓSITO EM PARTICULAR.
+
 
 
 ## Instrução de Execução
