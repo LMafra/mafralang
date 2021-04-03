@@ -8,7 +8,10 @@
 
 int line_number = 1;
 int string_size = 0;
+int lex_error = 0;
+int total_errors = 0;
 
+void lexical_error_unrecognizable_symbol(char* symbol);
 void yyerror(const char *s);
 
 %}
@@ -124,7 +127,7 @@ STR                     [^"]*
                                     if(string_size)     { BEGIN(0);string_size--; return QUOTES; }
                                     else                { BEGIN(STRING);string_size++; return QUOTES; }
                                   }
-<STRING>{STR}                     {yylval.strType = (char *) strdup(yytext);return STR;}
+<STRING>{STR}                     {if(strcmp(yytext, "\n") == 0){line_number++;} yylval.strType = (char *) strdup(yytext);return STR;}
 
 {INLINE_COMMENT}                  {;}
 {START_COMMENT}                   {BEGIN(COMMENT);}
@@ -134,12 +137,20 @@ STR                     [^"]*
 
 {WHITESPACE}                      {;}
 {EOL}                             {line_number++;}
-.                                 {fprintf(stderr, "Token not accepted\n"); exit(1);}
+.                                 {lexical_error_unrecognizable_symbol(yytext);}
 
 %%
 
 
 void yyerror(char const *s) {
   fprintf (stderr, "Parse error : %s\n", s);
+  total_errors++;
   exit(1);
+}
+
+void lexical_error_unrecognizable_symbol(char* symbol){
+    char *error = (char *)malloc((strlen(symbol) + 1 + 35) * sizeof(char)); // +1 for the null-terminator and 35 for lex error message
+    sprintf(error, "lexical error, unrecognizable symbol %s", symbol);
+    yyerror(error);
+    free(error);
 }

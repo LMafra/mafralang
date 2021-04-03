@@ -613,12 +613,15 @@ char *yytext;
 
 int line_number = 1;
 int string_size = 0;
+int lex_error = 0;
+int total_errors = 0;
 
+void lexical_error_unrecognizable_symbol(char* symbol);
 void yyerror(const char *s);
 
-#line 620 "lex.yy.c"
+#line 623 "lex.yy.c"
 
-#line 622 "lex.yy.c"
+#line 625 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -835,10 +838,10 @@ YY_DECL
 		}
 
 	{
-#line 76 "mafralang.l"
+#line 79 "mafralang.l"
 
 
-#line 842 "lex.yy.c"
+#line 845 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -907,192 +910,192 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 78 "mafralang.l"
+#line 81 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return TYPE;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 79 "mafralang.l"
+#line 82 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return EMPTY;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 81 "mafralang.l"
+#line 84 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return RETURN;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 82 "mafralang.l"
+#line 85 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return IF;}  
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 83 "mafralang.l"
+#line 86 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return ELSE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 84 "mafralang.l"
+#line 87 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return FOR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 85 "mafralang.l"
+#line 88 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return READ;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 86 "mafralang.l"
+#line 89 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return WRITE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 87 "mafralang.l"
+#line 90 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return WRITELN;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 89 "mafralang.l"
+#line 92 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return FORALL;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 90 "mafralang.l"
+#line 93 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return IS_SET;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 91 "mafralang.l"
+#line 94 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return REMOVE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 92 "mafralang.l"
+#line 95 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return ADD;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 93 "mafralang.l"
+#line 96 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return IN;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 95 "mafralang.l"
+#line 98 "mafralang.l"
 {yylval.strType = (char *) strdup(yytext);return ID;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 96 "mafralang.l"
+#line 99 "mafralang.l"
 {yylval.fType = atof(yytext);return REAL;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 97 "mafralang.l"
+#line 100 "mafralang.l"
 {yylval.iType = atoi(yytext);return INTEGER;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 99 "mafralang.l"
+#line 102 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return LEFT_CURLY_BRACKET;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 100 "mafralang.l"
+#line 103 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return RIGHT_CURLY_BRACKET;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 101 "mafralang.l"
+#line 104 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return LEFT_PARENTHESES;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 102 "mafralang.l"
+#line 105 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return RIGHT_PARENTHESES;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 103 "mafralang.l"
+#line 106 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return COMMA;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 104 "mafralang.l"
+#line 107 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return SEMICOLON;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 106 "mafralang.l"
+#line 109 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return ADD_OP;}                          
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 107 "mafralang.l"
+#line 110 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return SUB_OP;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 108 "mafralang.l"
+#line 111 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return DIVIDE;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 109 "mafralang.l"
+#line 112 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return ASSIGN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 110 "mafralang.l"
+#line 113 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return MULT;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 112 "mafralang.l"
+#line 115 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CLT;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 113 "mafralang.l"
+#line 116 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CLE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 114 "mafralang.l"
+#line 117 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CEQ;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 115 "mafralang.l"
+#line 118 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CGE;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 116 "mafralang.l"
+#line 119 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CGT;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 117 "mafralang.l"
+#line 120 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return CNE;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 119 "mafralang.l"
+#line 122 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return NEGATE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 120 "mafralang.l"
+#line 123 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return AND;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 121 "mafralang.l"
+#line 124 "mafralang.l"
 {yylval.symbol = (char *) strdup(yytext);return OR;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 123 "mafralang.l"
+#line 126 "mafralang.l"
 {
                                     if(string_size)     { BEGIN(0);string_size--; return QUOTES; }
                                     else                { BEGIN(STRING);string_size++; return QUOTES; }
@@ -1101,57 +1104,57 @@ YY_RULE_SETUP
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 127 "mafralang.l"
-{yylval.strType = (char *) strdup(yytext);return STR;}
+#line 130 "mafralang.l"
+{if(strcmp(yytext, "\n") == 0){line_number++;} yylval.strType = (char *) strdup(yytext);return STR;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 129 "mafralang.l"
+#line 132 "mafralang.l"
 {;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 130 "mafralang.l"
+#line 133 "mafralang.l"
 {BEGIN(COMMENT);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 131 "mafralang.l"
+#line 134 "mafralang.l"
 {BEGIN(INITIAL);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 132 "mafralang.l"
+#line 135 "mafralang.l"
 {;}
 	YY_BREAK
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 133 "mafralang.l"
+#line 136 "mafralang.l"
 {;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 135 "mafralang.l"
+#line 138 "mafralang.l"
 {;}
 	YY_BREAK
 case 46:
 /* rule 46 can match eol */
 YY_RULE_SETUP
-#line 136 "mafralang.l"
+#line 139 "mafralang.l"
 {line_number++;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 137 "mafralang.l"
-{fprintf(stderr, "Token not accepted\n"); exit(1);}
+#line 140 "mafralang.l"
+{lexical_error_unrecognizable_symbol(yytext);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 139 "mafralang.l"
+#line 142 "mafralang.l"
 ECHO;
 	YY_BREAK
-#line 1155 "lex.yy.c"
+#line 1158 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 case YY_STATE_EOF(STRING):
@@ -2129,11 +2132,19 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 139 "mafralang.l"
+#line 142 "mafralang.l"
 
 
 
 void yyerror(char const *s) {
   fprintf (stderr, "Parse error : %s\n", s);
+  total_errors++;
   exit(1);
+}
+
+void lexical_error_unrecognizable_symbol(char* symbol){
+    char *error = (char *)malloc((strlen(symbol) + 1 + 35) * sizeof(char)); // +1 for the null-terminator and 35 for lex error message
+    sprintf(error, "lexical error, unrecognizable symbol %s", symbol);
+    yyerror(error);
+    free(error);
 }

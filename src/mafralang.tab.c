@@ -67,18 +67,46 @@
 
 
 /* First part of user prologue.  */
-#line 6 "mafralang.y"
+#line 4 "mafralang.y"
 
   #include <stdlib.h>
   #include <stdio.h>
 
+  #define DECLARATION 1
+  #define VARIABLE_DECLARATION 2
+  #define FUNCTION_DECLARATION 3
+  #define PARAMATERS 4
+  #define PARAMATER 5
+  #define COMPOUND_STATEMENT 6
+  #define EXPRESSION_STATEMENT 7
+  #define CONDITIONAL_STATEMENT 8
+  #define ITERATION_STATEMENT 9
+  #define RETURN_STATEMENT 10
+  #define IS_SET_STATEMENT 11
+  #define REMOVE_STATEMENT 12
+  #define ADD_STATEMENT 13
+  #define SET_EXPRESSION 14
+  #define EXPRESSION 15
+  #define ARITHMETIC_OPERATION 16
+  #define LOGICAL_OPERATION 17
+  #define RELATIONAL_OPERATION 18
+  #define INPUT_OPERATION 19
+  #define OUTPUT_OPERATION 20
+  #define QUOT 21
+  #define IDENTIFIER 22
+  #define STRING 23
+  #define INTEG 24
+  #define DECIMAL 25
+  #define EMP 26
+
   int yylex();
+  int yyerror(const char *s);
   extern int yylex_destroy(void);
-  extern int total_errors;
-  extern int line;
-  extern int lex_error;
-  extern void yyerror(const char* msg);
   extern FILE *yyin;
+  extern int total_errors;
+  extern int line_number;
+  extern int lex_error;
+
 
   typedef struct ast_node {
     int node_class;
@@ -91,8 +119,12 @@
   struct ast_node* parserTree = NULL;
 
   struct ast_node* addNode(int node_class, struct ast_node *left, struct ast_node *right);
+  void print_class(int node_class);
+  void print_depth(int depth);
+  void print_tree(struct ast_node *tree, int depth);
+  void free_tree(ast_node* node);
 
-#line 96 "mafralang.tab.c"
+#line 128 "mafralang.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -561,13 +593,13 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    70,    70,    74,    75,    79,    80,    84,    88,    94,
-      95,    96,   100,   104,   105,   106,   107,   108,   109,   110,
-     111,   115,   119,   123,   126,   132,   133,   137,   141,   147,
-     151,   155,   159,   160,   161,   162,   166,   167,   168,   169,
-     170,   174,   175,   176,   177,   178,   182,   183,   184,   188,
-     189,   190,   191,   192,   193,   197,   201,   202,   207,   208,
-     209,   213,   217,   218,   219
+       0,   100,   100,   104,   105,   109,   110,   114,   118,   124,
+     125,   126,   130,   134,   135,   136,   137,   138,   139,   140,
+     141,   145,   149,   153,   156,   162,   163,   167,   171,   177,
+     181,   185,   189,   190,   191,   192,   196,   197,   198,   199,
+     200,   204,   205,   206,   207,   208,   212,   213,   214,   218,
+     219,   220,   221,   222,   223,   227,   231,   232,   237,   238,
+     239,   243,   247,   248,   249
 };
 #endif
 
@@ -1716,249 +1748,393 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: declarations  */
-#line 70 "mafralang.y"
+#line 100 "mafralang.y"
                { parserTree = (yyvsp[0].stmt); }
-#line 1722 "mafralang.tab.c"
+#line 1754 "mafralang.tab.c"
     break;
 
   case 3: /* declarations: declarations declaration  */
-#line 74 "mafralang.y"
-                           { (yyval.stmt) = addNode('D', (yyvsp[-1].stmt), (yyvsp[0].stmt));}
-#line 1728 "mafralang.tab.c"
-    break;
-
-  case 4: /* declarations: declaration  */
-#line 75 "mafralang.y"
-              { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1734 "mafralang.tab.c"
-    break;
-
-  case 5: /* declaration: varDeclaration  */
-#line 79 "mafralang.y"
-                  { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1740 "mafralang.tab.c"
-    break;
-
-  case 6: /* declaration: funcDeclaration  */
-#line 80 "mafralang.y"
-                  { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1746 "mafralang.tab.c"
-    break;
-
-  case 7: /* varDeclaration: TYPE ID SEMICOLON  */
-#line 84 "mafralang.y"
-                    { (yyval.stmt) = NULL;}
-#line 1752 "mafralang.tab.c"
-    break;
-
-  case 8: /* funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement  */
-#line 88 "mafralang.y"
-                                                                           {
-    (yyval.stmt) = addNode('F', NULL, (yyvsp[0].stmt));
-  }
+#line 104 "mafralang.y"
+                           { (yyval.stmt) = addNode(DECLARATION, (yyvsp[-1].stmt), (yyvsp[0].stmt));}
 #line 1760 "mafralang.tab.c"
     break;
 
-  case 9: /* paramaters: paramaters COMMA paramater  */
-#line 94 "mafralang.y"
-                             { (yyval.stmt) = addNode('P', (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+  case 4: /* declarations: declaration  */
+#line 105 "mafralang.y"
+              { (yyval.stmt) = (yyvsp[0].stmt); }
 #line 1766 "mafralang.tab.c"
     break;
 
-  case 10: /* paramaters: paramater  */
-#line 95 "mafralang.y"
-            { (yyval.stmt) = (yyvsp[0].stmt); }
+  case 5: /* declaration: varDeclaration  */
+#line 109 "mafralang.y"
+                  { (yyval.stmt) = (yyvsp[0].stmt); }
 #line 1772 "mafralang.tab.c"
     break;
 
-  case 11: /* paramaters: %empty  */
-#line 96 "mafralang.y"
-            { (yyval.stmt) = NULL; }
+  case 6: /* declaration: funcDeclaration  */
+#line 110 "mafralang.y"
+                  { (yyval.stmt) = (yyvsp[0].stmt); }
 #line 1778 "mafralang.tab.c"
     break;
 
-  case 12: /* paramater: TYPE ID  */
-#line 100 "mafralang.y"
-          { (yyval.stmt) = addNode('P', NULL, NULL);}
+  case 7: /* varDeclaration: TYPE ID SEMICOLON  */
+#line 114 "mafralang.y"
+                    { (yyval.stmt) = addNode(VARIABLE_DECLARATION, NULL, NULL);}
 #line 1784 "mafralang.tab.c"
     break;
 
+  case 8: /* funcDeclaration: TYPE ID LEFT_PARENTHESES paramaters RIGHT_PARENTHESES compound_statement  */
+#line 118 "mafralang.y"
+                                                                           {
+    (yyval.stmt) = addNode(FUNCTION_DECLARATION, NULL, (yyvsp[0].stmt));
+  }
+#line 1792 "mafralang.tab.c"
+    break;
+
+  case 9: /* paramaters: paramaters COMMA paramater  */
+#line 124 "mafralang.y"
+                             { (yyval.stmt) = addNode(PARAMATERS, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 1798 "mafralang.tab.c"
+    break;
+
+  case 10: /* paramaters: paramater  */
+#line 125 "mafralang.y"
+            { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1804 "mafralang.tab.c"
+    break;
+
+  case 11: /* paramaters: %empty  */
+#line 126 "mafralang.y"
+            { (yyval.stmt) = NULL; }
+#line 1810 "mafralang.tab.c"
+    break;
+
+  case 12: /* paramater: TYPE ID  */
+#line 130 "mafralang.y"
+          { (yyval.stmt) = addNode(PARAMATER, NULL, NULL);}
+#line 1816 "mafralang.tab.c"
+    break;
+
   case 13: /* statement: compound_statement  */
-#line 104 "mafralang.y"
+#line 134 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1790 "mafralang.tab.c"
+#line 1822 "mafralang.tab.c"
     break;
 
   case 14: /* statement: expression_statement  */
-#line 105 "mafralang.y"
+#line 135 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1796 "mafralang.tab.c"
+#line 1828 "mafralang.tab.c"
     break;
 
   case 15: /* statement: conditional_statement  */
-#line 106 "mafralang.y"
+#line 136 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1802 "mafralang.tab.c"
+#line 1834 "mafralang.tab.c"
     break;
 
   case 16: /* statement: iteration_statement  */
-#line 107 "mafralang.y"
+#line 137 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1808 "mafralang.tab.c"
+#line 1840 "mafralang.tab.c"
     break;
 
   case 17: /* statement: return_statement  */
-#line 108 "mafralang.y"
+#line 138 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1814 "mafralang.tab.c"
+#line 1846 "mafralang.tab.c"
     break;
 
   case 18: /* statement: is_set_statement  */
-#line 109 "mafralang.y"
+#line 139 "mafralang.y"
                          { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1820 "mafralang.tab.c"
-    break;
-
-  case 19: /* statement: remove_statement  */
-#line 110 "mafralang.y"
-                         { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1826 "mafralang.tab.c"
-    break;
-
-  case 20: /* statement: add_statement  */
-#line 111 "mafralang.y"
-                         { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 1832 "mafralang.tab.c"
-    break;
-
-  case 21: /* compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET  */
-#line 115 "mafralang.y"
-                                                   { (yyval.stmt) = addNode('P', NULL, (yyvsp[-1].stmt)); }
-#line 1838 "mafralang.tab.c"
-    break;
-
-  case 22: /* expression_statement: expression SEMICOLON  */
-#line 119 "mafralang.y"
-                       { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 1844 "mafralang.tab.c"
-    break;
-
-  case 23: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement  */
-#line 123 "mafralang.y"
-                                                             { 
-    (yyval.stmt) = addNode('P', (yyvsp[-2].stmt), (yyvsp[0].stmt));
-  }
 #line 1852 "mafralang.tab.c"
     break;
 
-  case 24: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE compound_statement  */
-#line 126 "mafralang.y"
-                                                                                              { 
-    (yyval.stmt) = addNode('P', addNode('P', (yyvsp[-4].stmt), (yyvsp[-2].stmt)), (yyvsp[0].stmt));;
-  }
-#line 1860 "mafralang.tab.c"
+  case 19: /* statement: remove_statement  */
+#line 140 "mafralang.y"
+                         { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1858 "mafralang.tab.c"
     break;
 
-  case 25: /* iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement  */
-#line 132 "mafralang.y"
-                                                                                                        { (yyval.stmt) = addNode('P', (yyvsp[-6].stmt), (yyvsp[0].stmt)); }
-#line 1866 "mafralang.tab.c"
-    break;
-
-  case 26: /* iteration_statement: FORALL LEFT_PARENTHESES set_expression RIGHT_PARENTHESES statement  */
-#line 133 "mafralang.y"
-                                                                     { (yyval.stmt) = addNode('P', (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
-#line 1872 "mafralang.tab.c"
-    break;
-
-  case 27: /* return_statement: RETURN LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON  */
-#line 137 "mafralang.y"
-                                                                 { (yyval.stmt) = (yyvsp[-2].stmt);}
-#line 1878 "mafralang.tab.c"
-    break;
-
-  case 28: /* is_set_statement: IS_SET LEFT_PARENTHESES set_expression RIGHT_PARENTHESES compound_statement  */
+  case 20: /* statement: add_statement  */
 #line 141 "mafralang.y"
-                                                                                 {
-    (yyval.stmt) = addNode('P', (yyvsp[-2].stmt), (yyvsp[0].stmt));
-  }
-#line 1886 "mafralang.tab.c"
+                         { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1864 "mafralang.tab.c"
     break;
 
-  case 29: /* remove_statement: REMOVE LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON  */
-#line 147 "mafralang.y"
-                                                                        { (yyval.stmt) = (yyvsp[-2].stmt);}
+  case 21: /* compound_statement: LEFT_CURLY_BRACKET statement RIGHT_CURLY_BRACKET  */
+#line 145 "mafralang.y"
+                                                   { (yyval.stmt) = addNode(COMPOUND_STATEMENT, NULL, (yyvsp[-1].stmt)); }
+#line 1870 "mafralang.tab.c"
+    break;
+
+  case 22: /* expression_statement: expression SEMICOLON  */
+#line 149 "mafralang.y"
+                       { (yyval.stmt) = addNode(EXPRESSION_STATEMENT, (yyvsp[-1].stmt), NULL); }
+#line 1876 "mafralang.tab.c"
+    break;
+
+  case 23: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement  */
+#line 153 "mafralang.y"
+                                                             { 
+    (yyval.stmt) = addNode(CONDITIONAL_STATEMENT, (yyvsp[-2].stmt), (yyvsp[0].stmt));
+  }
+#line 1884 "mafralang.tab.c"
+    break;
+
+  case 24: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES compound_statement ELSE compound_statement  */
+#line 156 "mafralang.y"
+                                                                                              { 
+    (yyval.stmt) = addNode(CONDITIONAL_STATEMENT, addNode(CONDITIONAL_STATEMENT, (yyvsp[-4].stmt), (yyvsp[-2].stmt)), (yyvsp[0].stmt));;
+  }
 #line 1892 "mafralang.tab.c"
     break;
 
-  case 30: /* add_statement: ADD LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON  */
-#line 151 "mafralang.y"
-                                                                     { (yyval.stmt) = (yyvsp[-2].stmt);}
+  case 25: /* iteration_statement: FOR LEFT_PARENTHESES expression SEMICOLON expression SEMICOLON expression RIGHT_PARENTHESES statement  */
+#line 162 "mafralang.y"
+                                                                                                        { (yyval.stmt) = addNode('P', (yyvsp[-6].stmt), (yyvsp[0].stmt)); }
 #line 1898 "mafralang.tab.c"
     break;
 
-  case 46: /* logical_operation: NEGATE variable  */
-#line 182 "mafralang.y"
-                  {(yyval.stmt) = (yyvsp[0].stmt);}
+  case 26: /* iteration_statement: FORALL LEFT_PARENTHESES set_expression RIGHT_PARENTHESES statement  */
+#line 163 "mafralang.y"
+                                                                     { (yyval.stmt) = addNode(ITERATION_STATEMENT, (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
 #line 1904 "mafralang.tab.c"
     break;
 
-  case 55: /* input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES  */
-#line 197 "mafralang.y"
-                                                  {(yyval.stmt) = (yyvsp[-1].stmt);}
+  case 27: /* return_statement: RETURN LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON  */
+#line 167 "mafralang.y"
+                                                                 { (yyval.stmt) = addNode(RETURN_STATEMENT, (yyvsp[-2].stmt), NULL);}
 #line 1910 "mafralang.tab.c"
     break;
 
+  case 28: /* is_set_statement: IS_SET LEFT_PARENTHESES set_expression RIGHT_PARENTHESES compound_statement  */
+#line 171 "mafralang.y"
+                                                                                 {
+    (yyval.stmt) = addNode(IS_SET_STATEMENT, (yyvsp[-2].stmt), (yyvsp[0].stmt));
+  }
+#line 1918 "mafralang.tab.c"
+    break;
+
+  case 29: /* remove_statement: REMOVE LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON  */
+#line 177 "mafralang.y"
+                                                                        { (yyval.stmt) = addNode(REMOVE_STATEMENT, (yyvsp[-2].stmt), NULL);}
+#line 1924 "mafralang.tab.c"
+    break;
+
+  case 30: /* add_statement: ADD LEFT_PARENTHESES set_expression RIGHT_PARENTHESES SEMICOLON  */
+#line 181 "mafralang.y"
+                                                                     { (yyval.stmt) = addNode(ADD_STATEMENT, (yyvsp[-2].stmt), NULL);}
+#line 1930 "mafralang.tab.c"
+    break;
+
+  case 31: /* set_expression: expression IN expression  */
+#line 185 "mafralang.y"
+                           { (yyval.stmt) = addNode(SET_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 1936 "mafralang.tab.c"
+    break;
+
+  case 32: /* expression: expression COMMA operation  */
+#line 189 "mafralang.y"
+                             { (yyval.stmt) = addNode(EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 1942 "mafralang.tab.c"
+    break;
+
+  case 33: /* expression: expression COMMA variable  */
+#line 190 "mafralang.y"
+                            { (yyval.stmt) = addNode(EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 1948 "mafralang.tab.c"
+    break;
+
+  case 34: /* expression: operation  */
+#line 191 "mafralang.y"
+            { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1954 "mafralang.tab.c"
+    break;
+
+  case 35: /* expression: variable  */
+#line 192 "mafralang.y"
+           { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1960 "mafralang.tab.c"
+    break;
+
+  case 36: /* operation: arithmetic_operation  */
+#line 196 "mafralang.y"
+                       { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1966 "mafralang.tab.c"
+    break;
+
+  case 37: /* operation: logical_operation  */
+#line 197 "mafralang.y"
+                    { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1972 "mafralang.tab.c"
+    break;
+
+  case 38: /* operation: relational_operation  */
+#line 198 "mafralang.y"
+                       { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1978 "mafralang.tab.c"
+    break;
+
+  case 39: /* operation: input_operation  */
+#line 199 "mafralang.y"
+                  { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1984 "mafralang.tab.c"
+    break;
+
+  case 40: /* operation: output_operation  */
+#line 200 "mafralang.y"
+                   { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1990 "mafralang.tab.c"
+    break;
+
+  case 41: /* arithmetic_operation: variable ADD_OP variable  */
+#line 204 "mafralang.y"
+                            { (yyval.stmt) = addNode(ARITHMETIC_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 1996 "mafralang.tab.c"
+    break;
+
+  case 42: /* arithmetic_operation: variable SUB_OP variable  */
+#line 205 "mafralang.y"
+                            { (yyval.stmt) = addNode(ARITHMETIC_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2002 "mafralang.tab.c"
+    break;
+
+  case 43: /* arithmetic_operation: variable DIVIDE variable  */
+#line 206 "mafralang.y"
+                            { (yyval.stmt) = addNode(ARITHMETIC_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2008 "mafralang.tab.c"
+    break;
+
+  case 44: /* arithmetic_operation: variable MULT variable  */
+#line 207 "mafralang.y"
+                            { (yyval.stmt) = addNode(ARITHMETIC_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2014 "mafralang.tab.c"
+    break;
+
+  case 45: /* arithmetic_operation: variable ASSIGN variable  */
+#line 208 "mafralang.y"
+                            { (yyval.stmt) = addNode(ARITHMETIC_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2020 "mafralang.tab.c"
+    break;
+
+  case 46: /* logical_operation: NEGATE variable  */
+#line 212 "mafralang.y"
+                            { (yyval.stmt) = addNode(LOGICAL_OPERATION, NULL, (yyvsp[0].stmt));}
+#line 2026 "mafralang.tab.c"
+    break;
+
+  case 47: /* logical_operation: variable AND variable  */
+#line 213 "mafralang.y"
+                            { (yyval.stmt) = addNode(LOGICAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2032 "mafralang.tab.c"
+    break;
+
+  case 48: /* logical_operation: variable OR variable  */
+#line 214 "mafralang.y"
+                            { (yyval.stmt) = addNode(LOGICAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2038 "mafralang.tab.c"
+    break;
+
+  case 49: /* relational_operation: variable CLT variable  */
+#line 218 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2044 "mafralang.tab.c"
+    break;
+
+  case 50: /* relational_operation: variable CLE variable  */
+#line 219 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2050 "mafralang.tab.c"
+    break;
+
+  case 51: /* relational_operation: variable CEQ variable  */
+#line 220 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2056 "mafralang.tab.c"
+    break;
+
+  case 52: /* relational_operation: variable CGE variable  */
+#line 221 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2062 "mafralang.tab.c"
+    break;
+
+  case 53: /* relational_operation: variable CGT variable  */
+#line 222 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2068 "mafralang.tab.c"
+    break;
+
+  case 54: /* relational_operation: variable CNE variable  */
+#line 223 "mafralang.y"
+                         { (yyval.stmt) = addNode(RELATIONAL_OPERATION, (yyvsp[-2].stmt), (yyvsp[0].stmt));}
+#line 2074 "mafralang.tab.c"
+    break;
+
+  case 55: /* input_operation: READ LEFT_PARENTHESES variable LEFT_PARENTHESES  */
+#line 227 "mafralang.y"
+                                                  { (yyval.stmt) = addNode(INPUT_OPERATION, (yyvsp[-1].stmt), NULL);}
+#line 2080 "mafralang.tab.c"
+    break;
+
   case 56: /* output_operation: WRITE LEFT_PARENTHESES variable LEFT_PARENTHESES  */
-#line 201 "mafralang.y"
-                                                     {(yyval.stmt) = (yyvsp[-1].stmt);}
-#line 1916 "mafralang.tab.c"
+#line 231 "mafralang.y"
+                                                     { (yyval.stmt) = addNode(OUTPUT_OPERATION, (yyvsp[-1].stmt), NULL);}
+#line 2086 "mafralang.tab.c"
     break;
 
   case 57: /* output_operation: WRITELN LEFT_PARENTHESES variable LEFT_PARENTHESES  */
-#line 202 "mafralang.y"
-                                                     {(yyval.stmt) = (yyvsp[-1].stmt);}
-#line 1922 "mafralang.tab.c"
+#line 232 "mafralang.y"
+                                                     { (yyval.stmt) = addNode(OUTPUT_OPERATION, (yyvsp[-1].stmt), NULL);}
+#line 2092 "mafralang.tab.c"
+    break;
+
+  case 58: /* variable: constant  */
+#line 237 "mafralang.y"
+           { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 2098 "mafralang.tab.c"
     break;
 
   case 59: /* variable: QUOTES string QUOTES  */
-#line 208 "mafralang.y"
-                       { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 1928 "mafralang.tab.c"
+#line 238 "mafralang.y"
+                       {(yyval.stmt) = addNode(QUOT, NULL, (yyvsp[-1].stmt));}
+#line 2104 "mafralang.tab.c"
     break;
 
   case 60: /* variable: ID  */
-#line 209 "mafralang.y"
-     {(yyval.stmt) = addNode('P', NULL, NULL);}
-#line 1934 "mafralang.tab.c"
+#line 239 "mafralang.y"
+     {(yyval.stmt) = addNode(IDENTIFIER, NULL, NULL);}
+#line 2110 "mafralang.tab.c"
     break;
 
   case 61: /* string: STR  */
-#line 213 "mafralang.y"
-      {(yyval.stmt) = addNode('P', NULL, NULL);}
-#line 1940 "mafralang.tab.c"
+#line 243 "mafralang.y"
+      {(yyval.stmt) = addNode(STRING, NULL, NULL);}
+#line 2116 "mafralang.tab.c"
     break;
 
   case 62: /* constant: INTEGER  */
-#line 217 "mafralang.y"
-            { (yyval.stmt) = addNode('P', NULL, NULL);  }
-#line 1946 "mafralang.tab.c"
+#line 247 "mafralang.y"
+            { (yyval.stmt) = addNode(INTEG, NULL, NULL);  }
+#line 2122 "mafralang.tab.c"
     break;
 
   case 63: /* constant: REAL  */
-#line 218 "mafralang.y"
-            { (yyval.stmt) = addNode('P', NULL, NULL);  }
-#line 1952 "mafralang.tab.c"
+#line 248 "mafralang.y"
+            { (yyval.stmt) = addNode(DECIMAL, NULL, NULL);  }
+#line 2128 "mafralang.tab.c"
     break;
 
   case 64: /* constant: EMPTY  */
-#line 219 "mafralang.y"
-            { (yyval.stmt) = addNode('P', NULL, NULL);  }
-#line 1958 "mafralang.tab.c"
+#line 249 "mafralang.y"
+            { (yyval.stmt) = addNode(EMP, NULL, NULL);  }
+#line 2134 "mafralang.tab.c"
     break;
 
 
-#line 1962 "mafralang.tab.c"
+#line 2138 "mafralang.tab.c"
 
       default: break;
     }
@@ -2183,8 +2359,116 @@ yyreturn:
   return yyresult;
 }
 
-#line 222 "mafralang.y"
+#line 252 "mafralang.y"
 
+
+void print_class(int node_class){
+  switch(node_class){
+    case DECLARATION:
+      printf("Declaration");
+    break;
+    case VARIABLE_DECLARATION:
+      printf("Variable_Declaration");
+    break;
+    case FUNCTION_DECLARATION:
+      printf("Variable_Declaration");
+    break;
+    case PARAMATERS:
+      printf("Paramaters");
+    break;
+    case PARAMATER:
+      printf("Paramater");
+    break;
+    case COMPOUND_STATEMENT:
+      printf("Compound_Statement");
+    break;
+    case EXPRESSION_STATEMENT:
+      printf("Expression_Statement");
+    break;
+    case CONDITIONAL_STATEMENT:
+      printf("Conditional_Statement");
+    break;
+    case ITERATION_STATEMENT:
+      printf("Iteration_Statement");
+    break;
+    case RETURN_STATEMENT:
+      printf("Return_Statement");
+    break;
+    case IS_SET_STATEMENT:
+      printf("Is_Set_Statement");
+    break;
+    case REMOVE_STATEMENT:
+      printf("Remove_Statement");
+    break;
+    case ADD_STATEMENT:
+      printf("Add_Statement");
+    break;
+    case SET_EXPRESSION:
+      printf("Set_Expression");
+    break;
+    case EXPRESSION:
+      printf("Expression");
+    break;
+    case ARITHMETIC_OPERATION:
+      printf("Arithmetic_Operation");
+    break;
+    case LOGICAL_OPERATION:
+      printf("Logical_Operation");
+    break;
+    case RELATIONAL_OPERATION:
+      printf("Relational_Operation");
+    break;
+    case INPUT_OPERATION:
+      printf("Input_Operation");
+    break;
+    case OUTPUT_OPERATION:
+      printf("Output_Operation");
+    break;
+    case QUOT:
+      printf("Quotes");
+    break;
+    case IDENTIFIER:
+      printf("Identifier");
+    break;
+    case STRING:
+      printf("String");
+    break;
+    case INTEG:
+      printf("Integer");
+    break;
+    case DECIMAL:
+      printf("Decimal");
+    break;
+    case EMP:
+      printf("Empty");
+    break;
+  }
+  printf(" | ");
+}
+
+void print_depth(int depth) {
+  int i = depth;
+  while(i != 0){
+      printf("-");
+      i--;
+  }
+}
+
+void print_tree(struct ast_node *tree, int depth) {
+  if (tree) {
+    print_depth(depth);
+    print_class(tree->node_class);
+    if (tree->type != NULL){
+        printf("type: %s | ", tree->type);
+    }
+    if (tree->value != NULL){
+        printf("value: %s | ", tree->value);
+    }
+    printf("\n");
+    print_tree(tree->left, depth + 1);
+    print_tree(tree->right, depth + 1);
+  }
+}
 
 void free_tree(struct ast_node* node){
     if(node == NULL) return;
@@ -2212,7 +2496,7 @@ int main(int argc, char **argv) {
     yyparse();
     if(total_errors == 0){
         printf("\n\n----------  ABSTRACT SYNTAX TREE ----------\n\n");
-        print_tree(parser_tree, 0);
+        print_tree(parserTree, 0);
     }
     yylex_destroy();
     free_tree(parserTree);

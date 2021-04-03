@@ -101,7 +101,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 31 "mafralang.y"
+#line 61 "mafralang.y"
 
   char* symbol;
   char* strType;
