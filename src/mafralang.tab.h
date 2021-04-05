@@ -54,45 +54,47 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    REAL = 258,                    /* REAL  */
-    INTEGER = 259,                 /* INTEGER  */
-    ID = 260,                      /* ID  */
-    EMPTY = 261,                   /* EMPTY  */
-    TYPE = 262,                    /* TYPE  */
+    ID = 258,                      /* ID  */
+    EMPTY = 259,                   /* EMPTY  */
+    TYPE = 260,                    /* TYPE  */
+    FLOAT = 261,                   /* FLOAT  */
+    INTEGER = 262,                 /* INTEGER  */
     RETURN = 263,                  /* RETURN  */
     IF = 264,                      /* IF  */
     FOR = 265,                     /* FOR  */
     FORALL = 266,                  /* FORALL  */
-    READ = 267,                    /* READ  */
-    WRITE = 268,                   /* WRITE  */
-    WRITELN = 269,                 /* WRITELN  */
-    IS_SET = 270,                  /* IS_SET  */
-    REMOVE = 271,                  /* REMOVE  */
-    ADD = 272,                     /* ADD  */
-    IN = 273,                      /* IN  */
-    STR = 274,                     /* STR  */
-    LEFT_CURLY_BRACKET = 275,      /* LEFT_CURLY_BRACKET  */
-    RIGHT_CURLY_BRACKET = 276,     /* RIGHT_CURLY_BRACKET  */
-    LEFT_PARENTHESES = 277,        /* LEFT_PARENTHESES  */
-    RIGHT_PARENTHESES = 278,       /* RIGHT_PARENTHESES  */
-    QUOTES = 279,                  /* QUOTES  */
-    SEMICOLON = 280,               /* SEMICOLON  */
-    COMMA = 281,                   /* COMMA  */
-    NEGATE = 282,                  /* NEGATE  */
-    AND = 283,                     /* AND  */
-    OR = 284,                      /* OR  */
-    ADD_OP = 285,                  /* ADD_OP  */
-    SUB_OP = 286,                  /* SUB_OP  */
-    DIVIDE = 287,                  /* DIVIDE  */
-    MULT = 288,                    /* MULT  */
-    ASSIGN = 289,                  /* ASSIGN  */
-    CLT = 290,                     /* CLT  */
-    CLE = 291,                     /* CLE  */
-    CEQ = 292,                     /* CEQ  */
-    CGE = 293,                     /* CGE  */
-    CGT = 294,                     /* CGT  */
-    CNE = 295,                     /* CNE  */
-    ELSE = 296                     /* ELSE  */
+    ELSE = 267,                    /* ELSE  */
+    READ = 268,                    /* READ  */
+    WRITE = 269,                   /* WRITE  */
+    WRITELN = 270,                 /* WRITELN  */
+    IS_SET = 271,                  /* IS_SET  */
+    REMOVE = 272,                  /* REMOVE  */
+    ADD = 273,                     /* ADD  */
+    IN = 274,                      /* IN  */
+    STR = 275,                     /* STR  */
+    EXISTS = 276,                  /* EXISTS  */
+    LEFT_CURLY_BRACKET = 277,      /* LEFT_CURLY_BRACKET  */
+    RIGHT_CURLY_BRACKET = 278,     /* RIGHT_CURLY_BRACKET  */
+    LEFT_PARENTHESES = 279,        /* LEFT_PARENTHESES  */
+    RIGHT_PARENTHESES = 280,       /* RIGHT_PARENTHESES  */
+    QUOTES = 281,                  /* QUOTES  */
+    SEMICOLON = 282,               /* SEMICOLON  */
+    COMMA = 283,                   /* COMMA  */
+    NEGATE = 284,                  /* NEGATE  */
+    AND = 285,                     /* AND  */
+    OR = 286,                      /* OR  */
+    ADD_OP = 287,                  /* ADD_OP  */
+    SUB_OP = 288,                  /* SUB_OP  */
+    DIVIDE = 289,                  /* DIVIDE  */
+    MULT = 290,                    /* MULT  */
+    ASSIGN = 291,                  /* ASSIGN  */
+    CLT = 292,                     /* CLT  */
+    CLE = 293,                     /* CLE  */
+    CEQ = 294,                     /* CEQ  */
+    CGE = 295,                     /* CGE  */
+    CGT = 296,                     /* CGT  */
+    CNE = 297,                     /* CNE  */
+    THEN = 298                     /* THEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -101,12 +103,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 61 "mafralang.y"
+#line 28 "mafralang.y"
 
   char* symbol;
   char* strType;
-  int iType;
-  float fType;
   struct ast_node* stmt;
 
 #line 113 "mafralang.tab.h"

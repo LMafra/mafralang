@@ -9,10 +9,9 @@
 int line_number = 1;
 int string_size = 0;
 int lex_error = 0;
-int total_errors = 0;
 
 void lexical_error_unrecognizable_symbol(char* symbol);
-void yyerror(const char *s);
+void yyerror(const char* msg);
 
 %}
 
@@ -29,7 +28,7 @@ DIGIT                   [0-9]
 
 ID                      {LETTER}({LETTER}|{DIGIT}|{UNDERSCORE})*
 INTEGER                 "-"?{DIGIT}+
-REAL                    "-"?{DIGIT}+"."({DIGIT}+)?
+FLOAT                    "-"?{DIGIT}+"."({DIGIT}+)?
 TYPE                    "int"|"float"|"elem"|"set"
 EMPTY                   "EMPTY"
 
@@ -46,6 +45,7 @@ FORALL                  "forall"
 IS_SET                  "is_set"
 REMOVE                  "remove"
 ADD                     "add"
+EXISTS                  "exists"
 IN                      "in"
 
 LEFT_CURLY_BRACKET      "{"
@@ -93,11 +93,12 @@ STR                     [^"]*
 {IS_SET}                          {yylval.strType = (char *) strdup(yytext);return IS_SET;}
 {REMOVE}                          {yylval.strType = (char *) strdup(yytext);return REMOVE;}
 {ADD}                             {yylval.strType = (char *) strdup(yytext);return ADD;}
+{EXISTS}                          {yylval.strType = (char *) strdup(yytext);return EXISTS;}
 {IN}                              {yylval.strType = (char *) strdup(yytext);return IN;}
 
 {ID}                              {yylval.strType = (char *) strdup(yytext);return ID;}
-{REAL}                            {yylval.fType = atof(yytext);return REAL;}
-{INTEGER}                         {yylval.iType = atoi(yytext);return INTEGER;}
+{FLOAT}                            {yylval.strType = (char *) strdup(yytext);return FLOAT;}
+{INTEGER}                         {yylval.strType = (char *) strdup(yytext);return INTEGER;}
 
 {LEFT_CURLY_BRACKET}              {yylval.symbol = (char *) strdup(yytext);return LEFT_CURLY_BRACKET;}
 {RIGHT_CURLY_BRACKET}             {yylval.symbol = (char *) strdup(yytext);return RIGHT_CURLY_BRACKET;}
@@ -141,16 +142,9 @@ STR                     [^"]*
 
 %%
 
-
-void yyerror(char const *s) {
-  fprintf (stderr, "Parse error : %s\n", s);
-  total_errors++;
-  exit(1);
-}
-
 void lexical_error_unrecognizable_symbol(char* symbol){
-    char *error = (char *)malloc((strlen(symbol) + 1 + 35) * sizeof(char)); // +1 for the null-terminator and 35 for lex error message
-    sprintf(error, "lexical error, unrecognizable symbol %s", symbol);
-    yyerror(error);
-    free(error);
+  char *error = (char *)malloc((strlen(symbol) + 1 + 35) * sizeof(char)); // +1 for the null-terminator and 35 for lex error message
+  sprintf(error, "lexical error, unrecognizable symbol %s", symbol);
+  yyerror(error);
+  free(error);
 }

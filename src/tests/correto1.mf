@@ -17,8 +17,5 @@ int main() {
         set sumsWithX;   
         sumsWithX = EMPTY;
         int val;
-        forall (val in possibleSums) add((x + val) in sumsWithX);
-        forall (val in sumsWithX) add (val in possibleSums);
-        if (13 in possibleSums) writeln('y'); else writeln('n');
     }
 }

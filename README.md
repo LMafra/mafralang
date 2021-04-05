@@ -24,8 +24,8 @@ QUALQUER PROPÓSITO EM PARTICULAR.
 ## Instrução de Execução
 
 ```c
-   lex mafralang.l
+   make
    gcc lex.yy.c -ll -g -Wall
-   ./a.out < code.c
+   ./mafralang < tests/code.mf
 ```
 Onde code representa um código válido ou inválido.
