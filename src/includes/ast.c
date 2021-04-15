@@ -74,6 +74,9 @@ void printClass(int nodeClass){
     case STATEMENT_LIST:
       printf("Statement_List");
     break;
+    case STATEMENT:
+      printf("Statement");
+    break;
     case COMPOUND_STATEMENT:
       printf("Compound_Statement");
     break;
@@ -103,6 +106,9 @@ void printClass(int nodeClass){
     break;
     case EXISTS_STATEMENT:
       printf("Exists_Statement");
+    break;
+    case EXISTS_EXPRESSION:
+      printf("Exists_Expression");
     break;
     case FORALL_STATEMENT:
       printf("Forall_Statement");
