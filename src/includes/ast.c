@@ -44,119 +44,125 @@ void printTree(ast_node *tree, int depth) {
 
 void printClass(int nodeClass){
   switch(nodeClass){
+    case TRANSLATION_UNIT:
+      printf("TRANSLATION_UNIT");
+    break;
+    case EXTERNAL_DECLARATION:
+      printf("EXTERNAL_DECLARATION");
+    break;
+    case FUNCTION_DEFINITION:
+      printf("FUNCTION_DEFINITION");
+    break;
     case DECLARATION:
-      printf("Declaration");
+      printf("DECLARATION");
     break;
-    case VARIABLE_DECLARATION:
-      printf("Variable_Declaration");
+    case DECLARATION_SPECIFIERS:
+      printf("DECLARATION_SPECIFIERS");
     break;
-    case FUNCTION_DECLARATION:
-      printf("Function_Declaration");
+    case DECLARATOR:
+      printf("DECLARATOR");
     break;
-    case PARAMATERS:
-      printf("Paramaters");
+    case DECLARATION_LIST:
+      printf("DECLARATION_LIST");
     break;
-    case PARAMATER:
-      printf("Paramater");
+    case INIT_DECLARATOR_LIST:
+      printf("INIT_DECLARATOR_LIST");
     break;
-    case LOCAL_DECLARATIONS:
-      printf("Local_Declarations");
+    case DIRECT_DECLARATOR:
+      printf("DIRECT_DECLARATOR");
     break;
-    case LOCAL_VAR_DECLARATION:
-      printf("Local_Var_Declaration");
+    case IDENTIFIER_LIST:
+      printf("IDENTIFIER_LIST");
     break;
-    case LOCAL_PARAMETERS:
-      printf("Local_Parameters");
+    case PARAMETER_LIST:
+      printf("PARAMETER_LIST");
     break;
-    case LOCAL_PARAMETER:
-      printf("Local_Parameter");
+    case PARAMETER_DECLARATION:
+      printf("PARAMETER_DECLARATION");
     break;
-    case STATEMENT_LIST:
-      printf("Statement_List");
+    case ABSTRACT_DECLARATOR:
+      printf("ABSTRACT_DECLARATOR");
+    break;
+    case DIRECT_ABSTRACT_DECLARATOR:
+      printf("DIRECT_ABSTRACT_DECLARATOR");
+    break;
+    case BLOCK_ITEM_LIST:
+      printf("BLOCK_ITEM_LIST");
+    break;
+    case BLOCK_ITEM:
+      printf("BLOCK_ITEM");
     break;
     case STATEMENT:
-      printf("Statement");
-    break;
-    case COMPOUND_STATEMENT:
-      printf("Compound_Statement");
+      printf("STATEMENT");
     break;
     case EXPRESSION_STATEMENT:
-      printf("Expression_Statement");
+      printf("EXPRESSION_STATEMENT");
+    break;
+    case COMPOUND_STATEMENT:
+      printf("COMPOUND_STATEMENT");
     break;
     case CONDITIONAL_STATEMENT:
-      printf("Conditional_Statement");
+      printf("CONDITIONAL_STATEMENT");
     break;
     case ITERATION_STATEMENT:
-      printf("Iteration_Statement");
-    break;
-    case RETURN_STATEMENT:
-      printf("Return_Statement");
+      printf("ITERATION_STATEMENT");
     break;
     case SET_STATEMENT:
-      printf("Set_Statement");
+      printf("SET_STATEMENT");
     break;
     case IS_SET_STATEMENT:
-      printf("Is_Set_Statement");
-    break;
-    case REMOVE_STATEMENT:
-      printf("Remove_Statement");
+      printf("IS_SET_STATEMENT");
     break;
     case ADD_STATEMENT:
-      printf("Add_Statement");
+      printf("ADD_STATEMENT");
+    break;
+    case REMOVE_STATEMENT:
+      printf("REMOVE_STATEMENT");
     break;
     case EXISTS_STATEMENT:
-      printf("Exists_Statement");
-    break;
-    case EXISTS_EXPRESSION:
-      printf("Exists_Expression");
-    break;
-    case FORALL_STATEMENT:
-      printf("Forall_Statement");
-    break;
-    case SET_EXPRESSION:
-      printf("Set_Expression");
-    break;
-    case FUNCTION_CALL:
-      printf("Function_Call");
+      printf("EXISTS_STATEMENT");
     break;
     case EXPRESSION:
-      printf("Expression");
+      printf("EXPRESSION");
     break;
-    case ASSIGN_OPERATION:
-      printf("Assign_Operation");
+    case SET_EXPRESSION:
+      printf("SET_EXPRESSION");
     break;
-    case ARITHMETIC_OPERATION:
-      printf("Arithmetic_Operation");
+    case ASSIGNMENT_EXPRESSION:
+      printf("ASSIGNMENT_EXPRESSION");
     break;
-    case LOGICAL_OPERATION:
-      printf("Logical_Operation");
+    case ARITHMETIC_EXPRESSION:
+      printf("ARITHMETIC_EXPRESSION");
     break;
-    case RELATIONAL_OPERATION:
-      printf("Relational_Operation");
+    case LOGICAL_EXPRESSION:
+      printf("LOGICAL_EXPRESSION");
     break;
-    case INPUT_STATEMENT:
-      printf("Input_Operation");
+    case RELATIONAL_EXPRESSION:
+      printf("RELATIONAL_EXPRESSION");
     break;
-    case OUTPUT_STATEMENT:
-      printf("Output_Operation");
+    case CAST_EXPRESSION:
+      printf("CAST_EXPRESSION");
     break;
-    case QUOT:
-      printf("Quotes");
+    case TYPE_NAME:
+      printf("TYPE_NAME");
     break;
-    case IDENTIFIER:
-      printf("Identifier");
+    case SPECIFIER_QUALIFIER_LIST:
+      printf("SPECIFIER_QUALIFIER_LIST");
     break;
-    case STRING:
-      printf("String");
+    case UNARY_EXPRESSION:
+      printf("UNARY_EXPRESSION");
     break;
-    case INTEG:
-      printf("Integer");
+    case POSTFIX_EXPRESSION:
+      printf("POSTFIX_EXPRESSION");
     break;
-    case DECIMAL:
-      printf("Decimal");
+    case INITIALIZER_LIST:
+      printf("INITIALIZER_LIST");
     break;
-    case EMP:
-      printf("Empty");
+    case INITIALIZER:
+      printf("INITIALIZER");
+    break;
+    case PRIMARY_EXPRESSION:
+      printf("PRIMARY_EXPRESSION");
     break;
   }
   printf("\n");

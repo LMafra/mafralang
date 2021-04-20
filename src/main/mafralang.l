@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "mafralang.tab.h"
+#include "mafralang_grammar.tab.h"
 
 int line_number = 1;
 int string_size = 0;
@@ -18,17 +18,17 @@ void yyerror(const char* msg);
 EOL                     "\n"
 DELIM                   [ \t]       
 WHITESPACE              {DELIM}+
-QUOTES                  "\""|"\'"
 UNDERSCORE              "_"
 START_COMMENT           "/*"
 END_COMMENT             "*/"
 INLINE_COMMENT          [/]{2}.*
 LETTER                  [a-zA-Z]
 DIGIT                   [0-9]
+STRING                  \"[^\"]*\"|'[^']*'
 
 ID                      {LETTER}({LETTER}|{DIGIT}|{UNDERSCORE})*
-INTEGER                 "-"?{DIGIT}+
-FLOAT                    "-"?{DIGIT}+"."({DIGIT}+)?
+INTEGER                 {DIGIT}+
+FLOAT                   {DIGIT}+"."({DIGIT}+)?
 TYPE                    "int"|"float"|"elem"|"set"
 EMPTY                   "EMPTY"
 
@@ -72,9 +72,7 @@ NEGATE                  "!"
 AND                     "&&"
 OR                      "||"
 
-STR                     [^"]*
 %x                      COMMENT
-%s                      STRING
 
 %%
 
@@ -97,7 +95,7 @@ STR                     [^"]*
 {IN}                              {yylval.strType = (char *) strdup(yytext);return IN;}
 
 {ID}                              {yylval.strType = (char *) strdup(yytext);return ID;}
-{FLOAT}                            {yylval.strType = (char *) strdup(yytext);return FLOAT;}
+{FLOAT}                           {yylval.strType = (char *) strdup(yytext);return FLOAT;}
 {INTEGER}                         {yylval.strType = (char *) strdup(yytext);return INTEGER;}
 
 {LEFT_CURLY_BRACKET}              {yylval.symbol = (char *) strdup(yytext);return LEFT_CURLY_BRACKET;}
@@ -124,11 +122,7 @@ STR                     [^"]*
 {AND}                             {yylval.symbol = (char *) strdup(yytext);return AND;}
 {OR}                              {yylval.symbol = (char *) strdup(yytext);return OR;}
 
-<INITIAL,STRING>{QUOTES}          {
-                                    if(string_size)     { BEGIN(0);string_size--; return QUOTES; }
-                                    else                { BEGIN(STRING);string_size++; return QUOTES; }
-                                  }
-<STRING>{STR}                     {if(strcmp(yytext, "\n") == 0){line_number++;} yylval.strType = (char *) strdup(yytext);return STR;}
+{STRING}                          {yylval.symbol = (char *) strdup(yytext);return STRING;}
 
 {INLINE_COMMENT}                  {;}
 {START_COMMENT}                   {BEGIN(COMMENT);}

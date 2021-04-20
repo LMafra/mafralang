@@ -1,7 +1,0 @@
-int main() {
-  int j;
-  for (j = 0; j < N; j++)
-    {
-        arr_move(arr[N]);
-  return j;
-}

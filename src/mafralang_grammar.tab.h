@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_MAFRALANG_TAB_H_INCLUDED
-# define YY_YY_MAFRALANG_TAB_H_INCLUDED
+#ifndef YY_YY_MAFRALANG_GRAMMAR_TAB_H_INCLUDED
+# define YY_YY_MAFRALANG_GRAMMAR_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -71,7 +71,7 @@ extern int yydebug;
     REMOVE = 272,                  /* REMOVE  */
     ADD = 273,                     /* ADD  */
     IN = 274,                      /* IN  */
-    STR = 275,                     /* STR  */
+    STRING = 275,                  /* STRING  */
     EXISTS = 276,                  /* EXISTS  */
     LEFT_CURLY_BRACKET = 277,      /* LEFT_CURLY_BRACKET  */
     RIGHT_CURLY_BRACKET = 278,     /* RIGHT_CURLY_BRACKET  */
@@ -103,13 +103,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "mafralang.y"
+#line 26 "main/mafralang_grammar.y"
 
   char* symbol;
   char* strType;
   struct ast_node* stmt;
 
-#line 113 "mafralang.tab.h"
+#line 113 "mafralang_grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -122,4 +122,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_MAFRALANG_TAB_H_INCLUDED  */
+#endif /* !YY_YY_MAFRALANG_GRAMMAR_TAB_H_INCLUDED  */
