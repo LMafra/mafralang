@@ -66,266 +66,484 @@ program:
 
 translation_unit:
   external_declaration {
-    printf("external_declaration \n");
+    $$ = addNode(TRANSLATION_UNIT, $1, NULL, NULL, NULL);
   }
-| translation_unit external_declaration
+| translation_unit external_declaration {
+    $$ = addNode(TRANSLATION_UNIT, $1, $2, NULL, NULL);
+  }
 ;
 
 external_declaration:
   function_definition {
-    printf("function_definition \n");
+    $$ = addNode(EXTERNAL_DECLARATION, $1, NULL, NULL, NULL);
   }
 | declaration {
-  printf("declaration \n");
-}
+    $$ = addNode(EXTERNAL_DECLARATION, $1, NULL, NULL, NULL);
+  }
 ;
 
 function_definition:
   declaration_specifiers declarator declaration_list compound_statement {
-  printf("function_definition 1 \n");
-}
+    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
+    ast_node* ast_node2 = addNode(FUNCTION_DEFINITION, ast_node1, $3, NULL, NULL);
+    $$ = addNode(FUNCTION_DEFINITION, ast_node2, $4, NULL, NULL);
+  }
 | declaration_specifiers declarator compound_statement {
-  printf("function_definition 2 \n");
-}
+    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
+    $$ = addNode(FUNCTION_DEFINITION, ast_node1, $3, NULL, NULL);
+  }
 ;
 
 declaration_list:
   declaration {
-  printf("declaration_list declaration \n");
-}
+    $$ = addNode(DECLARATION_LIST, $1, NULL, NULL, NULL);
+  }
 | declaration_list declaration {
-  printf("declaration_list \n");
-}
+    $$ = addNode(DECLARATION_LIST, $1, $2, NULL, NULL);
+  }
 ;
 
 declaration:
-  declaration_specifiers SEMICOLON {
-  printf("declaration_specifiers \n");
-}
+  declaration_specifiers SEMICOLON  {
+    $$ = addNode(DECLARATION, $1, NULL, NULL, NULL);
+  }
 | declaration_specifiers init_declarator_list SEMICOLON {
-  printf("declaration_specifiers init_declarator_list \n");
-}
+    $$ = addNode(DECLARATION, $1, $2, NULL, NULL);
+  }
 ;
 
 declaration_specifiers:
-  TYPE { $$ = NULL; }
-| TYPE declaration_specifiers { $$ = NULL; }
+  TYPE {
+    $$ = addNode(DECLARATION_SPECIFIERS, NULL, NULL, $1, NULL);
+  }
+| TYPE declaration_specifiers {
+    $$ = addNode(DECLARATION_SPECIFIERS, NULL, $2, $1, NULL);
+  }
 ;
 
 init_declarator_list:
-  declarator
-| init_declarator_list COMMA declarator
+  declarator  {
+    $$ = addNode(INIT_DECLARATOR_LIST, $1, NULL, NULL, NULL);
+  }
+| init_declarator_list COMMA declarator {
+    $$ = addNode(INIT_DECLARATOR_LIST, $1, $3, NULL, NULL);
+  }
 ;
 
 declarator:
-  direct_declarator { $$ = NULL; }
+  direct_declarator  {
+    $$ = addNode(DECLARATOR, $1, NULL, NULL, NULL);
+  }
 ;
 
 direct_declarator:
-  ID { $$ = NULL; }
-| LEFT_PARENTHESES declarator RIGHT_PARENTHESES { $$ = $2; }
-| direct_declarator LEFT_PARENTHESES RIGHT_PARENTHESES
-| direct_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES
-| direct_declarator LEFT_PARENTHESES identifier_list RIGHT_PARENTHESES
+  ID  {
+    $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, $1);
+  }
+| LEFT_PARENTHESES declarator RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_DECLARATOR, $2, NULL, NULL, NULL);
+  }
+| direct_declarator LEFT_PARENTHESES RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_DECLARATOR, $1, NULL, NULL, NULL);
+  }
+| direct_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_DECLARATOR, $1, $3, NULL, NULL);
+  }
+| direct_declarator LEFT_PARENTHESES identifier_list RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_DECLARATOR, $1, $3, NULL, NULL);
+  }
 ;
 
 identifier_list:
-  ID { $$ = NULL; }
-| identifier_list COMMA ID { $$ = NULL; }
+  ID  {
+    $$ = addNode(IDENTIFIER_LIST, NULL, NULL, NULL, $1);
+  }
+| identifier_list COMMA ID {
+    $$ = addNode(IDENTIFIER_LIST, $1, NULL, NULL, $3);
+  }
 ;
 
 
 parameter_list:
-  parameter_declaration
-| parameter_list COMMA parameter_declaration
+  parameter_declaration {
+    $$ = addNode(PARAMETER_LIST, $1, NULL, NULL, NULL);
+  }
+| parameter_list COMMA parameter_declaration {
+    $$ = addNode(PARAMETER_LIST, $1, $3, NULL, NULL);
+  }
 ;
 
 parameter_declaration:
-  declaration_specifiers declarator
-| declaration_specifiers abstract_declarator
+  declaration_specifiers declarator {
+    $$ = addNode(PARAMETER_DECLARATION, $1, $2, NULL, NULL);
+  }
+| declaration_specifiers abstract_declarator {
+    $$ = addNode(PARAMETER_DECLARATION, $1, $2, NULL, NULL);
+  }
 ;
 
 abstract_declarator:
-  direct_abstract_declarator { $$ = NULL; }
+  direct_abstract_declarator {
+    $$ = addNode(ABSTRACT_DECLARATOR, $1, NULL, NULL, NULL);
+  }
 ;
 
 direct_abstract_declarator:
-  LEFT_PARENTHESES abstract_declarator RIGHT_PARENTHESES { $$ = $2; }
-| LEFT_PARENTHESES RIGHT_PARENTHESES { $$ = NULL; }
-| direct_abstract_declarator LEFT_PARENTHESES RIGHT_PARENTHESES
-| direct_abstract_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES
+  LEFT_PARENTHESES abstract_declarator RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_ABSTRACT_DECLARATOR, $2, NULL, NULL, NULL);
+  }
+| LEFT_PARENTHESES RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_ABSTRACT_DECLARATOR, NULL, NULL, NULL, NULL);
+  }
+| direct_abstract_declarator LEFT_PARENTHESES RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_ABSTRACT_DECLARATOR, $1, NULL, NULL, NULL);
+  }
+| direct_abstract_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_ABSTRACT_DECLARATOR, $1, $3, NULL, NULL);
+  }
 ;
 
 compound_statement:
-  LEFT_CURLY_BRACKET RIGHT_CURLY_BRACKET { $$ = NULL; }
-| LEFT_CURLY_BRACKET block_item_list RIGHT_CURLY_BRACKET { $$ = $2; }
+  LEFT_CURLY_BRACKET RIGHT_CURLY_BRACKET {
+    $$ = addNode(COMPOUND_STATEMENT, NULL, NULL, NULL, NULL);
+  }
+| LEFT_CURLY_BRACKET block_item_list RIGHT_CURLY_BRACKET {
+    $$ = addNode(COMPOUND_STATEMENT, $2, NULL, NULL, NULL);
+  }
 ;
 
 block_item_list:
-  block_item 
-| block_item_list block_item
+  block_item {
+    $$ = addNode(BLOCK_ITEM_LIST, $1, NULL, NULL, NULL);
+  }
+| block_item_list block_item {
+    $$ = addNode(BLOCK_ITEM_LIST, $1, $2, NULL, NULL);
+  }
 ;
 
 block_item:
-  declaration { $$ = $1; }
-| statement
+  declaration {
+    $$ = addNode(BLOCK_ITEM, $1, NULL, NULL, NULL);
+  }
+| statement {
+    $$ = addNode(BLOCK_ITEM, $1, NULL, NULL, NULL);
+  }
 ;
 
 statement:
-  expression_statement { $$ = $1; }
-| compound_statement { $$ = $1; }
-| conditional_statement { $$ = $1; }
-| iteration_statement { $$ = $1; }
-| input_statement { $$ = $1; }
-| output_statement { $$ = $1; }
-| return_statement { $$ = $1; }
+  expression_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| compound_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| conditional_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| iteration_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| input_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| output_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
+| return_statement {
+    $$ = addNode(STATEMENT, $1, NULL, NULL, NULL);
+  }
 ;
 
 expression_statement:
-  SEMICOLON { $$ = NULL; }
-| expression SEMICOLON
+  SEMICOLON {
+    $$ = addNode(EXPRESSION_STATEMENT, NULL, NULL, NULL, NULL);
+  }
+| expression SEMICOLON {
+    $$ = addNode(EXPRESSION_STATEMENT, $1, NULL, NULL, NULL);
+  }
 ;
 
 conditional_statement:
-  IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement %prec THEN { $$ = $5; }
-| IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement ELSE statement { $$ = $7; }
+  IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement %prec THEN {
+    $$ = addNode(CONDITIONAL_STATEMENT, $3, $5, $1, NULL);
+  }
+| IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement ELSE statement  {
+    ast_node* ast_node1 = addNode(CONDITIONAL_STATEMENT, $3, $5, $1, NULL);
+    $$ = addNode(CONDITIONAL_STATEMENT, ast_node1, $7, $6, NULL);
+  }
 ;
 
 iteration_statement:
-  FOR LEFT_PARENTHESES expression_statement expression_statement expression RIGHT_PARENTHESES statement { $$ = $7; }
-| FOR LEFT_PARENTHESES expression_statement expression_statement RIGHT_PARENTHESES statement { $$ = $6; }
-| FOR LEFT_PARENTHESES declaration expression_statement expression RIGHT_PARENTHESES statement { $$ = $7; }
-| FOR LEFT_PARENTHESES declaration expression_statement RIGHT_PARENTHESES statement { $$ = $6; }
-| FORALL LEFT_PARENTHESES expression RIGHT_PARENTHESES statement { $$ = $5; }
+  FOR LEFT_PARENTHESES expression_statement expression_statement expression RIGHT_PARENTHESES statement {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, $3, $4, NULL, NULL);
+    ast_node* ast_node2 = addNode(ITERATION_STATEMENT, ast_node1, $5, NULL, NULL);
+    $$ = addNode(ITERATION_STATEMENT, ast_node2, $7, $1, NULL);
+  }
+| FOR LEFT_PARENTHESES expression_statement expression_statement RIGHT_PARENTHESES statement {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, $3, $4, NULL, NULL);
+    $$ = addNode(ITERATION_STATEMENT, ast_node1, $6, $1, NULL);
+  }
+| FOR LEFT_PARENTHESES declaration expression_statement expression RIGHT_PARENTHESES statement {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, $3, $4, NULL, NULL);
+    ast_node* ast_node2 = addNode(ITERATION_STATEMENT, ast_node1, $5, NULL, NULL);
+    $$ = addNode(ITERATION_STATEMENT, ast_node2, $7, $1, NULL);
+  }
+| FOR LEFT_PARENTHESES declaration expression_statement RIGHT_PARENTHESES statement {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, $3, $4, NULL, NULL);
+    $$ = addNode(ITERATION_STATEMENT, ast_node1, $6, $1, NULL);
+  }
+| FORALL LEFT_PARENTHESES expression RIGHT_PARENTHESES statement {
+    $$ = addNode(ITERATION_STATEMENT, $3, $5, $1, NULL);
+  }
 ;
 
 input_statement:
-  READ LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON { $$ = NULL; }
+  READ LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON  {
+    $$ = addNode(INPUT_STATEMENT, $3, NULL, $1, NULL);
+  }
 ;
 
 output_statement:
-  WRITE LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON { $$ = NULL; }
-| WRITELN LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON { $$ = NULL; }
+  WRITE LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON {
+    $$ = addNode(OUTPUT_STATEMENT, $3, NULL, $1, NULL);
+  }
+| WRITELN LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON {
+    $$ = addNode(OUTPUT_STATEMENT, $3, NULL, $1, NULL);
+  }
 ;
 
 return_statement:
-  RETURN expression SEMICOLON { $$ = NULL; }
+  RETURN expression SEMICOLON {
+    $$ = addNode(RETURN_STATEMENT, $2, NULL, $1, NULL);
+  }
 ;
 
 set_expression_list:
-  is_set_expression { $$ = $1; }
-| add_expression { $$ = $1; }
-| remove_expression { $$ = $1; }
-| exists_expression { $$ = $1; }
+  is_set_expression {
+    $$ = addNode(SET_EXPRESSION_LIST, $1, NULL, NULL, NULL);
+  }
+| add_expression {
+    $$ = addNode(SET_EXPRESSION_LIST, $1, NULL, NULL, NULL);
+  }
+| remove_expression {
+    $$ = addNode(SET_EXPRESSION_LIST, $1, NULL, NULL, NULL);
+  }
+| exists_expression {
+    $$ = addNode(SET_EXPRESSION_LIST, $1, NULL, NULL, NULL);
+  }
 ;
 
 is_set_expression:
-  IS_SET LEFT_PARENTHESES ID RIGHT_PARENTHESES { $$ = NULL; }
+  IS_SET LEFT_PARENTHESES ID RIGHT_PARENTHESES {
+    $$ = addNode(IS_SET_EXPRESSION, NULL, NULL, $1, $3);
+  }
 ;
 
 add_expression:
-  ADD LEFT_PARENTHESES expression RIGHT_PARENTHESES { $$ = $3; }
+  ADD LEFT_PARENTHESES expression RIGHT_PARENTHESES {
+    $$ = addNode(ADD_EXPRESSION, $3, NULL, $1, NULL);
+  }
 ;
 
 remove_expression:
-  REMOVE LEFT_PARENTHESES expression RIGHT_PARENTHESES { $$ = $3; }
+  REMOVE LEFT_PARENTHESES expression RIGHT_PARENTHESES {
+    $$ = addNode(REMOVE_EXPRESSION, $3, NULL, $1, NULL);
+  }
 ;
 
 exists_expression:
-  EXISTS LEFT_PARENTHESES expression RIGHT_PARENTHESES { $$ = $3; }
+  EXISTS LEFT_PARENTHESES expression RIGHT_PARENTHESES {
+    $$ = addNode(EXISTS_EXPRESSION, $3, NULL, $1, NULL);
+  }
 ;
 
 expression:
-  assignment_expression
-| expression COMMA assignment_expression
+  assignment_expression {
+    $$ = addNode(EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| expression COMMA assignment_expression {
+    $$ = addNode(EXPRESSION, $1, $3, NULL, NULL);
+  }
 ;
 
 assignment_expression:
-  arithmetic_expression
-| unary_expression ASSIGN assignment_expression
+  arithmetic_expression {
+    $$ = addNode(ASSIGNMENT_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| unary_expression ASSIGN assignment_expression {
+    $$ = addNode(ASSIGNMENT_EXPRESSION, $1, $3, $2, NULL);
+  }
 ;
 
 arithmetic_expression:
-  logical_expression
-| arithmetic_expression ADD_OP logical_expression
-| arithmetic_expression SUB_OP logical_expression
-| arithmetic_expression MULT logical_expression
-| arithmetic_expression DIVIDE logical_expression
+  logical_expression {
+    $$ = addNode(ARITHMETIC_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| arithmetic_expression ADD_OP logical_expression {
+    $$ = addNode(ARITHMETIC_EXPRESSION, $1, $3, $2, NULL);
+  }
+| arithmetic_expression SUB_OP logical_expression  {
+    $$ = addNode(ARITHMETIC_EXPRESSION, $1, $3, $2, NULL);
+  }
+| arithmetic_expression MULT logical_expression  {
+    $$ = addNode(ARITHMETIC_EXPRESSION, $1, $3, $2, NULL);
+  }
+| arithmetic_expression DIVIDE logical_expression  {
+    $$ = addNode(ARITHMETIC_EXPRESSION, $1, $3, $2, NULL);
+  }
 ;
 
 logical_expression:
-  relational_expression
-| NEGATE relational_expression { $$ = $2; }
-| logical_expression AND relational_expression
-| logical_expression OR  relational_expression
+  relational_expression  {
+    $$ = addNode(LOGICAL_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| NEGATE relational_expression {
+    $$ = addNode(LOGICAL_EXPRESSION, $2, NULL, $1, NULL);
+  }
+| logical_expression AND relational_expression {
+    $$ = addNode(LOGICAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| logical_expression OR  relational_expression  {
+    $$ = addNode(LOGICAL_EXPRESSION, $1, $3, $2, NULL);
+  }
 ;
 
 relational_expression:
-  set_expression
-| relational_expression CLT set_expression
-| relational_expression CLE set_expression
-| relational_expression CEQ set_expression
-| relational_expression CGE set_expression
-| relational_expression CGT set_expression
-| relational_expression CNE set_expression
+  set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| relational_expression CLT set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| relational_expression CLE set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| relational_expression CEQ set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| relational_expression CGE set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| relational_expression CGT set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
+| relational_expression CNE set_expression {
+    $$ = addNode(RELATIONAL_EXPRESSION, $1, $3, $2, NULL);
+  }
 ;
 
 set_expression:
-  cast_expression
-| set_expression IN cast_expression
+  cast_expression {
+    $$ = addNode(SET_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| set_expression IN cast_expression {
+    $$ = addNode(SET_EXPRESSION, $1, $3, $2, NULL);
+  }
 ;
 
 cast_expression:
-  unary_expression
-| LEFT_PARENTHESES type_name RIGHT_PARENTHESES cast_expression { $$ = $4; }
+  unary_expression {
+    $$ = addNode(CAST_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| LEFT_PARENTHESES type_name RIGHT_PARENTHESES cast_expression {
+    $$ = addNode(CAST_EXPRESSION, $2, $4, NULL, NULL);
+  }
 ;
 
 type_name:
-  specifier_qualifier_list
-| specifier_qualifier_list abstract_declarator
-| specifier_qualifier_list declarator
+  specifier_qualifier_list {
+    $$ = addNode(TYPE_NAME, $1, NULL, NULL, NULL);
+  }
+| specifier_qualifier_list abstract_declarator {
+    $$ = addNode(TYPE_NAME, $1, $2, NULL, NULL);
+  }
+| specifier_qualifier_list declarator {
+    $$ = addNode(TYPE_NAME, $1, $2, NULL, NULL);
+  }
 ;
 
 specifier_qualifier_list:
-  TYPE specifier_qualifier_list { $$ = NULL; }
-| TYPE { $$ = NULL; }
+  TYPE specifier_qualifier_list {
+    $$ = addNode(SPECIFIER_QUALIFIER_LIST, $2, NULL, $1, NULL);
+  }
+| TYPE {
+    $$ = addNode(SPECIFIER_QUALIFIER_LIST, NULL, NULL, $1, NULL);
+  }
 ;
 
 unary_expression:
-  postfix_expression
-| SUB_OP cast_expression { $$ = NULL; }
-| set_expression_list
-| function_expression
+  postfix_expression {
+    $$ = addNode(UNARY_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| SUB_OP cast_expression {
+    $$ = addNode(UNARY_EXPRESSION, $2, NULL, NULL, $1);
+  }
+| set_expression_list {
+    $$ = addNode(UNARY_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| function_expression  {
+    $$ = addNode(UNARY_EXPRESSION, $1, NULL, NULL, NULL);
+  }
 ;
 
 function_expression:
-  ID LEFT_PARENTHESES initializer_list RIGHT_PARENTHESES { $$ = NULL; }
+  ID LEFT_PARENTHESES initializer_list RIGHT_PARENTHESES {
+    $$ = addNode(FUNCTION_EXPRESSION, $3, NULL, NULL, $1);
+  }
 ;
 
 postfix_expression:
-  primary_expression
-| LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET { $$ = $5; }
-| LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET { $$ = $5; }
+  primary_expression {
+    $$ = addNode(POSTFIX_EXPRESSION, $1, NULL, NULL, NULL);
+  }
+| LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET {
+    $$ = addNode(POSTFIX_EXPRESSION, $2, $5, NULL, NULL);
+  }
+| LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET {
+    $$ = addNode(POSTFIX_EXPRESSION, $2, $5, NULL, NULL);
+  }
 ;
 
 initializer_list:
-  initializer
-| initializer_list COMMA initializer
+  initializer {
+    $$ = addNode(INITIALIZER_LIST, $1, NULL, NULL, NULL);
+  }
+| initializer_list COMMA initializer {
+    $$ = addNode(INITIALIZER_LIST, $1, $3, NULL, NULL);
+  }
 ;
 
 initializer:
-  assignment_expression
-| LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET { $$ = $2; }
-| LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET { $$ = $2; }
+  assignment_expression {
+    $$ = addNode(INITIALIZER, $1, NULL, NULL, NULL);
+  }
+| LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET {
+    $$ = addNode(INITIALIZER, $2, NULL, NULL, NULL);
+  }
+| LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET {
+    $$ = addNode(INITIALIZER, $2, NULL, NULL, NULL);
+  }
 ;
 
 primary_expression:
-  ID { $$ = NULL; }
-| INTEGER { $$ = NULL; }
-| FLOAT { $$ = NULL; }
-| STRING { $$ = NULL; }
-| EMPTY { $$ = NULL; }
-| LEFT_PARENTHESES expression RIGHT_PARENTHESES { $$ = $2; }
+  ID {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
+| INTEGER {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
+| FLOAT {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
+| STRING {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
+| EMPTY {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
+| LEFT_PARENTHESES expression RIGHT_PARENTHESES {
+    $$ = addNode(PRIMARY_EXPRESSION, $2, NULL, NULL, NULL);
+  }
 ;
 
 %%
@@ -339,12 +557,12 @@ int main(int argc, char **argv) {
   // initializeGlobalScope();
   yyparse();
   yylex_destroy();
-  // if(syntax_error == 0 && lex_error == 0){
-  //   printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
-  //   printTree(parserTree, 0);
-  // }
+  if(syntax_error == 0 && lex_error == 0){
+    printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
+    printTree(parserTree, 0);
+  }
   // printSymbolTable();
-  // freeTree(parserTree);
+  freeTree(parserTree);
   // freeSymbolTable();
   return 0;
 }

@@ -4,6 +4,15 @@
 #include "ast.h"
 #include "symbolTable.h"
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_ORANGE  "\x1b[37m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 ast_node* addNode(int nodeClass, ast_node* left, ast_node* right, char* vType, char* name){
     ast_node* auxNode = (ast_node*)calloc(1, sizeof(ast_node));
 
@@ -23,18 +32,18 @@ void printTree(ast_node *tree, int depth) {
     int i = depth;
     if (tree->vType != NULL){
       while(i != 0){
-        printf("\t");
+        printf(" ");
         i--;
       }
-      printf("Type: %s\n", tree->vType);
+      printf(ANSI_COLOR_RED "Type: %s\n" ANSI_COLOR_RESET, tree->vType);
     }
     if (tree->name != NULL){
       i = depth;
       while(i != 0){
-        printf("\t");
+        printf(" ");
         i--;
       }
-      printf("Name: %s\n", tree->name);
+      printf(ANSI_COLOR_GREEN "Value: %s\n" ANSI_COLOR_RESET, tree->name);
     }
     printf("\n");
     printTree(tree->left, depth + 1);
@@ -107,26 +116,38 @@ void printClass(int nodeClass){
     case ITERATION_STATEMENT:
       printf("ITERATION_STATEMENT");
     break;
-    case SET_STATEMENT:
-      printf("SET_STATEMENT");
+    case INPUT_STATEMENT:
+      printf("INPUT_STATEMENT");
     break;
-    case IS_SET_STATEMENT:
-      printf("IS_SET_STATEMENT");
+    case OUTPUT_STATEMENT:
+      printf("OUTPUT_STATEMENT");
     break;
-    case ADD_STATEMENT:
-      printf("ADD_STATEMENT");
+    case RETURN_STATEMENT:
+      printf("RETURN_STATEMENT");
     break;
-    case REMOVE_STATEMENT:
-      printf("REMOVE_STATEMENT");
+    case SET_EXPRESSION_LIST:
+      printf("SET_EXPRESSION_LIST");
     break;
-    case EXISTS_STATEMENT:
-      printf("EXISTS_STATEMENT");
+    case IS_SET_EXPRESSION:
+      printf("IS_SET_EXPRESSION");
+    break;
+    case ADD_EXPRESSION:
+      printf("ADD_EXPRESSION");
+    break;
+    case REMOVE_EXPRESSION:
+      printf("REMOVE_EXPRESSION");
+    break;
+    case EXISTS_EXPRESSION:
+      printf("EXISTS_EXPRESSION");
     break;
     case EXPRESSION:
       printf("EXPRESSION");
     break;
     case SET_EXPRESSION:
       printf("SET_EXPRESSION");
+    break;
+    case FUNCTION_EXPRESSION:
+      printf("FUNCTION_EXPRESSION");
     break;
     case ASSIGNMENT_EXPRESSION:
       printf("ASSIGNMENT_EXPRESSION");
@@ -171,7 +192,7 @@ void printClass(int nodeClass){
 void printDepth(int depth) {
   int i = depth;
   while(i != 0){
-    printf("\t");
+    printf(" ");
     i--;
   }
   printf("(%d)", depth);

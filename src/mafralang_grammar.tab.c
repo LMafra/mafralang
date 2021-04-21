@@ -578,18 +578,18 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    64,    64,    68,    71,    75,    78,    84,    87,    93,
-      96,   102,   105,   111,   112,   116,   117,   121,   125,   126,
-     127,   128,   129,   133,   134,   139,   140,   144,   145,   149,
-     153,   154,   155,   156,   160,   161,   165,   166,   170,   171,
-     175,   176,   177,   178,   179,   180,   181,   185,   186,   190,
-     191,   195,   196,   197,   198,   199,   203,   207,   208,   212,
-     216,   217,   218,   219,   223,   227,   231,   235,   239,   240,
-     244,   245,   249,   250,   251,   252,   253,   257,   258,   259,
-     260,   264,   265,   266,   267,   268,   269,   270,   274,   275,
-     279,   280,   284,   285,   286,   290,   291,   295,   296,   297,
-     298,   302,   306,   307,   308,   312,   313,   317,   318,   319,
-     323,   324,   325,   326,   327,   328
+       0,    64,    64,    68,    71,    77,    80,    86,    91,    98,
+     101,   107,   110,   116,   119,   125,   128,   134,   140,   143,
+     146,   149,   152,   158,   161,   168,   171,   177,   180,   186,
+     192,   195,   198,   201,   207,   210,   216,   219,   225,   228,
+     234,   237,   240,   243,   246,   249,   252,   258,   261,   267,
+     270,   277,   282,   286,   291,   295,   301,   307,   310,   316,
+     322,   325,   328,   331,   337,   343,   349,   355,   361,   364,
+     370,   373,   379,   382,   385,   388,   391,   397,   400,   403,
+     406,   412,   415,   418,   421,   424,   427,   430,   436,   439,
+     445,   448,   454,   457,   460,   466,   469,   475,   478,   481,
+     484,   490,   496,   499,   502,   508,   511,   517,   520,   523,
+     529,   532,   535,   538,   541,   544
 };
 #endif
 
@@ -3739,413 +3739,919 @@ yyreduce:
   case 3: /* translation_unit: external_declaration  */
 #line 68 "main/mafralang_grammar.y"
                        {
-    printf("external_declaration \n");
+    (yyval.stmt) = addNode(TRANSLATION_UNIT, (yyvsp[0].stmt), NULL, NULL, NULL);
   }
 #line 3745 "mafralang_grammar.tab.c"
     break;
 
-  case 5: /* external_declaration: function_definition  */
-#line 75 "main/mafralang_grammar.y"
-                      {
-    printf("function_definition \n");
+  case 4: /* translation_unit: translation_unit external_declaration  */
+#line 71 "main/mafralang_grammar.y"
+                                        {
+    (yyval.stmt) = addNode(TRANSLATION_UNIT, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
   }
 #line 3753 "mafralang_grammar.tab.c"
     break;
 
-  case 6: /* external_declaration: declaration  */
-#line 78 "main/mafralang_grammar.y"
-              {
-  printf("declaration \n");
-}
+  case 5: /* external_declaration: function_definition  */
+#line 77 "main/mafralang_grammar.y"
+                      {
+    (yyval.stmt) = addNode(EXTERNAL_DECLARATION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
 #line 3761 "mafralang_grammar.tab.c"
     break;
 
-  case 7: /* function_definition: declaration_specifiers declarator declaration_list compound_statement  */
-#line 84 "main/mafralang_grammar.y"
-                                                                        {
-  printf("function_definition 1 \n");
-}
+  case 6: /* external_declaration: declaration  */
+#line 80 "main/mafralang_grammar.y"
+              {
+    (yyval.stmt) = addNode(EXTERNAL_DECLARATION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
 #line 3769 "mafralang_grammar.tab.c"
     break;
 
+  case 7: /* function_definition: declaration_specifiers declarator declaration_list compound_statement  */
+#line 86 "main/mafralang_grammar.y"
+                                                                        {
+    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, (yyvsp[-3].stmt), (yyvsp[-2].stmt), NULL, NULL);
+    ast_node* ast_node2 = addNode(FUNCTION_DEFINITION, ast_node1, (yyvsp[-1].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(FUNCTION_DEFINITION, ast_node2, (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3779 "mafralang_grammar.tab.c"
+    break;
+
   case 8: /* function_definition: declaration_specifiers declarator compound_statement  */
-#line 87 "main/mafralang_grammar.y"
+#line 91 "main/mafralang_grammar.y"
                                                        {
-  printf("function_definition 2 \n");
-}
-#line 3777 "mafralang_grammar.tab.c"
+    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, (yyvsp[-2].stmt), (yyvsp[-1].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(FUNCTION_DEFINITION, ast_node1, (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3788 "mafralang_grammar.tab.c"
     break;
 
   case 9: /* declaration_list: declaration  */
-#line 93 "main/mafralang_grammar.y"
+#line 98 "main/mafralang_grammar.y"
               {
-  printf("declaration_list declaration \n");
-}
-#line 3785 "mafralang_grammar.tab.c"
+    (yyval.stmt) = addNode(DECLARATION_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 3796 "mafralang_grammar.tab.c"
     break;
 
   case 10: /* declaration_list: declaration_list declaration  */
-#line 96 "main/mafralang_grammar.y"
+#line 101 "main/mafralang_grammar.y"
                                {
-  printf("declaration_list \n");
-}
-#line 3793 "mafralang_grammar.tab.c"
+    (yyval.stmt) = addNode(DECLARATION_LIST, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3804 "mafralang_grammar.tab.c"
     break;
 
   case 11: /* declaration: declaration_specifiers SEMICOLON  */
-#line 102 "main/mafralang_grammar.y"
-                                   {
-  printf("declaration_specifiers \n");
-}
-#line 3801 "mafralang_grammar.tab.c"
+#line 107 "main/mafralang_grammar.y"
+                                    {
+    (yyval.stmt) = addNode(DECLARATION, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 3812 "mafralang_grammar.tab.c"
     break;
 
   case 12: /* declaration: declaration_specifiers init_declarator_list SEMICOLON  */
-#line 105 "main/mafralang_grammar.y"
+#line 110 "main/mafralang_grammar.y"
                                                         {
-  printf("declaration_specifiers init_declarator_list \n");
-}
-#line 3809 "mafralang_grammar.tab.c"
+    (yyval.stmt) = addNode(DECLARATION, (yyvsp[-2].stmt), (yyvsp[-1].stmt), NULL, NULL);
+  }
+#line 3820 "mafralang_grammar.tab.c"
     break;
 
   case 13: /* declaration_specifiers: TYPE  */
-#line 111 "main/mafralang_grammar.y"
-       { (yyval.stmt) = NULL; }
-#line 3815 "mafralang_grammar.tab.c"
+#line 116 "main/mafralang_grammar.y"
+       {
+    (yyval.stmt) = addNode(DECLARATION_SPECIFIERS, NULL, NULL, (yyvsp[0].strType), NULL);
+  }
+#line 3828 "mafralang_grammar.tab.c"
     break;
 
   case 14: /* declaration_specifiers: TYPE declaration_specifiers  */
-#line 112 "main/mafralang_grammar.y"
-                              { (yyval.stmt) = NULL; }
-#line 3821 "mafralang_grammar.tab.c"
+#line 119 "main/mafralang_grammar.y"
+                              {
+    (yyval.stmt) = addNode(DECLARATION_SPECIFIERS, NULL, (yyvsp[0].stmt), (yyvsp[-1].strType), NULL);
+  }
+#line 3836 "mafralang_grammar.tab.c"
+    break;
+
+  case 15: /* init_declarator_list: declarator  */
+#line 125 "main/mafralang_grammar.y"
+              {
+    (yyval.stmt) = addNode(INIT_DECLARATOR_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 3844 "mafralang_grammar.tab.c"
+    break;
+
+  case 16: /* init_declarator_list: init_declarator_list COMMA declarator  */
+#line 128 "main/mafralang_grammar.y"
+                                        {
+    (yyval.stmt) = addNode(INIT_DECLARATOR_LIST, (yyvsp[-2].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3852 "mafralang_grammar.tab.c"
     break;
 
   case 17: /* declarator: direct_declarator  */
-#line 121 "main/mafralang_grammar.y"
-                    { (yyval.stmt) = NULL; }
-#line 3827 "mafralang_grammar.tab.c"
+#line 134 "main/mafralang_grammar.y"
+                     {
+    (yyval.stmt) = addNode(DECLARATOR, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 3860 "mafralang_grammar.tab.c"
     break;
 
   case 18: /* direct_declarator: ID  */
-#line 125 "main/mafralang_grammar.y"
-     { (yyval.stmt) = NULL; }
-#line 3833 "mafralang_grammar.tab.c"
+#line 140 "main/mafralang_grammar.y"
+      {
+    (yyval.stmt) = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 3868 "mafralang_grammar.tab.c"
     break;
 
   case 19: /* direct_declarator: LEFT_PARENTHESES declarator RIGHT_PARENTHESES  */
-#line 126 "main/mafralang_grammar.y"
-                                                { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 3839 "mafralang_grammar.tab.c"
+#line 143 "main/mafralang_grammar.y"
+                                                {
+    (yyval.stmt) = addNode(DIRECT_DECLARATOR, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 3876 "mafralang_grammar.tab.c"
+    break;
+
+  case 20: /* direct_declarator: direct_declarator LEFT_PARENTHESES RIGHT_PARENTHESES  */
+#line 146 "main/mafralang_grammar.y"
+                                                       {
+    (yyval.stmt) = addNode(DIRECT_DECLARATOR, (yyvsp[-2].stmt), NULL, NULL, NULL);
+  }
+#line 3884 "mafralang_grammar.tab.c"
+    break;
+
+  case 21: /* direct_declarator: direct_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES  */
+#line 149 "main/mafralang_grammar.y"
+                                                                      {
+    (yyval.stmt) = addNode(DIRECT_DECLARATOR, (yyvsp[-3].stmt), (yyvsp[-1].stmt), NULL, NULL);
+  }
+#line 3892 "mafralang_grammar.tab.c"
+    break;
+
+  case 22: /* direct_declarator: direct_declarator LEFT_PARENTHESES identifier_list RIGHT_PARENTHESES  */
+#line 152 "main/mafralang_grammar.y"
+                                                                       {
+    (yyval.stmt) = addNode(DIRECT_DECLARATOR, (yyvsp[-3].stmt), (yyvsp[-1].stmt), NULL, NULL);
+  }
+#line 3900 "mafralang_grammar.tab.c"
     break;
 
   case 23: /* identifier_list: ID  */
-#line 133 "main/mafralang_grammar.y"
-     { (yyval.stmt) = NULL; }
-#line 3845 "mafralang_grammar.tab.c"
+#line 158 "main/mafralang_grammar.y"
+      {
+    (yyval.stmt) = addNode(IDENTIFIER_LIST, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 3908 "mafralang_grammar.tab.c"
     break;
 
   case 24: /* identifier_list: identifier_list COMMA ID  */
-#line 134 "main/mafralang_grammar.y"
-                           { (yyval.stmt) = NULL; }
-#line 3851 "mafralang_grammar.tab.c"
+#line 161 "main/mafralang_grammar.y"
+                           {
+    (yyval.stmt) = addNode(IDENTIFIER_LIST, (yyvsp[-2].stmt), NULL, NULL, (yyvsp[0].strType));
+  }
+#line 3916 "mafralang_grammar.tab.c"
+    break;
+
+  case 25: /* parameter_list: parameter_declaration  */
+#line 168 "main/mafralang_grammar.y"
+                        {
+    (yyval.stmt) = addNode(PARAMETER_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 3924 "mafralang_grammar.tab.c"
+    break;
+
+  case 26: /* parameter_list: parameter_list COMMA parameter_declaration  */
+#line 171 "main/mafralang_grammar.y"
+                                             {
+    (yyval.stmt) = addNode(PARAMETER_LIST, (yyvsp[-2].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3932 "mafralang_grammar.tab.c"
+    break;
+
+  case 27: /* parameter_declaration: declaration_specifiers declarator  */
+#line 177 "main/mafralang_grammar.y"
+                                    {
+    (yyval.stmt) = addNode(PARAMETER_DECLARATION, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3940 "mafralang_grammar.tab.c"
+    break;
+
+  case 28: /* parameter_declaration: declaration_specifiers abstract_declarator  */
+#line 180 "main/mafralang_grammar.y"
+                                             {
+    (yyval.stmt) = addNode(PARAMETER_DECLARATION, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 3948 "mafralang_grammar.tab.c"
     break;
 
   case 29: /* abstract_declarator: direct_abstract_declarator  */
-#line 149 "main/mafralang_grammar.y"
-                             { (yyval.stmt) = NULL; }
-#line 3857 "mafralang_grammar.tab.c"
+#line 186 "main/mafralang_grammar.y"
+                             {
+    (yyval.stmt) = addNode(ABSTRACT_DECLARATOR, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 3956 "mafralang_grammar.tab.c"
     break;
 
   case 30: /* direct_abstract_declarator: LEFT_PARENTHESES abstract_declarator RIGHT_PARENTHESES  */
-#line 153 "main/mafralang_grammar.y"
-                                                         { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 3863 "mafralang_grammar.tab.c"
+#line 192 "main/mafralang_grammar.y"
+                                                         {
+    (yyval.stmt) = addNode(DIRECT_ABSTRACT_DECLARATOR, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 3964 "mafralang_grammar.tab.c"
     break;
 
   case 31: /* direct_abstract_declarator: LEFT_PARENTHESES RIGHT_PARENTHESES  */
-#line 154 "main/mafralang_grammar.y"
-                                     { (yyval.stmt) = NULL; }
-#line 3869 "mafralang_grammar.tab.c"
+#line 195 "main/mafralang_grammar.y"
+                                     {
+    (yyval.stmt) = addNode(DIRECT_ABSTRACT_DECLARATOR, NULL, NULL, NULL, NULL);
+  }
+#line 3972 "mafralang_grammar.tab.c"
+    break;
+
+  case 32: /* direct_abstract_declarator: direct_abstract_declarator LEFT_PARENTHESES RIGHT_PARENTHESES  */
+#line 198 "main/mafralang_grammar.y"
+                                                                {
+    (yyval.stmt) = addNode(DIRECT_ABSTRACT_DECLARATOR, (yyvsp[-2].stmt), NULL, NULL, NULL);
+  }
+#line 3980 "mafralang_grammar.tab.c"
+    break;
+
+  case 33: /* direct_abstract_declarator: direct_abstract_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES  */
+#line 201 "main/mafralang_grammar.y"
+                                                                               {
+    (yyval.stmt) = addNode(DIRECT_ABSTRACT_DECLARATOR, (yyvsp[-3].stmt), (yyvsp[-1].stmt), NULL, NULL);
+  }
+#line 3988 "mafralang_grammar.tab.c"
     break;
 
   case 34: /* compound_statement: LEFT_CURLY_BRACKET RIGHT_CURLY_BRACKET  */
-#line 160 "main/mafralang_grammar.y"
-                                         { (yyval.stmt) = NULL; }
-#line 3875 "mafralang_grammar.tab.c"
+#line 207 "main/mafralang_grammar.y"
+                                         {
+    (yyval.stmt) = addNode(COMPOUND_STATEMENT, NULL, NULL, NULL, NULL);
+  }
+#line 3996 "mafralang_grammar.tab.c"
     break;
 
   case 35: /* compound_statement: LEFT_CURLY_BRACKET block_item_list RIGHT_CURLY_BRACKET  */
-#line 161 "main/mafralang_grammar.y"
-                                                         { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 3881 "mafralang_grammar.tab.c"
+#line 210 "main/mafralang_grammar.y"
+                                                         {
+    (yyval.stmt) = addNode(COMPOUND_STATEMENT, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 4004 "mafralang_grammar.tab.c"
+    break;
+
+  case 36: /* block_item_list: block_item  */
+#line 216 "main/mafralang_grammar.y"
+             {
+    (yyval.stmt) = addNode(BLOCK_ITEM_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4012 "mafralang_grammar.tab.c"
+    break;
+
+  case 37: /* block_item_list: block_item_list block_item  */
+#line 219 "main/mafralang_grammar.y"
+                             {
+    (yyval.stmt) = addNode(BLOCK_ITEM_LIST, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4020 "mafralang_grammar.tab.c"
     break;
 
   case 38: /* block_item: declaration  */
-#line 170 "main/mafralang_grammar.y"
-              { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3887 "mafralang_grammar.tab.c"
+#line 225 "main/mafralang_grammar.y"
+              {
+    (yyval.stmt) = addNode(BLOCK_ITEM, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4028 "mafralang_grammar.tab.c"
+    break;
+
+  case 39: /* block_item: statement  */
+#line 228 "main/mafralang_grammar.y"
+            {
+    (yyval.stmt) = addNode(BLOCK_ITEM, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4036 "mafralang_grammar.tab.c"
     break;
 
   case 40: /* statement: expression_statement  */
-#line 175 "main/mafralang_grammar.y"
-                       { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3893 "mafralang_grammar.tab.c"
+#line 234 "main/mafralang_grammar.y"
+                       {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4044 "mafralang_grammar.tab.c"
     break;
 
   case 41: /* statement: compound_statement  */
-#line 176 "main/mafralang_grammar.y"
-                     { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3899 "mafralang_grammar.tab.c"
+#line 237 "main/mafralang_grammar.y"
+                     {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4052 "mafralang_grammar.tab.c"
     break;
 
   case 42: /* statement: conditional_statement  */
-#line 177 "main/mafralang_grammar.y"
-                        { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3905 "mafralang_grammar.tab.c"
+#line 240 "main/mafralang_grammar.y"
+                        {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4060 "mafralang_grammar.tab.c"
     break;
 
   case 43: /* statement: iteration_statement  */
-#line 178 "main/mafralang_grammar.y"
-                      { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3911 "mafralang_grammar.tab.c"
+#line 243 "main/mafralang_grammar.y"
+                      {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4068 "mafralang_grammar.tab.c"
     break;
 
   case 44: /* statement: input_statement  */
-#line 179 "main/mafralang_grammar.y"
-                  { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3917 "mafralang_grammar.tab.c"
+#line 246 "main/mafralang_grammar.y"
+                  {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4076 "mafralang_grammar.tab.c"
     break;
 
   case 45: /* statement: output_statement  */
-#line 180 "main/mafralang_grammar.y"
-                   { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3923 "mafralang_grammar.tab.c"
+#line 249 "main/mafralang_grammar.y"
+                   {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4084 "mafralang_grammar.tab.c"
     break;
 
   case 46: /* statement: return_statement  */
-#line 181 "main/mafralang_grammar.y"
-                   { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3929 "mafralang_grammar.tab.c"
+#line 252 "main/mafralang_grammar.y"
+                   {
+    (yyval.stmt) = addNode(STATEMENT, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4092 "mafralang_grammar.tab.c"
     break;
 
   case 47: /* expression_statement: SEMICOLON  */
-#line 185 "main/mafralang_grammar.y"
-            { (yyval.stmt) = NULL; }
-#line 3935 "mafralang_grammar.tab.c"
+#line 258 "main/mafralang_grammar.y"
+            {
+    (yyval.stmt) = addNode(EXPRESSION_STATEMENT, NULL, NULL, NULL, NULL);
+  }
+#line 4100 "mafralang_grammar.tab.c"
+    break;
+
+  case 48: /* expression_statement: expression SEMICOLON  */
+#line 261 "main/mafralang_grammar.y"
+                       {
+    (yyval.stmt) = addNode(EXPRESSION_STATEMENT, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 4108 "mafralang_grammar.tab.c"
     break;
 
   case 49: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement  */
-#line 190 "main/mafralang_grammar.y"
-                                                                        { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3941 "mafralang_grammar.tab.c"
+#line 267 "main/mafralang_grammar.y"
+                                                                        {
+    (yyval.stmt) = addNode(CONDITIONAL_STATEMENT, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-4].strType), NULL);
+  }
+#line 4116 "mafralang_grammar.tab.c"
     break;
 
   case 50: /* conditional_statement: IF LEFT_PARENTHESES expression RIGHT_PARENTHESES statement ELSE statement  */
-#line 191 "main/mafralang_grammar.y"
-                                                                            { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3947 "mafralang_grammar.tab.c"
+#line 270 "main/mafralang_grammar.y"
+                                                                             {
+    ast_node* ast_node1 = addNode(CONDITIONAL_STATEMENT, (yyvsp[-4].stmt), (yyvsp[-2].stmt), (yyvsp[-6].strType), NULL);
+    (yyval.stmt) = addNode(CONDITIONAL_STATEMENT, ast_node1, (yyvsp[0].stmt), (yyvsp[-1].strType), NULL);
+  }
+#line 4125 "mafralang_grammar.tab.c"
     break;
 
   case 51: /* iteration_statement: FOR LEFT_PARENTHESES expression_statement expression_statement expression RIGHT_PARENTHESES statement  */
-#line 195 "main/mafralang_grammar.y"
-                                                                                                        { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3953 "mafralang_grammar.tab.c"
+#line 277 "main/mafralang_grammar.y"
+                                                                                                        {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, (yyvsp[-4].stmt), (yyvsp[-3].stmt), NULL, NULL);
+    ast_node* ast_node2 = addNode(ITERATION_STATEMENT, ast_node1, (yyvsp[-2].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(ITERATION_STATEMENT, ast_node2, (yyvsp[0].stmt), (yyvsp[-6].strType), NULL);
+  }
+#line 4135 "mafralang_grammar.tab.c"
     break;
 
   case 52: /* iteration_statement: FOR LEFT_PARENTHESES expression_statement expression_statement RIGHT_PARENTHESES statement  */
-#line 196 "main/mafralang_grammar.y"
-                                                                                             { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3959 "mafralang_grammar.tab.c"
+#line 282 "main/mafralang_grammar.y"
+                                                                                             {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, (yyvsp[-3].stmt), (yyvsp[-2].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(ITERATION_STATEMENT, ast_node1, (yyvsp[0].stmt), (yyvsp[-5].strType), NULL);
+  }
+#line 4144 "mafralang_grammar.tab.c"
     break;
 
   case 53: /* iteration_statement: FOR LEFT_PARENTHESES declaration expression_statement expression RIGHT_PARENTHESES statement  */
-#line 197 "main/mafralang_grammar.y"
-                                                                                               { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3965 "mafralang_grammar.tab.c"
+#line 286 "main/mafralang_grammar.y"
+                                                                                               {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, (yyvsp[-4].stmt), (yyvsp[-3].stmt), NULL, NULL);
+    ast_node* ast_node2 = addNode(ITERATION_STATEMENT, ast_node1, (yyvsp[-2].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(ITERATION_STATEMENT, ast_node2, (yyvsp[0].stmt), (yyvsp[-6].strType), NULL);
+  }
+#line 4154 "mafralang_grammar.tab.c"
     break;
 
   case 54: /* iteration_statement: FOR LEFT_PARENTHESES declaration expression_statement RIGHT_PARENTHESES statement  */
-#line 198 "main/mafralang_grammar.y"
-                                                                                    { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3971 "mafralang_grammar.tab.c"
+#line 291 "main/mafralang_grammar.y"
+                                                                                    {
+    ast_node* ast_node1 = addNode(ITERATION_STATEMENT, (yyvsp[-3].stmt), (yyvsp[-2].stmt), NULL, NULL);
+    (yyval.stmt) = addNode(ITERATION_STATEMENT, ast_node1, (yyvsp[0].stmt), (yyvsp[-5].strType), NULL);
+  }
+#line 4163 "mafralang_grammar.tab.c"
     break;
 
   case 55: /* iteration_statement: FORALL LEFT_PARENTHESES expression RIGHT_PARENTHESES statement  */
-#line 199 "main/mafralang_grammar.y"
-                                                                 { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 3977 "mafralang_grammar.tab.c"
+#line 295 "main/mafralang_grammar.y"
+                                                                 {
+    (yyval.stmt) = addNode(ITERATION_STATEMENT, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-4].strType), NULL);
+  }
+#line 4171 "mafralang_grammar.tab.c"
     break;
 
   case 56: /* input_statement: READ LEFT_PARENTHESES expression RIGHT_PARENTHESES SEMICOLON  */
-#line 203 "main/mafralang_grammar.y"
-                                                               { (yyval.stmt) = NULL; }
-#line 3983 "mafralang_grammar.tab.c"
+#line 301 "main/mafralang_grammar.y"
+                                                                {
+    (yyval.stmt) = addNode(INPUT_STATEMENT, (yyvsp[-2].stmt), NULL, (yyvsp[-4].strType), NULL);
+  }
+#line 4179 "mafralang_grammar.tab.c"
     break;
 
   case 57: /* output_statement: WRITE LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON  */
-#line 207 "main/mafralang_grammar.y"
-                                                                        { (yyval.stmt) = NULL; }
-#line 3989 "mafralang_grammar.tab.c"
+#line 307 "main/mafralang_grammar.y"
+                                                                        {
+    (yyval.stmt) = addNode(OUTPUT_STATEMENT, (yyvsp[-2].stmt), NULL, (yyvsp[-4].strType), NULL);
+  }
+#line 4187 "mafralang_grammar.tab.c"
     break;
 
   case 58: /* output_statement: WRITELN LEFT_PARENTHESES primary_expression RIGHT_PARENTHESES SEMICOLON  */
-#line 208 "main/mafralang_grammar.y"
-                                                                          { (yyval.stmt) = NULL; }
-#line 3995 "mafralang_grammar.tab.c"
+#line 310 "main/mafralang_grammar.y"
+                                                                          {
+    (yyval.stmt) = addNode(OUTPUT_STATEMENT, (yyvsp[-2].stmt), NULL, (yyvsp[-4].strType), NULL);
+  }
+#line 4195 "mafralang_grammar.tab.c"
     break;
 
   case 59: /* return_statement: RETURN expression SEMICOLON  */
-#line 212 "main/mafralang_grammar.y"
-                              { (yyval.stmt) = NULL; }
-#line 4001 "mafralang_grammar.tab.c"
+#line 316 "main/mafralang_grammar.y"
+                              {
+    (yyval.stmt) = addNode(RETURN_STATEMENT, (yyvsp[-1].stmt), NULL, (yyvsp[-2].strType), NULL);
+  }
+#line 4203 "mafralang_grammar.tab.c"
     break;
 
   case 60: /* set_expression_list: is_set_expression  */
-#line 216 "main/mafralang_grammar.y"
-                    { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4007 "mafralang_grammar.tab.c"
+#line 322 "main/mafralang_grammar.y"
+                    {
+    (yyval.stmt) = addNode(SET_EXPRESSION_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4211 "mafralang_grammar.tab.c"
     break;
 
   case 61: /* set_expression_list: add_expression  */
-#line 217 "main/mafralang_grammar.y"
-                 { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4013 "mafralang_grammar.tab.c"
+#line 325 "main/mafralang_grammar.y"
+                 {
+    (yyval.stmt) = addNode(SET_EXPRESSION_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4219 "mafralang_grammar.tab.c"
     break;
 
   case 62: /* set_expression_list: remove_expression  */
-#line 218 "main/mafralang_grammar.y"
-                    { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4019 "mafralang_grammar.tab.c"
+#line 328 "main/mafralang_grammar.y"
+                    {
+    (yyval.stmt) = addNode(SET_EXPRESSION_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4227 "mafralang_grammar.tab.c"
     break;
 
   case 63: /* set_expression_list: exists_expression  */
-#line 219 "main/mafralang_grammar.y"
-                    { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4025 "mafralang_grammar.tab.c"
+#line 331 "main/mafralang_grammar.y"
+                    {
+    (yyval.stmt) = addNode(SET_EXPRESSION_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4235 "mafralang_grammar.tab.c"
     break;
 
   case 64: /* is_set_expression: IS_SET LEFT_PARENTHESES ID RIGHT_PARENTHESES  */
-#line 223 "main/mafralang_grammar.y"
-                                               { (yyval.stmt) = NULL; }
-#line 4031 "mafralang_grammar.tab.c"
+#line 337 "main/mafralang_grammar.y"
+                                               {
+    (yyval.stmt) = addNode(IS_SET_EXPRESSION, NULL, NULL, (yyvsp[-3].strType), (yyvsp[-1].strType));
+  }
+#line 4243 "mafralang_grammar.tab.c"
     break;
 
   case 65: /* add_expression: ADD LEFT_PARENTHESES expression RIGHT_PARENTHESES  */
-#line 227 "main/mafralang_grammar.y"
-                                                    { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4037 "mafralang_grammar.tab.c"
+#line 343 "main/mafralang_grammar.y"
+                                                    {
+    (yyval.stmt) = addNode(ADD_EXPRESSION, (yyvsp[-1].stmt), NULL, (yyvsp[-3].strType), NULL);
+  }
+#line 4251 "mafralang_grammar.tab.c"
     break;
 
   case 66: /* remove_expression: REMOVE LEFT_PARENTHESES expression RIGHT_PARENTHESES  */
-#line 231 "main/mafralang_grammar.y"
-                                                       { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4043 "mafralang_grammar.tab.c"
+#line 349 "main/mafralang_grammar.y"
+                                                       {
+    (yyval.stmt) = addNode(REMOVE_EXPRESSION, (yyvsp[-1].stmt), NULL, (yyvsp[-3].strType), NULL);
+  }
+#line 4259 "mafralang_grammar.tab.c"
     break;
 
   case 67: /* exists_expression: EXISTS LEFT_PARENTHESES expression RIGHT_PARENTHESES  */
-#line 235 "main/mafralang_grammar.y"
-                                                       { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4049 "mafralang_grammar.tab.c"
+#line 355 "main/mafralang_grammar.y"
+                                                       {
+    (yyval.stmt) = addNode(EXISTS_EXPRESSION, (yyvsp[-1].stmt), NULL, (yyvsp[-3].strType), NULL);
+  }
+#line 4267 "mafralang_grammar.tab.c"
+    break;
+
+  case 68: /* expression: assignment_expression  */
+#line 361 "main/mafralang_grammar.y"
+                        {
+    (yyval.stmt) = addNode(EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4275 "mafralang_grammar.tab.c"
+    break;
+
+  case 69: /* expression: expression COMMA assignment_expression  */
+#line 364 "main/mafralang_grammar.y"
+                                         {
+    (yyval.stmt) = addNode(EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4283 "mafralang_grammar.tab.c"
+    break;
+
+  case 70: /* assignment_expression: arithmetic_expression  */
+#line 370 "main/mafralang_grammar.y"
+                        {
+    (yyval.stmt) = addNode(ASSIGNMENT_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4291 "mafralang_grammar.tab.c"
+    break;
+
+  case 71: /* assignment_expression: unary_expression ASSIGN assignment_expression  */
+#line 373 "main/mafralang_grammar.y"
+                                                {
+    (yyval.stmt) = addNode(ASSIGNMENT_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4299 "mafralang_grammar.tab.c"
+    break;
+
+  case 72: /* arithmetic_expression: logical_expression  */
+#line 379 "main/mafralang_grammar.y"
+                     {
+    (yyval.stmt) = addNode(ARITHMETIC_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4307 "mafralang_grammar.tab.c"
+    break;
+
+  case 73: /* arithmetic_expression: arithmetic_expression ADD_OP logical_expression  */
+#line 382 "main/mafralang_grammar.y"
+                                                  {
+    (yyval.stmt) = addNode(ARITHMETIC_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4315 "mafralang_grammar.tab.c"
+    break;
+
+  case 74: /* arithmetic_expression: arithmetic_expression SUB_OP logical_expression  */
+#line 385 "main/mafralang_grammar.y"
+                                                   {
+    (yyval.stmt) = addNode(ARITHMETIC_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4323 "mafralang_grammar.tab.c"
+    break;
+
+  case 75: /* arithmetic_expression: arithmetic_expression MULT logical_expression  */
+#line 388 "main/mafralang_grammar.y"
+                                                 {
+    (yyval.stmt) = addNode(ARITHMETIC_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4331 "mafralang_grammar.tab.c"
+    break;
+
+  case 76: /* arithmetic_expression: arithmetic_expression DIVIDE logical_expression  */
+#line 391 "main/mafralang_grammar.y"
+                                                   {
+    (yyval.stmt) = addNode(ARITHMETIC_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4339 "mafralang_grammar.tab.c"
+    break;
+
+  case 77: /* logical_expression: relational_expression  */
+#line 397 "main/mafralang_grammar.y"
+                         {
+    (yyval.stmt) = addNode(LOGICAL_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4347 "mafralang_grammar.tab.c"
     break;
 
   case 78: /* logical_expression: NEGATE relational_expression  */
-#line 258 "main/mafralang_grammar.y"
-                               { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4055 "mafralang_grammar.tab.c"
+#line 400 "main/mafralang_grammar.y"
+                               {
+    (yyval.stmt) = addNode(LOGICAL_EXPRESSION, (yyvsp[0].stmt), NULL, (yyvsp[-1].symbol), NULL);
+  }
+#line 4355 "mafralang_grammar.tab.c"
+    break;
+
+  case 79: /* logical_expression: logical_expression AND relational_expression  */
+#line 403 "main/mafralang_grammar.y"
+                                               {
+    (yyval.stmt) = addNode(LOGICAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4363 "mafralang_grammar.tab.c"
+    break;
+
+  case 80: /* logical_expression: logical_expression OR relational_expression  */
+#line 406 "main/mafralang_grammar.y"
+                                                {
+    (yyval.stmt) = addNode(LOGICAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4371 "mafralang_grammar.tab.c"
+    break;
+
+  case 81: /* relational_expression: set_expression  */
+#line 412 "main/mafralang_grammar.y"
+                 {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4379 "mafralang_grammar.tab.c"
+    break;
+
+  case 82: /* relational_expression: relational_expression CLT set_expression  */
+#line 415 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4387 "mafralang_grammar.tab.c"
+    break;
+
+  case 83: /* relational_expression: relational_expression CLE set_expression  */
+#line 418 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4395 "mafralang_grammar.tab.c"
+    break;
+
+  case 84: /* relational_expression: relational_expression CEQ set_expression  */
+#line 421 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4403 "mafralang_grammar.tab.c"
+    break;
+
+  case 85: /* relational_expression: relational_expression CGE set_expression  */
+#line 424 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4411 "mafralang_grammar.tab.c"
+    break;
+
+  case 86: /* relational_expression: relational_expression CGT set_expression  */
+#line 427 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4419 "mafralang_grammar.tab.c"
+    break;
+
+  case 87: /* relational_expression: relational_expression CNE set_expression  */
+#line 430 "main/mafralang_grammar.y"
+                                           {
+    (yyval.stmt) = addNode(RELATIONAL_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].symbol), NULL);
+  }
+#line 4427 "mafralang_grammar.tab.c"
+    break;
+
+  case 88: /* set_expression: cast_expression  */
+#line 436 "main/mafralang_grammar.y"
+                  {
+    (yyval.stmt) = addNode(SET_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4435 "mafralang_grammar.tab.c"
+    break;
+
+  case 89: /* set_expression: set_expression IN cast_expression  */
+#line 439 "main/mafralang_grammar.y"
+                                    {
+    (yyval.stmt) = addNode(SET_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), (yyvsp[-1].strType), NULL);
+  }
+#line 4443 "mafralang_grammar.tab.c"
+    break;
+
+  case 90: /* cast_expression: unary_expression  */
+#line 445 "main/mafralang_grammar.y"
+                   {
+    (yyval.stmt) = addNode(CAST_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4451 "mafralang_grammar.tab.c"
     break;
 
   case 91: /* cast_expression: LEFT_PARENTHESES type_name RIGHT_PARENTHESES cast_expression  */
-#line 280 "main/mafralang_grammar.y"
-                                                               { (yyval.stmt) = (yyvsp[0].stmt); }
-#line 4061 "mafralang_grammar.tab.c"
+#line 448 "main/mafralang_grammar.y"
+                                                               {
+    (yyval.stmt) = addNode(CAST_EXPRESSION, (yyvsp[-2].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4459 "mafralang_grammar.tab.c"
+    break;
+
+  case 92: /* type_name: specifier_qualifier_list  */
+#line 454 "main/mafralang_grammar.y"
+                           {
+    (yyval.stmt) = addNode(TYPE_NAME, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4467 "mafralang_grammar.tab.c"
+    break;
+
+  case 93: /* type_name: specifier_qualifier_list abstract_declarator  */
+#line 457 "main/mafralang_grammar.y"
+                                               {
+    (yyval.stmt) = addNode(TYPE_NAME, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4475 "mafralang_grammar.tab.c"
+    break;
+
+  case 94: /* type_name: specifier_qualifier_list declarator  */
+#line 460 "main/mafralang_grammar.y"
+                                      {
+    (yyval.stmt) = addNode(TYPE_NAME, (yyvsp[-1].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4483 "mafralang_grammar.tab.c"
     break;
 
   case 95: /* specifier_qualifier_list: TYPE specifier_qualifier_list  */
-#line 290 "main/mafralang_grammar.y"
-                                { (yyval.stmt) = NULL; }
-#line 4067 "mafralang_grammar.tab.c"
+#line 466 "main/mafralang_grammar.y"
+                                {
+    (yyval.stmt) = addNode(SPECIFIER_QUALIFIER_LIST, (yyvsp[0].stmt), NULL, (yyvsp[-1].strType), NULL);
+  }
+#line 4491 "mafralang_grammar.tab.c"
     break;
 
   case 96: /* specifier_qualifier_list: TYPE  */
-#line 291 "main/mafralang_grammar.y"
-       { (yyval.stmt) = NULL; }
-#line 4073 "mafralang_grammar.tab.c"
+#line 469 "main/mafralang_grammar.y"
+       {
+    (yyval.stmt) = addNode(SPECIFIER_QUALIFIER_LIST, NULL, NULL, (yyvsp[0].strType), NULL);
+  }
+#line 4499 "mafralang_grammar.tab.c"
+    break;
+
+  case 97: /* unary_expression: postfix_expression  */
+#line 475 "main/mafralang_grammar.y"
+                     {
+    (yyval.stmt) = addNode(UNARY_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4507 "mafralang_grammar.tab.c"
     break;
 
   case 98: /* unary_expression: SUB_OP cast_expression  */
-#line 296 "main/mafralang_grammar.y"
-                         { (yyval.stmt) = NULL; }
-#line 4079 "mafralang_grammar.tab.c"
+#line 478 "main/mafralang_grammar.y"
+                         {
+    (yyval.stmt) = addNode(UNARY_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, (yyvsp[-1].symbol));
+  }
+#line 4515 "mafralang_grammar.tab.c"
+    break;
+
+  case 99: /* unary_expression: set_expression_list  */
+#line 481 "main/mafralang_grammar.y"
+                      {
+    (yyval.stmt) = addNode(UNARY_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4523 "mafralang_grammar.tab.c"
+    break;
+
+  case 100: /* unary_expression: function_expression  */
+#line 484 "main/mafralang_grammar.y"
+                       {
+    (yyval.stmt) = addNode(UNARY_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4531 "mafralang_grammar.tab.c"
     break;
 
   case 101: /* function_expression: ID LEFT_PARENTHESES initializer_list RIGHT_PARENTHESES  */
-#line 302 "main/mafralang_grammar.y"
-                                                         { (yyval.stmt) = NULL; }
-#line 4085 "mafralang_grammar.tab.c"
+#line 490 "main/mafralang_grammar.y"
+                                                         {
+    (yyval.stmt) = addNode(FUNCTION_EXPRESSION, (yyvsp[-1].stmt), NULL, NULL, (yyvsp[-3].strType));
+  }
+#line 4539 "mafralang_grammar.tab.c"
+    break;
+
+  case 102: /* postfix_expression: primary_expression  */
+#line 496 "main/mafralang_grammar.y"
+                     {
+    (yyval.stmt) = addNode(POSTFIX_EXPRESSION, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4547 "mafralang_grammar.tab.c"
     break;
 
   case 103: /* postfix_expression: LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET  */
-#line 307 "main/mafralang_grammar.y"
-                                                                                                       { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4091 "mafralang_grammar.tab.c"
+#line 499 "main/mafralang_grammar.y"
+                                                                                                       {
+    (yyval.stmt) = addNode(POSTFIX_EXPRESSION, (yyvsp[-4].stmt), (yyvsp[-1].stmt), NULL, NULL);
+  }
+#line 4555 "mafralang_grammar.tab.c"
     break;
 
   case 104: /* postfix_expression: LEFT_PARENTHESES type_name RIGHT_PARENTHESES LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET  */
-#line 308 "main/mafralang_grammar.y"
-                                                                                                             { (yyval.stmt) = (yyvsp[-2].stmt); }
-#line 4097 "mafralang_grammar.tab.c"
+#line 502 "main/mafralang_grammar.y"
+                                                                                                             {
+    (yyval.stmt) = addNode(POSTFIX_EXPRESSION, (yyvsp[-5].stmt), (yyvsp[-2].stmt), NULL, NULL);
+  }
+#line 4563 "mafralang_grammar.tab.c"
+    break;
+
+  case 105: /* initializer_list: initializer  */
+#line 508 "main/mafralang_grammar.y"
+              {
+    (yyval.stmt) = addNode(INITIALIZER_LIST, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4571 "mafralang_grammar.tab.c"
+    break;
+
+  case 106: /* initializer_list: initializer_list COMMA initializer  */
+#line 511 "main/mafralang_grammar.y"
+                                     {
+    (yyval.stmt) = addNode(INITIALIZER_LIST, (yyvsp[-2].stmt), (yyvsp[0].stmt), NULL, NULL);
+  }
+#line 4579 "mafralang_grammar.tab.c"
+    break;
+
+  case 107: /* initializer: assignment_expression  */
+#line 517 "main/mafralang_grammar.y"
+                        {
+    (yyval.stmt) = addNode(INITIALIZER, (yyvsp[0].stmt), NULL, NULL, NULL);
+  }
+#line 4587 "mafralang_grammar.tab.c"
     break;
 
   case 108: /* initializer: LEFT_CURLY_BRACKET initializer_list RIGHT_CURLY_BRACKET  */
-#line 318 "main/mafralang_grammar.y"
-                                                          { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4103 "mafralang_grammar.tab.c"
+#line 520 "main/mafralang_grammar.y"
+                                                          {
+    (yyval.stmt) = addNode(INITIALIZER, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 4595 "mafralang_grammar.tab.c"
     break;
 
   case 109: /* initializer: LEFT_CURLY_BRACKET initializer_list COMMA RIGHT_CURLY_BRACKET  */
-#line 319 "main/mafralang_grammar.y"
-                                                                { (yyval.stmt) = (yyvsp[-2].stmt); }
-#line 4109 "mafralang_grammar.tab.c"
+#line 523 "main/mafralang_grammar.y"
+                                                                {
+    (yyval.stmt) = addNode(INITIALIZER, (yyvsp[-2].stmt), NULL, NULL, NULL);
+  }
+#line 4603 "mafralang_grammar.tab.c"
     break;
 
   case 110: /* primary_expression: ID  */
-#line 323 "main/mafralang_grammar.y"
-     { (yyval.stmt) = NULL; }
-#line 4115 "mafralang_grammar.tab.c"
+#line 529 "main/mafralang_grammar.y"
+     {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 4611 "mafralang_grammar.tab.c"
     break;
 
   case 111: /* primary_expression: INTEGER  */
-#line 324 "main/mafralang_grammar.y"
-          { (yyval.stmt) = NULL; }
-#line 4121 "mafralang_grammar.tab.c"
+#line 532 "main/mafralang_grammar.y"
+          {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 4619 "mafralang_grammar.tab.c"
     break;
 
   case 112: /* primary_expression: FLOAT  */
-#line 325 "main/mafralang_grammar.y"
-        { (yyval.stmt) = NULL; }
-#line 4127 "mafralang_grammar.tab.c"
+#line 535 "main/mafralang_grammar.y"
+        {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 4627 "mafralang_grammar.tab.c"
     break;
 
   case 113: /* primary_expression: STRING  */
-#line 326 "main/mafralang_grammar.y"
-         { (yyval.stmt) = NULL; }
-#line 4133 "mafralang_grammar.tab.c"
+#line 538 "main/mafralang_grammar.y"
+         {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 4635 "mafralang_grammar.tab.c"
     break;
 
   case 114: /* primary_expression: EMPTY  */
-#line 327 "main/mafralang_grammar.y"
-        { (yyval.stmt) = NULL; }
-#line 4139 "mafralang_grammar.tab.c"
+#line 541 "main/mafralang_grammar.y"
+        {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, (yyvsp[0].strType));
+  }
+#line 4643 "mafralang_grammar.tab.c"
     break;
 
   case 115: /* primary_expression: LEFT_PARENTHESES expression RIGHT_PARENTHESES  */
-#line 328 "main/mafralang_grammar.y"
-                                                { (yyval.stmt) = (yyvsp[-1].stmt); }
-#line 4145 "mafralang_grammar.tab.c"
+#line 544 "main/mafralang_grammar.y"
+                                                {
+    (yyval.stmt) = addNode(PRIMARY_EXPRESSION, (yyvsp[-1].stmt), NULL, NULL, NULL);
+  }
+#line 4651 "mafralang_grammar.tab.c"
     break;
 
 
-#line 4149 "mafralang_grammar.tab.c"
+#line 4655 "mafralang_grammar.tab.c"
 
       default: break;
     }
@@ -4370,7 +4876,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 331 "main/mafralang_grammar.y"
+#line 549 "main/mafralang_grammar.y"
 
 
 int main(int argc, char **argv) {
@@ -4382,12 +4888,12 @@ int main(int argc, char **argv) {
   // initializeGlobalScope();
   yyparse();
   yylex_destroy();
-  // if(syntax_error == 0 && lex_error == 0){
-  //   printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
-  //   printTree(parserTree, 0);
-  // }
+  if(syntax_error == 0 && lex_error == 0){
+    printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
+    printTree(parserTree, 0);
+  }
   // printSymbolTable();
-  // freeTree(parserTree);
+  freeTree(parserTree);
   // freeSymbolTable();
   return 0;
 }

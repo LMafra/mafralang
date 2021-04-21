@@ -207,25 +207,25 @@ set_statement:
 
 is_set_statement:
   IS_SET LEFT_PARENTHESES ID RIGHT_PARENTHESES {
-    $$ = addNode(IS_SET_STATEMENT, NULL, NULL, $3, NULL);
+    $$ = addNode(IS_SET_EXPRESSION, NULL, NULL, $3, NULL);
   }
 ;
 
 remove_statement:
   REMOVE set_expression {
-    $$ = addNode(REMOVE_STATEMENT, $2, NULL, NULL, $1);
+    $$ = addNode(REMOVE_EXPRESSION, $2, NULL, NULL, $1);
   }
 ;
 
 add_statement:
   ADD set_expression {
-    $$ = addNode(ADD_STATEMENT, $2, NULL, NULL, $1);
+    $$ = addNode(ADD_EXPRESSION, $2, NULL, NULL, $1);
   }
 ;
 
 exists_statement:
   EXISTS set_expression {
-    $$ = addNode(EXISTS_STATEMENT, $2, NULL, NULL, NULL);
+    $$ = addNode(EXISTS_EXPRESSION, $2, NULL, NULL, NULL);
   }
 ;
 
