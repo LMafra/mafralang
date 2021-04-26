@@ -1,34 +1,44 @@
-#ifndef SYMBOLTABLE_h
-#define SYMBOLTABLE_h
+#ifndef SYMBOLTABLE_H
+#define SYMBOLTABLE_H
 
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
   #include "uthash.h"
+  #include "utstack.h"
+  #include "ast.h"
 
-  typedef struct scope {
-    char* scope_name;
-    char* type;
-    struct scope *next;
-  }scope;
+  enum KEY {
+    KEY_ID_VAR,
+    KEY_ID_FUN,
+    KEY_ID_UND
+  };
 
   typedef struct symbol_node {
-    char* key;
-    char* name;
+    char* symbol;
     char* type;
-    char symbol;
     char* scope_name;
     UT_hash_handle hh;
   }symbol_node;
 
-  symbol_node* createSymbol(char* key, char* name, char* type, char symbol,char* scope_name);
-  void addSymbol(char* name, char* type, char symbol);
-  void printSymbolTable();
-  void freeSymbolTable();
+  typedef struct scope {
+    char* name;
+    char* type;
+    struct scope *next;
+  }scope;
 
+  struct symbol_node* global_symbol_table;
+  struct scope* global_stack;
+  
+  void initializeGlobalScope();
   scope* getStackHead();
   void pushStack(char* scope_name, char* type);
   void popStack();
-  void initializeGlobalScope();
+
+
+  symbol_node* insertSymbol(char* symbol);
+  symbol_node* insertType(char* type);
+  symbol_node* insertScope(char* scope_name);
+  void printSymbolTable();
 
 #endif

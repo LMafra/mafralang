@@ -1,17 +1,25 @@
 %option nounput noinput yylineno noyywrap
 %{
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "mafralang_grammar.tab.h"
+  #include <string.h>
+  #include <stdlib.h>
+  #include <stdio.h>
+  #include "mafralang_grammar.tab.h"
 
-int line_number = 1;
-int string_size = 0;
-int lex_error = 0;
+  extern int line_number;
+  extern int column_number;
+  extern int lex_error;
 
-void lexical_error_unrecognizable_symbol(char* symbol);
-void yyerror(const char* msg);
+  void lexical_error_unrecognizable_symbol(char* symbol);
+  void yyerror(const char* msg);
+
+  void handleTokenStrType(int line_number, int column_number) {
+    yylval.strType = (char *) strdup(yytext);
+  }
+
+  void handleTokenSymbol(int line_number, int column_number) {
+    yylval.symbol = (char *) strdup(yytext);
+  }
 
 %}
 
@@ -31,6 +39,7 @@ INTEGER                 {DIGIT}+
 FLOAT                   {DIGIT}+"."({DIGIT}+)?
 TYPE                    "int"|"float"|"elem"|"set"
 EMPTY                   "EMPTY"
+MAIN                    "main"
 
 RETURN                  "return"
 IF                      "if"
@@ -76,53 +85,57 @@ OR                      "||"
 
 %%
 
-{TYPE}                            {yylval.strType = (char *) strdup(yytext);return TYPE;}
-{EMPTY}                           {yylval.strType = (char *) strdup(yytext);return EMPTY;}
+{WHITESPACE}                      {column_number += yyleng;}
+{EOL}                             {line_number++; column_number = 0;}
 
-{RETURN}                          {yylval.strType = (char *) strdup(yytext);return RETURN;}
-{IF}                              {yylval.strType = (char *) strdup(yytext);return IF;}  
-{ELSE}                            {yylval.strType = (char *) strdup(yytext);return ELSE;}
-{FOR}                             {yylval.strType = (char *) strdup(yytext);return FOR;}
-{READ}                            {yylval.strType = (char *) strdup(yytext);return READ;}
-{WRITE}                           {yylval.strType = (char *) strdup(yytext);return WRITE;}
-{WRITELN}                         {yylval.strType = (char *) strdup(yytext);return WRITELN;}
+{TYPE}                            {column_number += yyleng;handleTokenStrType(line_number, column_number);return TYPE;}
+{EMPTY}                           {column_number += yyleng;handleTokenStrType(line_number, column_number);return EMPTY;}
+{MAIN}                            {column_number += yyleng;handleTokenStrType(line_number, column_number);return MAIN;}
 
-{FORALL}                          {yylval.strType = (char *) strdup(yytext);return FORALL;}
-{IS_SET}                          {yylval.strType = (char *) strdup(yytext);return IS_SET;}
-{REMOVE}                          {yylval.strType = (char *) strdup(yytext);return REMOVE;}
-{ADD}                             {yylval.strType = (char *) strdup(yytext);return ADD;}
-{EXISTS}                          {yylval.strType = (char *) strdup(yytext);return EXISTS;}
-{IN}                              {yylval.strType = (char *) strdup(yytext);return IN;}
+{RETURN}                          {column_number += yyleng;handleTokenStrType(line_number, column_number);return RETURN;}
+{IF}                              {column_number += yyleng;handleTokenStrType(line_number, column_number);return IF;}  
+{ELSE}                            {column_number += yyleng;handleTokenStrType(line_number, column_number);return ELSE;}
+{FOR}                             {column_number += yyleng;handleTokenStrType(line_number, column_number);return FOR;}
+{READ}                            {column_number += yyleng;handleTokenStrType(line_number, column_number);return READ;}
+{WRITE}                           {column_number += yyleng;handleTokenStrType(line_number, column_number);return WRITE;}
+{WRITELN}                         {column_number += yyleng;handleTokenStrType(line_number, column_number);return WRITELN;}
 
-{ID}                              {yylval.strType = (char *) strdup(yytext);return ID;}
-{FLOAT}                           {yylval.strType = (char *) strdup(yytext);return FLOAT;}
-{INTEGER}                         {yylval.strType = (char *) strdup(yytext);return INTEGER;}
+{FORALL}                          {column_number += yyleng;handleTokenStrType(line_number, column_number);return FORALL;}
+{IS_SET}                          {column_number += yyleng;handleTokenStrType(line_number, column_number);return IS_SET;}
+{REMOVE}                          {column_number += yyleng;handleTokenStrType(line_number, column_number);return REMOVE;}
+{ADD}                             {column_number += yyleng;handleTokenStrType(line_number, column_number);return ADD;}
+{EXISTS}                          {column_number += yyleng;handleTokenStrType(line_number, column_number);return EXISTS;}
+{IN}                              {column_number += yyleng;handleTokenStrType(line_number, column_number);return IN;}
 
-{LEFT_CURLY_BRACKET}              {yylval.symbol = (char *) strdup(yytext);return LEFT_CURLY_BRACKET;}
-{RIGHT_CURLY_BRACKET}             {yylval.symbol = (char *) strdup(yytext);return RIGHT_CURLY_BRACKET;}
-{LEFT_PARENTHESES}                {yylval.symbol = (char *) strdup(yytext);return LEFT_PARENTHESES;}
-{RIGHT_PARENTHESES}               {yylval.symbol = (char *) strdup(yytext);return RIGHT_PARENTHESES;}
-{COMMA}                           {yylval.symbol = (char *) strdup(yytext);return COMMA;}
-{SEMICOLON}                       {yylval.symbol = (char *) strdup(yytext);return SEMICOLON;}
+{ID}                              {column_number += yyleng;handleTokenStrType(line_number, column_number);return ID;}
+{FLOAT}                           {column_number += yyleng;handleTokenStrType(line_number, column_number);return FLOAT;}
+{INTEGER}                         {column_number += yyleng;handleTokenStrType(line_number, column_number);return INTEGER;}
 
-{ADD_OP}                          {yylval.symbol = (char *) strdup(yytext);return ADD_OP;}                          
-{SUB_OP}                          {yylval.symbol = (char *) strdup(yytext);return SUB_OP;}
-{DIVIDE}                          {yylval.symbol = (char *) strdup(yytext);return DIVIDE;}
-{ASSIGN}                          {yylval.symbol = (char *) strdup(yytext);return ASSIGN;}
-{MULT}                            {yylval.symbol = (char *) strdup(yytext);return MULT;}
+{LEFT_CURLY_BRACKET}              {column_number += yyleng;handleTokenSymbol(line_number, column_number);return LEFT_CURLY_BRACKET;}
+{RIGHT_CURLY_BRACKET}             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return RIGHT_CURLY_BRACKET;}
+{LEFT_PARENTHESES}                {column_number += yyleng;handleTokenSymbol(line_number, column_number);return LEFT_PARENTHESES;}
+{RIGHT_PARENTHESES}               {column_number += yyleng;handleTokenSymbol(line_number, column_number);return RIGHT_PARENTHESES;}
+{COMMA}                           {column_number += yyleng;handleTokenSymbol(line_number, column_number);return COMMA;}
+{SEMICOLON}                       {column_number += yyleng;handleTokenSymbol(line_number, column_number);return SEMICOLON;}
 
-{CLT}                             {yylval.symbol = (char *) strdup(yytext);return CLT;}
-{CLE}                             {yylval.symbol = (char *) strdup(yytext);return CLE;}
-{CEQ}                             {yylval.symbol = (char *) strdup(yytext);return CEQ;}
-{CGE}                             {yylval.symbol = (char *) strdup(yytext);return CGE;}
-{CGT}                             {yylval.symbol = (char *) strdup(yytext);return CGT;}
-{CNE}                             {yylval.symbol = (char *) strdup(yytext);return CNE;}
+{ADD_OP}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return ADD_OP;}                          
+{SUB_OP}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return SUB_OP;}
+{DIVIDE}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return DIVIDE;}
+{ASSIGN}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return ASSIGN;}
+{MULT}                            {column_number += yyleng;handleTokenSymbol(line_number, column_number);return MULT;}
 
-{NEGATE}                          {yylval.symbol = (char *) strdup(yytext);return NEGATE;}
-{AND}                             {yylval.symbol = (char *) strdup(yytext);return AND;}
-{OR}                              {yylval.symbol = (char *) strdup(yytext);return OR;}
+{CLT}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CLT;}
+{CLE}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CLE;}
+{CEQ}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CEQ;}
+{CGE}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CGE;}
+{CGT}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CGT;}
+{CNE}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CNE;}
 
-{STRING}                          {yylval.symbol = (char *) strdup(yytext);return STRING;}
+{NEGATE}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return NEGATE;}
+{AND}                             {column_number += yyleng;handleTokenSymbol(line_number, column_number);return AND;}
+{OR}                              {column_number += yyleng;handleTokenSymbol(line_number, column_number);return OR;}
+
+{STRING}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return STRING;}
 
 {INLINE_COMMENT}                  {;}
 {START_COMMENT}                   {BEGIN(COMMENT);}
@@ -130,8 +143,6 @@ OR                      "||"
 <COMMENT>.                        {;}
 <COMMENT>{EOL}                    {;}
 
-{WHITESPACE}                      {;}
-{EOL}                             {line_number++;}
 .                                 {lexical_error_unrecognizable_symbol(yytext);}
 
 %%

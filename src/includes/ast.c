@@ -1,8 +1,4 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "ast.h"
-#include "symbolTable.h"
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -25,7 +21,14 @@ ast_node* addNode(int nodeClass, ast_node* left, ast_node* right, char* vType, c
     return auxNode;
 }
 
-void printTree(ast_node *tree, int depth) {
+void printTree(int syntax_error, int lex_error, ast_node *tree) {
+  if(syntax_error == 0 && lex_error == 0){
+    printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
+    printAST(tree, 0);
+  }
+}
+
+void printAST(ast_node *tree, int depth) {
   if (tree) {
     printDepth(depth);
     printClass(tree->nodeClass);
@@ -46,8 +49,8 @@ void printTree(ast_node *tree, int depth) {
       printf(ANSI_COLOR_GREEN "Value: %s\n" ANSI_COLOR_RESET, tree->name);
     }
     printf("\n");
-    printTree(tree->left, depth + 1);
-    printTree(tree->right, depth + 1);
+    printAST(tree->left, depth + 1);
+    printAST(tree->right, depth + 1);
   }
 }
 

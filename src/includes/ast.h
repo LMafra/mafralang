@@ -4,6 +4,7 @@
   #include <stdlib.h>
   #include <stdio.h>
   #include <string.h>
+  #include "symbolTable.h"
 
   enum parser {
     TRANSLATION_UNIT,
@@ -61,7 +62,8 @@
   } ast_node;
 
   ast_node* addNode(int nodeClass, ast_node *left, ast_node *right, char* vType, char* value);
-  void printTree(ast_node *tree, int depth);
+  void printTree(int syntax_error, int lex_error, ast_node *tree);
+  void printAST(ast_node *tree, int depth);
   void printClass(int nodeClass);
   void printDepth(int depth);
   void freeTree(ast_node* stmt);

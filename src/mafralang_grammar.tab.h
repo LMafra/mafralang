@@ -59,42 +59,43 @@ extern int yydebug;
     TYPE = 260,                    /* TYPE  */
     FLOAT = 261,                   /* FLOAT  */
     INTEGER = 262,                 /* INTEGER  */
-    RETURN = 263,                  /* RETURN  */
-    IF = 264,                      /* IF  */
-    FOR = 265,                     /* FOR  */
-    FORALL = 266,                  /* FORALL  */
-    ELSE = 267,                    /* ELSE  */
-    READ = 268,                    /* READ  */
-    WRITE = 269,                   /* WRITE  */
-    WRITELN = 270,                 /* WRITELN  */
-    IS_SET = 271,                  /* IS_SET  */
-    REMOVE = 272,                  /* REMOVE  */
-    ADD = 273,                     /* ADD  */
-    IN = 274,                      /* IN  */
-    STRING = 275,                  /* STRING  */
-    EXISTS = 276,                  /* EXISTS  */
-    LEFT_CURLY_BRACKET = 277,      /* LEFT_CURLY_BRACKET  */
-    RIGHT_CURLY_BRACKET = 278,     /* RIGHT_CURLY_BRACKET  */
-    LEFT_PARENTHESES = 279,        /* LEFT_PARENTHESES  */
-    RIGHT_PARENTHESES = 280,       /* RIGHT_PARENTHESES  */
-    QUOTES = 281,                  /* QUOTES  */
-    SEMICOLON = 282,               /* SEMICOLON  */
-    COMMA = 283,                   /* COMMA  */
-    NEGATE = 284,                  /* NEGATE  */
-    AND = 285,                     /* AND  */
-    OR = 286,                      /* OR  */
-    ADD_OP = 287,                  /* ADD_OP  */
-    SUB_OP = 288,                  /* SUB_OP  */
-    DIVIDE = 289,                  /* DIVIDE  */
-    MULT = 290,                    /* MULT  */
-    ASSIGN = 291,                  /* ASSIGN  */
-    CLT = 292,                     /* CLT  */
-    CLE = 293,                     /* CLE  */
-    CEQ = 294,                     /* CEQ  */
-    CGE = 295,                     /* CGE  */
-    CGT = 296,                     /* CGT  */
-    CNE = 297,                     /* CNE  */
-    THEN = 298                     /* THEN  */
+    MAIN = 263,                    /* MAIN  */
+    RETURN = 264,                  /* RETURN  */
+    IF = 265,                      /* IF  */
+    FOR = 266,                     /* FOR  */
+    FORALL = 267,                  /* FORALL  */
+    ELSE = 268,                    /* ELSE  */
+    READ = 269,                    /* READ  */
+    WRITE = 270,                   /* WRITE  */
+    WRITELN = 271,                 /* WRITELN  */
+    IS_SET = 272,                  /* IS_SET  */
+    REMOVE = 273,                  /* REMOVE  */
+    ADD = 274,                     /* ADD  */
+    IN = 275,                      /* IN  */
+    STRING = 276,                  /* STRING  */
+    EXISTS = 277,                  /* EXISTS  */
+    LEFT_CURLY_BRACKET = 278,      /* LEFT_CURLY_BRACKET  */
+    RIGHT_CURLY_BRACKET = 279,     /* RIGHT_CURLY_BRACKET  */
+    LEFT_PARENTHESES = 280,        /* LEFT_PARENTHESES  */
+    RIGHT_PARENTHESES = 281,       /* RIGHT_PARENTHESES  */
+    QUOTES = 282,                  /* QUOTES  */
+    SEMICOLON = 283,               /* SEMICOLON  */
+    COMMA = 284,                   /* COMMA  */
+    NEGATE = 285,                  /* NEGATE  */
+    AND = 286,                     /* AND  */
+    OR = 287,                      /* OR  */
+    ADD_OP = 288,                  /* ADD_OP  */
+    SUB_OP = 289,                  /* SUB_OP  */
+    DIVIDE = 290,                  /* DIVIDE  */
+    MULT = 291,                    /* MULT  */
+    ASSIGN = 292,                  /* ASSIGN  */
+    CLT = 293,                     /* CLT  */
+    CLE = 294,                     /* CLE  */
+    CEQ = 295,                     /* CEQ  */
+    CGE = 296,                     /* CGE  */
+    CGT = 297,                     /* CGT  */
+    CNE = 298,                     /* CNE  */
+    THEN = 299                     /* THEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -103,13 +104,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 26 "main/mafralang_grammar.y"
+#line 24 "main/mafralang_grammar.y"
 
   char* symbol;
   char* strType;
   struct ast_node* stmt;
 
-#line 113 "mafralang_grammar.tab.h"
+#line 114 "mafralang_grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
