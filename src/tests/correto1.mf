@@ -1,0 +1,13 @@
+int main() {
+    int n;
+    int rev;
+    int remainder;
+    rev = 10;
+    n = 10;
+    if (n != 0) {
+        remainder = n / 10;
+        rev = exists((rev * 10) in remainder);
+        n = 10;
+    }
+    return 0;
+}

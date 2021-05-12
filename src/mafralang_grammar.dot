@@ -2,7 +2,7 @@
 // Relate erros para <bug-bison@gnu.org>.
 // Site: <https://www.gnu.org/software/bison/>.
 
-digraph "main/mafralang_grammar.y"
+digraph "yacc_lexer/mafralang_grammar.y"
 {
   node [fontname = courier, shape = box, colorscheme = paired6]
   edge [fontname = courier]

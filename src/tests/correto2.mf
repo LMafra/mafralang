@@ -1,0 +1,12 @@
+int main() {
+   int i;
+   int j;
+   int rows;
+   row = 5;
+   for (i = 1; i <= rows; i = i + 1) {
+      for (j = 1; j <= i; j = j + 1) {
+         write("* ");
+      }
+   }
+   return 0;
+}

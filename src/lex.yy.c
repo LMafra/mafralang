@@ -543,9 +543,9 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "main/mafralang.l"
+#line 1 "yacc_lexer/mafralang.l"
 #define YY_NO_INPUT 1
-#line 3 "main/mafralang.l"
+#line 3 "yacc_lexer/mafralang.l"
 
   #include <string.h>
   #include <stdlib.h>
@@ -785,7 +785,7 @@ YY_DECL
 		}
 
 	{
-#line 86 "main/mafralang.l"
+#line 86 "yacc_lexer/mafralang.l"
 
 
 #line 792 "lex.yy.c"
@@ -857,250 +857,250 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 88 "main/mafralang.l"
+#line 88 "yacc_lexer/mafralang.l"
 {column_number += yyleng;}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 89 "main/mafralang.l"
+#line 89 "yacc_lexer/mafralang.l"
 {line_number++; column_number = 0;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 91 "main/mafralang.l"
+#line 91 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return TYPE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 92 "main/mafralang.l"
+#line 92 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return EMPTY;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 93 "main/mafralang.l"
+#line 93 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return MAIN;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 95 "main/mafralang.l"
+#line 95 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 96 "main/mafralang.l"
+#line 96 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return IF;}  
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 97 "main/mafralang.l"
+#line 97 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return ELSE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 98 "main/mafralang.l"
+#line 98 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return FOR;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 99 "main/mafralang.l"
+#line 99 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return READ;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 100 "main/mafralang.l"
+#line 100 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return WRITE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 101 "main/mafralang.l"
+#line 101 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return WRITELN;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 103 "main/mafralang.l"
+#line 103 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return FORALL;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 104 "main/mafralang.l"
+#line 104 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return IS_SET;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 105 "main/mafralang.l"
+#line 105 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return REMOVE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 106 "main/mafralang.l"
+#line 106 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return ADD;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 107 "main/mafralang.l"
+#line 107 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return EXISTS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 108 "main/mafralang.l"
+#line 108 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return IN;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 110 "main/mafralang.l"
+#line 110 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return ID;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 111 "main/mafralang.l"
+#line 111 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return FLOAT;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 112 "main/mafralang.l"
+#line 112 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenStrType(line_number, column_number);return INTEGER;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 114 "main/mafralang.l"
+#line 114 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return LEFT_CURLY_BRACKET;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 115 "main/mafralang.l"
+#line 115 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return RIGHT_CURLY_BRACKET;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 116 "main/mafralang.l"
+#line 116 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return LEFT_PARENTHESES;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 117 "main/mafralang.l"
+#line 117 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return RIGHT_PARENTHESES;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 118 "main/mafralang.l"
+#line 118 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return COMMA;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 119 "main/mafralang.l"
+#line 119 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return SEMICOLON;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 121 "main/mafralang.l"
+#line 121 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return ADD_OP;}                          
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 122 "main/mafralang.l"
+#line 122 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return SUB_OP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 123 "main/mafralang.l"
+#line 123 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return DIVIDE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 124 "main/mafralang.l"
+#line 124 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return ASSIGN;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 125 "main/mafralang.l"
+#line 125 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return MULT;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 127 "main/mafralang.l"
+#line 127 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CLT;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 128 "main/mafralang.l"
+#line 128 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CLE;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 129 "main/mafralang.l"
+#line 129 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CEQ;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 130 "main/mafralang.l"
+#line 130 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CGE;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 131 "main/mafralang.l"
+#line 131 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CGT;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 132 "main/mafralang.l"
+#line 132 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CNE;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 134 "main/mafralang.l"
+#line 134 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return NEGATE;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 135 "main/mafralang.l"
+#line 135 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return AND;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 136 "main/mafralang.l"
+#line 136 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return OR;}
 	YY_BREAK
 case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
-#line 138 "main/mafralang.l"
+#line 138 "yacc_lexer/mafralang.l"
 {column_number += yyleng;handleTokenSymbol(line_number, column_number);return STRING;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 140 "main/mafralang.l"
+#line 140 "yacc_lexer/mafralang.l"
 {;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 141 "main/mafralang.l"
+#line 141 "yacc_lexer/mafralang.l"
 {BEGIN(COMMENT);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 142 "main/mafralang.l"
+#line 142 "yacc_lexer/mafralang.l"
 {BEGIN(INITIAL);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 143 "main/mafralang.l"
+#line 143 "yacc_lexer/mafralang.l"
 {;}
 	YY_BREAK
 case 47:
 /* rule 47 can match eol */
 YY_RULE_SETUP
-#line 144 "main/mafralang.l"
+#line 144 "yacc_lexer/mafralang.l"
 {;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 146 "main/mafralang.l"
+#line 146 "yacc_lexer/mafralang.l"
 {lexical_error_unrecognizable_symbol(yytext);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 148 "main/mafralang.l"
+#line 148 "yacc_lexer/mafralang.l"
 ECHO;
 	YY_BREAK
 #line 1107 "lex.yy.c"
@@ -2080,7 +2080,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 148 "main/mafralang.l"
+#line 148 "yacc_lexer/mafralang.l"
 
 
 void lexical_error_unrecognizable_symbol(char* symbol){

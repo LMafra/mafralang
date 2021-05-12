@@ -104,7 +104,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "main/mafralang_grammar.y"
+#line 24 "yacc_lexer/mafralang_grammar.y"
 
   char* symbol;
   char* strType;

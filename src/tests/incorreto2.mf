@@ -1,8 +1,8 @@
 set copy_set(set s) {
-    set ans;
-    ans = EMPTY;
+
+    ans  EMPTY;
     elem x;
-    forall(x in s) add(x in ans);
+    forall(x  s) add(ans);
     return ans;
 }
 
@@ -13,10 +13,9 @@ set succ(set n) {
 }
 
 int main() {
-    set zero; set one; set two; set three;
+    set zero; set set two; set three;
    
     zero = EMPTY;
-    one = succ(zero);
+    one = succ zero);
     two = succ(one);
-    three = succ(two);
 }

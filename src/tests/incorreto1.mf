@@ -1,0 +1,20 @@
+set add_int(set s) {
+    return add(2 in add(1 in s));
+    / {1,2}
+}
+
+set add_float(set s) {
+    return add(5.4 in add(1.5 in s));
+}
+
+int checkPrimeNumber(int n) {
+    int j;
+    int flag
+    for (j = 2; j <= n / 2; ++j) {
+        if (n % j == 0) {
+            flag = 0;
+            break;
+        }
+    }
+    return flag;
+}

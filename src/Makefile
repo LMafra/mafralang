@@ -1,6 +1,6 @@
 mafralang:		
-	bison -vdt -Wconflicts-sr  -Wcounterexamples --graph main/mafralang_grammar.y
-	flex main/mafralang.l;
+	bison -vdt -Wconflicts-sr  -Wcounterexamples --graph yacc_lexer/mafralang_grammar.y
+	flex yacc_lexer/mafralang.l;
 	gcc -g -Wall includes/symbolTable.c includes/ast.c mafralang_grammar.tab.c lex.yy.c -o mafralang -lfl
 
 clean:
