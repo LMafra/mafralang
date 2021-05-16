@@ -78,14 +78,22 @@ external_declaration:
 ;
 
 function_definition:
-  declaration_specifiers declarator declaration_list compound_statement {
-    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
-    ast_node* ast_node2 = addNode(FUNCTION_DEFINITION, ast_node1, $3, NULL, NULL);
-    $$ = addNode(FUNCTION_DEFINITION, ast_node2, $4, NULL, NULL);
+  declaration_specifiers declarator {
+    pushStack();
   }
-| declaration_specifiers declarator compound_statement {
+  declaration_list compound_statement {
     ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
-    $$ = addNode(FUNCTION_DEFINITION, ast_node1, $3, NULL, NULL);
+    ast_node* ast_node2 = addNode(FUNCTION_DEFINITION, ast_node1, $4, NULL, NULL);
+    $$ = addNode(FUNCTION_DEFINITION, ast_node2, $5, NULL, NULL);
+    popStack();
+  }
+| declaration_specifiers declarator {
+    pushStack();
+  }
+  compound_statement {
+    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
+    $$ = addNode(FUNCTION_DEFINITION, ast_node1, $4, NULL, NULL);
+    popStack();
   }
 ;
 
@@ -111,10 +119,12 @@ declaration_specifiers:
   TYPE {
     $$ = addNode(DECLARATION_SPECIFIERS, NULL, NULL, $1, NULL);
     insertType($1);
+    insertScopeType($1);
   }
 | TYPE declaration_specifiers {
     $$ = addNode(DECLARATION_SPECIFIERS, NULL, $2, $1, NULL);
     insertType($1);
+    insertScopeType($1);
   }
 ;
 
@@ -133,10 +143,12 @@ direct_declarator:
   ID  {
     $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, $1);
     insertSymbol($1);
+    insertScopeName($1);
   }
 |  MAIN  {
     $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, $1);
     insertSymbol($1);
+    insertScopeName($1);
   }
 | LEFT_PARENTHESES declarator RIGHT_PARENTHESES {
     $$ = $2;
@@ -452,10 +464,12 @@ specifier_qualifier_list:
   TYPE specifier_qualifier_list {
     $$ = addNode(SPECIFIER_QUALIFIER_LIST, $2, NULL, $1, NULL);
     insertType($1);
+    insertScopeType($1);
   }
 | TYPE {
     $$ = addNode(SPECIFIER_QUALIFIER_LIST, NULL, NULL, $1, NULL);
     insertType($1);
+    insertScopeType($1);
   }
 ;
 
@@ -536,13 +550,13 @@ int main(int argc, char **argv) {
     yyin = fopen( argv[0], "r" );
   else
     yyin = stdin;
+  initializeGlobalScope();
   yyparse();
   yylex_destroy();
-  initializeGlobalScope();
   printSymbolTable();
-  if(!(syntax_error || lex_error)){
-    printTree(syntax_error, lex_error, parserTree);
-    freeTree(parserTree);
-  }
+  // if(!(syntax_error || lex_error)){
+  //   printTree(syntax_error, lex_error, parserTree);
+  //   freeTree(parserTree);
+  // }
   return 0;
 }

@@ -11,3 +11,11 @@ int main() {
     }
     return 0;
 }
+
+float function() {
+    int x;
+    int y;
+    float z;
+    z = x + y;
+    return z;
+}

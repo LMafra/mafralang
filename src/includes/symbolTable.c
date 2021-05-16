@@ -1,6 +1,8 @@
 #include "symbolTable.h"
 
 char* type_name = NULL;
+char* scope_type_name = NULL;
+char* scope_symbol_name = NULL;
 
 void initializeGlobalScope(){
   scope* s = (scope *)malloc(sizeof *s);
@@ -16,12 +18,20 @@ scope* getStackHead() {
   return s;
 }
 
-void pushStack(char* name, char* type){
+void insertScopeType(char* type) {
+  scope_type_name = type;
+}
+
+void insertScopeName(char* name) {
+  scope_symbol_name = name;
+}
+
+void pushStack(){
   scope* s = (scope *)malloc(sizeof *s);
   scope* stack_head;
 
-  s->type = type;
-  s->name = name;
+  s->type = scope_type_name;
+  s->name = scope_symbol_name;
 
   stack_head = getStackHead();
   stack_head->next = s;
@@ -39,16 +49,23 @@ void popStack(){
   s->next = NULL;
 }
 
-symbol_node* insertSymbol(char* symbol) {
-  symbol_node* s = (symbol_node *)malloc(sizeof *s);
-  s->type = type_name;
-  s->symbol = symbol;
-  HASH_ADD_STR(global_symbol_table, symbol, s);
-  return s;
+void insertSymbol(char* symbol) {
+  symbol_node* s = createSymbol(symbol, type_name);
+  HASH_FIND_STR(global_symbol_table, symbol, s);
 }
 
 void insertType(char* type) {
   type_name = type;
+}
+
+symbol_node* createSymbol(char* symbol, char* type) {
+  symbol_node* s = (symbol_node *)malloc(sizeof *s);
+  scope* scope = getStackHead();
+  s->type = type;
+  s->symbol = symbol;
+  s->scope_name = scope->name;
+  HASH_ADD_STR(global_symbol_table, symbol, s);
+  return s;
 }
 
 void printSymbolTable() {
@@ -56,7 +73,7 @@ void printSymbolTable() {
   printf("\n\n\t\t\t\t\t\t\t\t----------  SYMBOL TABLE ----------\t\t\t\t\t\t\t\t\n\n");
   for(s=global_symbol_table; s != NULL; s=s->hh.next) {
     printf("| Type: %12s", s->type);
-    printf("| Symbol: %12s| \n", s->symbol);
-    // printf("| Scope: %12s| \n", s->scope_name);
+    printf("| Symbol: %12s", s->symbol);
+    printf("| Scope: %12s| \n", s->scope_name);
   }
 }
