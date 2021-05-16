@@ -14,6 +14,8 @@
     KEY_ID_UND
   };
 
+  extern char* type_name;
+
   typedef struct symbol_node {
     char* symbol;
     char* type;
@@ -37,8 +39,7 @@
 
 
   symbol_node* insertSymbol(char* symbol);
-  symbol_node* insertType(char* type);
-  symbol_node* insertScope(char* scope_name);
+  void insertType(char* type);
   void printSymbolTable();
 
 #endif

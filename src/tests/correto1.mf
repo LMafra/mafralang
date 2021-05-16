@@ -1,7 +1,7 @@
 int main() {
-    int n;
-    int rev;
-    int remainder;
+    set n;
+    float rev;
+    elem remainder;
     rev = 10;
     n = 10;
     if (n != 0) {
