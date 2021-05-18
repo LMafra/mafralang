@@ -49,23 +49,53 @@ void popStack(){
   s->next = NULL;
 }
 
+char* concat(const char *s1, const char *s2) {
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+    strcpy(result, s1);
+    strcat(result, "::");
+    strcat(result, s2);
+    return result;
+}
+
 void insertSymbol(char* symbol) {
-  symbol_node* s = createSymbol(symbol, type_name);
-  HASH_FIND_STR(global_symbol_table, symbol, s);
+  symbol_node* s;
+  scope* scope = getStackHead();
+  char *key = concat(symbol, scope->name);
+  HASH_FIND_STR(global_symbol_table, key, s);
+  if(s == NULL) {
+    s = createSymbol(key, symbol, type_name, scope->name);
+    HASH_ADD_STR(global_symbol_table, key, s);
+  } else {
+    checkSemanticErrorRedeclaration(symbol, scope->name);
+  }
 }
 
 void insertType(char* type) {
   type_name = type;
 }
 
-symbol_node* createSymbol(char* symbol, char* type) {
+symbol_node* createSymbol(char* key, char* symbol, char* type, char* name) {
   symbol_node* s = (symbol_node *)malloc(sizeof *s);
-  scope* scope = getStackHead();
+  s->key = key;
   s->type = type;
   s->symbol = symbol;
-  s->scope_name = scope->name;
-  HASH_ADD_STR(global_symbol_table, symbol, s);
+  s->scope_name = name;
   return s;
+}
+
+void checkSemanticErrorRedeclaration(char* symbol, char* name) {
+  printf("Semantic Error: %s was already declared in %s \n", symbol, name);
+  semantic_error += 1;
+}
+
+void checkSemanticErrorMain() {
+  symbol_node* s;
+  char* key = concat("main", global_stack->name);
+  HASH_FIND_STR(global_symbol_table, key, s);
+  if(s == NULL){
+    printf("Semantic Error: Function main not found.\n");
+    semantic_error += 1;
+  }
 }
 
 void printSymbolTable() {

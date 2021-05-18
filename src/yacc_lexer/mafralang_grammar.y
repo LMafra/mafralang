@@ -17,6 +17,7 @@
   int column_number = 0;
   int lex_error = 0;
   int syntax_error = 0;
+  int semantic_error = 0;
 
   void yyerror(const char* msg);  
 %}
@@ -59,7 +60,10 @@
 %%
 
 program:
-  translation_unit { parserTree = $1; }
+  translation_unit { 
+    parserTree = $1;
+    checkSemanticErrorMain();
+  }
 ;
 
 translation_unit:

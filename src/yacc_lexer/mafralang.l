@@ -149,7 +149,7 @@ OR                      "||"
 
 void lexical_error_unrecognizable_symbol(char* symbol){
   char *error = (char *)malloc((strlen(symbol) + 1 + 35) * sizeof(char)); // +1 for the null-terminator and 35 for lex error message
-  sprintf(error, "lexical error, unrecognizable symbol %s", symbol);
+  sprintf(error, "Lexical Error, unrecognizable symbol %s", symbol);
   yyerror(error);
   free(error);
 }

@@ -17,8 +17,10 @@
   extern char* type_name;
   extern char* scope_type_name;
   extern char* scope_symbol_name;
+  extern int semantic_error;
 
   typedef struct symbol_node {
+    char* key;
     char* type;
     char* symbol;
     char* scope_name;
@@ -43,9 +45,13 @@
   void popStack();
 
 
+  char* concat(const char *s1, const char *s2);
   void insertSymbol(char* symbol);
   void insertType(char* type);
-  symbol_node* createSymbol(char* symbol, char* type);
+  symbol_node* createSymbol(char* key, char* symbol, char* type, char* name);
   void printSymbolTable();
+
+  void checkSemanticErrorRedeclaration(char* symbol, char* name);
+  void checkSemanticErrorMain();
 
 #endif
