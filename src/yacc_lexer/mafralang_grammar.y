@@ -121,14 +121,14 @@ declaration:
 
 declaration_specifiers:
   TYPE {
-    $$ = addNode(DECLARATION_SPECIFIERS, NULL, NULL, $1, NULL);
     insertType($1);
     insertScopeType($1);
+    $$ = addNode(DECLARATION_SPECIFIERS, NULL, NULL, $1, NULL);
   }
 | TYPE declaration_specifiers {
-    $$ = addNode(DECLARATION_SPECIFIERS, NULL, $2, $1, NULL);
     insertType($1);
     insertScopeType($1);
+    $$ = addNode(DECLARATION_SPECIFIERS, NULL, $2, $1, NULL);
   }
 ;
 
@@ -145,14 +145,24 @@ declarator:
 
 direct_declarator:
   ID  {
-    $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, $1);
     insertSymbol($1);
     insertScopeName($1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+        type = s->type;
+    }
+    $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, type, $1);
   }
 |  MAIN  {
-    $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, NULL, $1);
     insertSymbol($1);
     insertScopeName($1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+        type = s->type;
+    }
+    $$ = addNode(DIRECT_DECLARATOR, NULL, NULL, type, $1);
   }
 | LEFT_PARENTHESES declarator RIGHT_PARENTHESES {
     $$ = $2;
@@ -171,12 +181,20 @@ direct_declarator:
 
 identifier_list:
   ID  {
-    $$ = addNode(IDENTIFIER_LIST, NULL, NULL, NULL, $1);
-    insertSymbol($1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+      type = s->type;
+    }
+    $$ = addNode(IDENTIFIER_LIST, NULL, NULL, type, $1);
   }
 | identifier_list COMMA ID {
-    $$ = addNode(IDENTIFIER_LIST, $1, NULL, NULL, $3);
-    insertSymbol($3);
+    symbol_node* s = findSymbol($3);
+    char* type = NULL;
+    if(s != NULL){
+      type = s->type;
+    }
+    $$ = addNode(IDENTIFIER_LIST, $1, NULL, type, $3);
   }
 ;
 
@@ -490,6 +508,9 @@ function_expression:
   ID LEFT_PARENTHESES initializer_list RIGHT_PARENTHESES {
     $$ = addNode(FUNCTION_EXPRESSION, $3, NULL, NULL, $1);
   }
+| ID LEFT_PARENTHESES RIGHT_PARENTHESES {
+    $$ = addNode(FUNCTION_EXPRESSION, NULL, NULL, NULL, $1);
+  }
 ;
 
 postfix_expression:
@@ -521,7 +542,12 @@ initializer:
 
 primary_expression:
   ID {
-    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+      type = s->type;
+    }
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, type, $1);
   }
 | INTEGER {
     $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
@@ -556,11 +582,12 @@ int main(int argc, char **argv) {
     yyin = stdin;
   initializeGlobalScope();
   yyparse();
-  yylex_destroy();
   printSymbolTable();
-  // if(!(syntax_error || lex_error)){
-  //   printTree(syntax_error, lex_error, parserTree);
-  //   freeTree(parserTree);
-  // }
+  if(!(syntax_error || lex_error | semantic_error)){
+    printTree(syntax_error, lex_error, semantic_error, parserTree);
+  }
+  yylex_destroy();
+  freeTree(parserTree);
+  freeSymbolTable();
   return 0;
 }

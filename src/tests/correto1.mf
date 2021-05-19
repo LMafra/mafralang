@@ -1,8 +1,11 @@
 float function() {
     int x;
     int y;
-    int y;
-    float z;
+    int z;
     z = x + y;
     return z;
+}
+
+int main() {
+    function();
 }

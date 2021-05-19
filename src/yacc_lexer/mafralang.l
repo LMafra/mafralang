@@ -86,7 +86,7 @@ OR                      "||"
 %%
 
 {WHITESPACE}                      {column_number += yyleng;}
-{EOL}                             {line_number++; column_number = 0;}
+{EOL}                             {line_number++; column_number = 1;}
 
 {TYPE}                            {column_number += yyleng;handleTokenStrType(line_number, column_number);return TYPE;}
 {EMPTY}                           {column_number += yyleng;handleTokenStrType(line_number, column_number);return EMPTY;}

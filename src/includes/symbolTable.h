@@ -23,6 +23,7 @@
     char* key;
     char* type;
     char* symbol;
+    char* symbolType;
     char* scope_name;
     UT_hash_handle hh;
   }symbol_node;
@@ -49,9 +50,16 @@
   void insertSymbol(char* symbol);
   void insertType(char* type);
   symbol_node* createSymbol(char* key, char* symbol, char* type, char* name);
+  symbol_node* findSymbol(char* symbol);
   void printSymbolTable();
+  void freeSymbolTable();
 
   void checkSemanticErrorRedeclaration(char* symbol, char* name);
   void checkSemanticErrorMain();
+  void checkSemanticErrorNotDeclared(char* symbol);
+
+  void printCodeTAC(ast_node* parserTree, FILE *tacFile);
+  void createFileTAC(ast_node* parserTree);
+  void printSymbolTableTAC(FILE* tacFile);
 
 #endif
