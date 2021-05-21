@@ -71,31 +71,32 @@ extern int yydebug;
     IS_SET = 272,                  /* IS_SET  */
     REMOVE = 273,                  /* REMOVE  */
     ADD = 274,                     /* ADD  */
-    IN = 275,                      /* IN  */
-    STRING = 276,                  /* STRING  */
-    EXISTS = 277,                  /* EXISTS  */
-    LEFT_CURLY_BRACKET = 278,      /* LEFT_CURLY_BRACKET  */
-    RIGHT_CURLY_BRACKET = 279,     /* RIGHT_CURLY_BRACKET  */
-    LEFT_PARENTHESES = 280,        /* LEFT_PARENTHESES  */
-    RIGHT_PARENTHESES = 281,       /* RIGHT_PARENTHESES  */
-    QUOTES = 282,                  /* QUOTES  */
-    SEMICOLON = 283,               /* SEMICOLON  */
-    COMMA = 284,                   /* COMMA  */
-    NEGATE = 285,                  /* NEGATE  */
-    AND = 286,                     /* AND  */
-    OR = 287,                      /* OR  */
-    ADD_OP = 288,                  /* ADD_OP  */
-    SUB_OP = 289,                  /* SUB_OP  */
-    DIVIDE = 290,                  /* DIVIDE  */
-    MULT = 291,                    /* MULT  */
-    ASSIGN = 292,                  /* ASSIGN  */
-    CLT = 293,                     /* CLT  */
-    CLE = 294,                     /* CLE  */
-    CEQ = 295,                     /* CEQ  */
-    CGE = 296,                     /* CGE  */
-    CGT = 297,                     /* CGT  */
-    CNE = 298,                     /* CNE  */
-    THEN = 299                     /* THEN  */
+    EXISTS = 275,                  /* EXISTS  */
+    IN = 276,                      /* IN  */
+    STRING = 277,                  /* STRING  */
+    CHAR = 278,                    /* CHAR  */
+    LEFT_CURLY_BRACKET = 279,      /* LEFT_CURLY_BRACKET  */
+    RIGHT_CURLY_BRACKET = 280,     /* RIGHT_CURLY_BRACKET  */
+    LEFT_PARENTHESES = 281,        /* LEFT_PARENTHESES  */
+    RIGHT_PARENTHESES = 282,       /* RIGHT_PARENTHESES  */
+    QUOTES = 283,                  /* QUOTES  */
+    SEMICOLON = 284,               /* SEMICOLON  */
+    COMMA = 285,                   /* COMMA  */
+    NEGATE = 286,                  /* NEGATE  */
+    AND = 287,                     /* AND  */
+    OR = 288,                      /* OR  */
+    ADD_OP = 289,                  /* ADD_OP  */
+    SUB_OP = 290,                  /* SUB_OP  */
+    DIVIDE = 291,                  /* DIVIDE  */
+    MULT = 292,                    /* MULT  */
+    ASSIGN = 293,                  /* ASSIGN  */
+    CLT = 294,                     /* CLT  */
+    CLE = 295,                     /* CLE  */
+    CEQ = 296,                     /* CEQ  */
+    CGE = 297,                     /* CGE  */
+    CGT = 298,                     /* CGT  */
+    CNE = 299,                     /* CNE  */
+    THEN = 300                     /* THEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -104,13 +105,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "yacc_lexer/mafralang_grammar.y"
+#line 26 "yacc_lexer/mafralang_grammar.y"
 
   char* symbol;
   char* strType;
   struct ast_node* stmt;
 
-#line 114 "mafralang_grammar.tab.h"
+#line 115 "mafralang_grammar.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

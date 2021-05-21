@@ -5,21 +5,18 @@ void printSymbolTableTAC(FILE* tacFile) {
   char *aux = (char *)malloc((1 + 100) * sizeof(char));
   fputs(".table\n", tacFile);
   for(s=global_symbol_table; s != NULL; s=s->hh.next) {
-    if((strcmp(s->type, "string") == 0)){
-        strcpy(aux, "char");
-    }
-    else if ((strcmp(s->type, "bool") == 0)){
-        strcpy(aux, "int");
+    if((strcmp(s->type, "string") == 0)|| (strcmp(s->type, "char") == 0)){
+      strcpy(aux, " char");
     }
     else{
-        strcpy(aux, s->type);
+      strcpy(aux, s->type);
     }
     strcat(aux, " ");
     strcat(aux, s->symbol);
-    strcat(aux, "__");
+    strcat(aux, "_");
     strcat(aux, s->scope_name);
-    if((strcmp(s->type, "string") == 0)){
-        strcat(aux, " [] = \"\"");
+    if((strcmp(s->type, "string") == 0) || (strcmp(s->type, "char") == 0)){
+      strcat(aux, " [] = \"\"");
     }
     strcat(aux, "\n");
     fputs(aux, tacFile);
@@ -38,6 +35,13 @@ void createFileTAC(ast_node* parserTree) {
   tacFile = fopen("mafralang.tac", "w+");
   printSymbolTableTAC(tacFile);
   printCodeTAC(parserTree, tacFile);
+  printMainTAC(tacFile);
   fclose(tacFile);
   printf("\nArquivo mafralang.tac criado\n");
+}
+
+void printMainTAC(FILE *tacFile) {
+  fputs("main: \n", tacFile);
+  fputs("call main_global \n", tacFile);
+  fputs("return 0 \n", tacFile);
 }

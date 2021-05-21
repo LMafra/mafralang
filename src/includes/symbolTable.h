@@ -58,8 +58,4 @@
   void checkSemanticErrorMain();
   void checkSemanticErrorNotDeclared(char* symbol);
 
-  void printCodeTAC(ast_node* parserTree, FILE *tacFile);
-  void createFileTAC(ast_node* parserTree);
-  void printSymbolTableTAC(FILE* tacFile);
-
 #endif

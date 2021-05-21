@@ -32,6 +32,7 @@ END_COMMENT             "*/"
 INLINE_COMMENT          [/]{2}.*
 LETTER                  [a-zA-Z]
 DIGIT                   [0-9]
+CHAR                    (\'(.|\\a|\\b|\\f|\\n|\\r|\\t|\\v|\\\\|\\\'|\\\"|\\\?)\')
 STRING                  \"[^\"]*\"|'[^']*'
 
 ID                      {LETTER}({LETTER}|{DIGIT}|{UNDERSCORE})*
@@ -136,6 +137,7 @@ OR                      "||"
 {OR}                              {column_number += yyleng;handleTokenSymbol(line_number, column_number);return OR;}
 
 {STRING}                          {column_number += yyleng;handleTokenSymbol(line_number, column_number);return STRING;}
+{CHAR}                            {column_number += yyleng;handleTokenSymbol(line_number, column_number);return CHAR;}
 
 {INLINE_COMMENT}                  {;}
 {START_COMMENT}                   {BEGIN(COMMENT);}

@@ -1,11 +1,16 @@
-float function() {
-    int x;
-    int y;
-    int z;
-    z = x + y;
-    return z;
-}
+int main(elem j) {
+    set s;
 
-int main() {
-    function();
+    int acc; float accf;
+    acc = 0; accf = 0;
+    elem x;
+
+    forall(x in s) {
+        if (!is_set(x)) {
+           acc = acc + x;
+       accf = accf + 5;
+    }   
+    }
+
+    return 0;
 }

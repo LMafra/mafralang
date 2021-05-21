@@ -25,7 +25,6 @@ void printTree(int syntax_error, int lex_error, int semantic_error, ast_node *tr
   if(syntax_error == 0 && lex_error == 0){
     printf("\n\n\t\t\t\t\t\t\t\t----------  ABSTRACT SYNTAX TREE ----------\t\t\t\t\t\t\t\t\n\n");
     printAST(tree, 0);
-    createFileTAC(tree);
   }
 }
 
@@ -92,6 +91,12 @@ void printClass(int nodeClass){
     break;
     case PARAMETER_DECLARATION:
       printf("PARAMETER_DECLARATION");
+    break;
+    case TYPE_SPECIFIERS:
+      printf("TYPE_SPECIFIERS");
+    break;
+    case DIRECT_PARAMETER_DECLARATOR:
+      printf("DIRECT_PARAMETER_DECLARATOR");
     break;
     case ABSTRACT_DECLARATOR:
       printf("ABSTRACT_DECLARATOR");

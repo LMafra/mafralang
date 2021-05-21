@@ -6,6 +6,7 @@
   #include <stdio.h>
   #include <string.h>
   #include "includes/ast.h"
+  #include "includes/tac.h"
 
   struct ast_node* parserTree = NULL;
 
@@ -31,7 +32,7 @@
 %token <strType>  ID EMPTY TYPE FLOAT INTEGER MAIN
 %token <strType>  RETURN IF FOR FORALL ELSE
 %token <strType>  READ WRITE WRITELN
-%token <strType>  IS_SET REMOVE ADD IN STRING EXISTS
+%token <strType>  IS_SET REMOVE ADD EXISTS IN STRING CHAR
 %token <symbol>   LEFT_CURLY_BRACKET RIGHT_CURLY_BRACKET
 %token <symbol>   LEFT_PARENTHESES RIGHT_PARENTHESES QUOTES
 %token <symbol>   SEMICOLON COMMA
@@ -39,16 +40,12 @@
 %token <symbol>   ADD_OP SUB_OP DIVIDE MULT ASSIGN
 %token <symbol>   CLT CLE CEQ CGE CGT CNE
 
-%left CLT CLE CEQ CGE CGT CNE
-%left ADD_OP SUB_OP
-%left DIVIDE MULT
-%right ASSIGN
 %right THEN ELSE
 
-%type <stmt> program translation_unit external_declaration function_definition declaration_list declaration
+%type <stmt> program translation_unit external_declaration function_definition declaration
 %type <stmt> declaration_specifiers init_declarator_list declarator direct_declarator 
-%type <stmt> identifier_list parameter_list parameter_declaration abstract_declarator
-%type <stmt> direct_abstract_declarator block_item_list block_item statement expression_statement
+%type <stmt> identifier_list parameter_list parameter_declaration type_specifiers parameter_declarator direct_parameter_declarator
+%type <stmt> abstract_declarator direct_abstract_declarator block_item_list block_item statement expression_statement
 %type <stmt> compound_statement conditional_statement iteration_statement input_statement output_statement return_statement
 %type <stmt> set_expression_list is_set_expression add_expression remove_expression exists_expression
 %type <stmt> expression assignment_expression arithmetic_expression logical_expression
@@ -85,15 +82,6 @@ function_definition:
   declaration_specifiers declarator {
     pushStack();
   }
-  declaration_list compound_statement {
-    ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
-    ast_node* ast_node2 = addNode(FUNCTION_DEFINITION, ast_node1, $4, NULL, NULL);
-    $$ = addNode(FUNCTION_DEFINITION, ast_node2, $5, NULL, NULL);
-    popStack();
-  }
-| declaration_specifiers declarator {
-    pushStack();
-  }
   compound_statement {
     ast_node* ast_node1 = addNode(FUNCTION_DEFINITION, $1, $2, NULL, NULL);
     $$ = addNode(FUNCTION_DEFINITION, ast_node1, $4, NULL, NULL);
@@ -101,14 +89,7 @@ function_definition:
   }
 ;
 
-declaration_list:
-  declaration {
-    $$ = addNode(DECLARATION_LIST, $1, NULL, NULL, NULL);
-  }
-| declaration_list declaration {
-    $$ = addNode(DECLARATION_LIST, $1, $2, NULL, NULL);
-  }
-;
+
 
 declaration:
   declaration_specifiers SEMICOLON  {
@@ -207,11 +188,51 @@ parameter_list:
 ;
 
 parameter_declaration:
-  declaration_specifiers declarator {
+  type_specifiers parameter_declarator {
     $$ = addNode(PARAMETER_DECLARATION, $1, $2, NULL, NULL);
   }
-| declaration_specifiers abstract_declarator {
+| type_specifiers abstract_declarator {
     $$ = addNode(PARAMETER_DECLARATION, $1, $2, NULL, NULL);
+  }
+;
+
+type_specifiers: 
+  TYPE {
+    insertType($1);
+    $$ = addNode(TYPE_SPECIFIERS, NULL, NULL, $1, NULL);
+  }
+| TYPE type_specifiers {
+    insertType($1);
+    $$ = addNode(TYPE_SPECIFIERS, NULL, $2, $1, NULL);
+  }
+;
+
+parameter_declarator:
+  direct_parameter_declarator
+;
+
+direct_parameter_declarator:
+  ID  {
+    insertSymbol($1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+        type = s->type;
+    }
+    $$ = addNode(DIRECT_PARAMETER_DECLARATOR, NULL, NULL, type, $1);
+  }
+| LEFT_PARENTHESES parameter_declarator RIGHT_PARENTHESES {
+    $$ = $2;
+  }
+| direct_parameter_declarator LEFT_PARENTHESES RIGHT_PARENTHESES
+| direct_parameter_declarator LEFT_PARENTHESES parameter_list RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_PARAMETER_DECLARATOR, $1, $3, NULL, NULL);
+  }
+| direct_parameter_declarator LEFT_PARENTHESES identifier_list RIGHT_PARENTHESES {
+    $$ = addNode(DIRECT_PARAMETER_DECLARATOR, $1, $3, NULL, NULL);
+  }
+| direct_parameter_declarator LEFT_PARENTHESES error RIGHT_PARENTHESES {
+    yyerrok;
   }
 ;
 
@@ -369,8 +390,8 @@ set_expression_list:
 ;
 
 is_set_expression:
-  IS_SET LEFT_PARENTHESES ID RIGHT_PARENTHESES {
-    $$ = addNode(IS_SET_EXPRESSION, NULL, NULL, $1, $3);
+  IS_SET LEFT_PARENTHESES expression RIGHT_PARENTHESES {
+    $$ = addNode(IS_SET_EXPRESSION, $3, NULL, $1, NULL);
   }
 ;
 
@@ -506,10 +527,20 @@ unary_expression:
 
 function_expression:
   ID LEFT_PARENTHESES initializer_list RIGHT_PARENTHESES {
-    $$ = addNode(FUNCTION_EXPRESSION, $3, NULL, NULL, $1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+      type = s->type;
+    }
+    $$ = addNode(FUNCTION_EXPRESSION, $3, NULL, type, $1);
   }
 | ID LEFT_PARENTHESES RIGHT_PARENTHESES {
-    $$ = addNode(FUNCTION_EXPRESSION, NULL, NULL, NULL, $1);
+    symbol_node* s = findSymbol($1);
+    char* type = NULL;
+    if(s != NULL){
+      type = s->type;
+    }
+    $$ = addNode(FUNCTION_EXPRESSION, NULL, NULL, type, $1);
   }
 ;
 
@@ -558,6 +589,9 @@ primary_expression:
 | STRING {
     $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
   }
+| CHAR {
+    $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
+  }
 | EMPTY {
     $$ = addNode(PRIMARY_EXPRESSION, NULL, NULL, NULL, $1);
   }
@@ -585,9 +619,10 @@ int main(int argc, char **argv) {
   printSymbolTable();
   if(!(syntax_error || lex_error | semantic_error)){
     printTree(syntax_error, lex_error, semantic_error, parserTree);
+    createFileTAC(parserTree);
+    freeTree(parserTree);
   }
   yylex_destroy();
-  freeTree(parserTree);
   freeSymbolTable();
   return 0;
 }
